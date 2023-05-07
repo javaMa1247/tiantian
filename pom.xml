@@ -15,6 +15,7 @@
         <module>ttsx-feign</module>
         <module>ttsx-gateway</module>
         <module>ttsx-entity</module>
+        <module>ttsx-background</module>
     </modules>
 
     <parent>

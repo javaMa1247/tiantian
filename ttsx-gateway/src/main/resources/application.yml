@@ -1,0 +1,37 @@
+spring:
+  application:
+    name: piggy-gateway
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+        username: nacos
+        password: nacos
+        namespace: ttsx-prod
+    gateway:
+      routes:
+      #        - id: res-order
+      #          uri: lb://res-order
+      #          predicates:
+      #            - Path=/resorder/**
+      #          filters:
+      #            - RewritePath=/resorder/(?<segment>.*), /$\{segment}
+      globalcors:  #全局跨域处理
+        cors-configurations:
+          '[/**]':
+            allowedMethods: "*"
+            allowedHeaders: "*"
+            #要注意的是，当 Access-Control-Allow-Credentials 的值为 true 时，Access-Control-Allow-Origin 的值只能是请求的 Origin，不能是 *
+            #allowedOrigins: "*"
+            allowCredentials: true   #并且允许携带身份凭证
+server:
+  port: 20001  #网关端口
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"    # 暴露gateway端点，* 是暴露全部端点
+  endpoint:
+    gateway:
+      enabled: true # default value
