@@ -1,4 +1,4 @@
-package bean;
+package com.ttsx.bean;
 
 import lombok.Data;
 
