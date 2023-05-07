@@ -6,8 +6,25 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="ttsx-entity" />
+        <module name="ttsx-order" />
+        <module name="ttsx-foods" />
+        <module name="ttsx-feign" />
+        <module name="ttsx-gateway" />
         <module name="shengxian" />
+        <module name="ttsx-index" />
       </profile>
     </annotationProcessing>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="-" options="-parameters" />
+      <module name="ttsx-entity" options="-parameters" />
+      <module name="ttsx-feign" options="-parameters" />
+      <module name="ttsx-foods" options="-parameters" />
+      <module name="ttsx-gateway" options="-parameters" />
+      <module name="ttsx-index" options="-parameters" />
+      <module name="ttsx-order" options="-parameters" />
+    </option>
   </component>
 </project>
