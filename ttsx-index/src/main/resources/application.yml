@@ -10,7 +10,7 @@ spring:
         namespace: ttsx-prod
 
   application:
-    name: piggy-index
+    name: ttsx-index
   web:
     resources:
       static-locations: [classpath:/META-INF/resources,classpath:/resources,classpath:/static,classpath:/templates]
