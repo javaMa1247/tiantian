@@ -68,11 +68,9 @@
 		methods:{
 			login:function () {
 				var params = new URLSearchParams();
-				params.append("op","login");
 				params.append("nickName",this.nickName);
 				params.append("pwd",this.pwd);
-				params.append("flag",this.flag);
-				axios.post("resuser.action",params).then(data=>{
+				axios.post("/user/login",params).then(data=>{
 					var result = data.data;
 					if(result.code==1){
 						alert("登录成功,欢迎您"+result.data.nickName);
