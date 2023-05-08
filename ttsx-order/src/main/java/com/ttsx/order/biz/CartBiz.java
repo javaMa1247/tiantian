@@ -65,7 +65,7 @@ public class CartBiz {
                     num2 = 1;
                 }
                 UpdateWrapper<Cartinfo> updateWrapper = new UpdateWrapper<>();
-                updateWrapper.set("num", num)
+                updateWrapper.set("num", num2)
                         .eq("gno", gno)
                         .eq("mno", mno);
                 int rows = dao.update(null, updateWrapper);
