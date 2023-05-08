@@ -1,5 +1,7 @@
-package bean;
+package com.ttsx.bean;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -11,7 +13,9 @@ import java.io.Serializable;
  * @Description:
  */
 @Data
+
 public class Memberinfo implements Serializable {
+    @TableId(type = IdType.AUTO)    //主键且自增
     private Integer mno;
     private String nickName;
     private String realName;
