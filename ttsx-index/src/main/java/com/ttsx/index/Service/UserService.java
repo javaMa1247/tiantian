@@ -1,4 +1,4 @@
-package com.ttsx.index.Servlet;
+package com.ttsx.index.Service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.ttsx.bean.Memberinfo;
@@ -8,6 +8,6 @@ import com.ttsx.bean.Memberinfo;
  * @Author: 86150
  * @CreateDate: 2023-05-07 下午 9:02
  */
-public interface UserServlet extends IService<Memberinfo> {
+public interface UserService extends IService<Memberinfo> {
 
 }
