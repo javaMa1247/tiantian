@@ -1,0 +1,33 @@
+#spring:
+#  cloud:
+#    nacos:
+#      discovery:
+#        server-addr: localhost:8848
+#        username: nacos
+#        password: nacos
+#        namespace: ttsx-prod
+#
+#  application:
+#    name: ttsx-foods
+#server:
+#  port: 7777
+#
+#logging:
+#  level:
+#    root: info
+#    com.ttsx: info
+#    org.springframework: info
+#  file:
+#    path: ./logs
+#
+#mybatis-plus:
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+#
+##暴露端点的状态
+##使用 http://ip:port/actuator/healyh  访问
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include: "*"
