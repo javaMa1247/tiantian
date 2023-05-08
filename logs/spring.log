@@ -2625,3 +2625,4 @@ java.sql.SQLException: Access denied for user 'root'@'localhost' (using password
 2023-05-08 21:30:11.287  INFO 4416 --- [RMI TCP Connection(3)-172.20.90.239] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
 2023-05-08 21:30:26.453  INFO 4416 --- [http-nio-7777-exec-2] c.ttsx.goods.controller.GoodController   : 进来了
 2023-05-08 21:34:21.703  INFO 4416 --- [http-nio-7777-exec-7] c.ttsx.goods.controller.GoodController   : 进来了
+2023-05-08 21:37:23.339  INFO 4416 --- [http-nio-7777-exec-10] c.ttsx.goods.controller.GoodController   : 进来了
