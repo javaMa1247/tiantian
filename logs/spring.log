@@ -2195,3 +2195,71 @@ Consider defining a bean of type 'com.ttsx.order.dao.CartDao' in your configurat
 2023-05-08 21:21:29.217  INFO 30040 --- [RMI TCP Connection(4)-192.168.100.1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
 2023-05-08 21:21:29.218  INFO 30040 --- [RMI TCP Connection(4)-192.168.100.1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
 2023-05-08 21:21:29.220  INFO 30040 --- [RMI TCP Connection(4)-192.168.100.1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2023-05-08 21:59:21.085  INFO 18980 --- [main] com.ttsx.order.OrderApplication          : The following 1 profile is active: "prod"
+2023-05-08 21:59:21.801  INFO 18980 --- [main] o.s.cloud.context.scope.GenericScope     : BeanFactory id=4b2fe40a-38f7-31a1-924e-006def0f31cf
+2023-05-08 21:59:22.055  INFO 18980 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8888 (http)
+2023-05-08 21:59:22.056  INFO 18980 --- [main] o.a.catalina.core.AprLifecycleListener   : Loaded Apache Tomcat Native library [1.2.35] using APR version [1.7.0].
+2023-05-08 21:59:22.056  INFO 18980 --- [main] o.a.catalina.core.AprLifecycleListener   : APR capabilities: IPv6 [true], sendfile [true], accept filters [false], random [true], UDS [true].
+2023-05-08 21:59:22.056  INFO 18980 --- [main] o.a.catalina.core.AprLifecycleListener   : APR/OpenSSL configuration: useAprConnector [false], useOpenSSL [true]
+2023-05-08 21:59:22.060  INFO 18980 --- [main] o.a.catalina.core.AprLifecycleListener   : OpenSSL successfully initialized [OpenSSL 1.1.1q  5 Jul 2022]
+2023-05-08 21:59:22.067  INFO 18980 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-05-08 21:59:22.068  INFO 18980 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.63]
+2023-05-08 21:59:22.186  INFO 18980 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2023-05-08 21:59:22.186  INFO 18980 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1086 ms
+2023-05-08 21:59:22.232  INFO 18980 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2023-05-08 21:59:22.314  INFO 18980 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2023-05-08 21:59:22.493  INFO 18980 --- [main] o.s.c.openfeign.FeignClientFactoryBean   : For 'ttsx-foods' URL not provided. Will try picking an instance via load-balancing.
+2023-05-08 21:59:25.172  INFO 18980 --- [main] o.s.cloud.commons.util.InetUtils         : Cannot determine local hostname
+2023-05-08 21:59:26.619  WARN 4564 --- [Thread-15] c.a.nacos.common.notify.NotifyCenter     : [NotifyCenter] Start destroying Publisher
+2023-05-08 21:59:26.616  WARN 4564 --- [Thread-6] c.a.n.common.http.HttpClientBeanHolder   : [HttpClientBeanHolder] Start destroying common HttpClient
+2023-05-08 21:59:26.635  WARN 4564 --- [Thread-15] c.a.nacos.common.notify.NotifyCenter     : [NotifyCenter] Destruction of the end
+2023-05-08 21:59:26.648  WARN 4564 --- [Thread-6] c.a.n.common.http.HttpClientBeanHolder   : [HttpClientBeanHolder] Destruction of the end
+2023-05-08 21:59:27.331  INFO 4564 --- [SpringApplicationShutdownHook] c.a.c.n.registry.NacosServiceRegistry    : De-registering from Nacos Server now...
+2023-05-08 21:59:27.349  INFO 4564 --- [SpringApplicationShutdownHook] c.a.c.n.registry.NacosServiceRegistry    : De-registration finished.
+2023-05-08 21:59:27.400  INFO 4564 --- [SpringApplicationShutdownHook] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} closing ...
+2023-05-08 21:59:27.409  INFO 4564 --- [SpringApplicationShutdownHook] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} closed
+2023-05-08 21:59:27.448  INFO 18980 --- [main] o.s.cloud.commons.util.InetUtils         : Cannot determine local hostname
+2023-05-08 21:59:27.473  WARN 18980 --- [main] iguration$LoadBalancerCaffeineWarnLogger : Spring Cloud LoadBalancer is currently working with the default cache. While this cache implementation is useful for development and tests, it's recommended to use Caffeine cache in production.You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.
+2023-05-08 21:59:27.479  INFO 18980 --- [main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 19 endpoint(s) beneath base path '/actuator'
+2023-05-08 21:59:27.544  INFO 18980 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8888 (http) with context path ''
+2023-05-08 21:59:27.554  INFO 18980 --- [main] c.a.n.p.a.s.c.ClientAuthPluginManager    : [ClientAuthPluginManager] Load ClientAuthService com.alibaba.nacos.client.auth.impl.NacosClientAuthServiceImpl success.
+2023-05-08 21:59:27.555  INFO 18980 --- [main] c.a.n.p.a.s.c.ClientAuthPluginManager    : [ClientAuthPluginManager] Load ClientAuthService com.alibaba.nacos.client.auth.ram.RamClientAuthServiceImpl success.
+2023-05-08 21:59:27.755  INFO 18980 --- [main] c.a.c.n.registry.NacosServiceRegistry    : nacos registry, DEFAULT_GROUP ttsx-order 192.168.62.1:8888 register finished
+2023-05-08 21:59:29.397  INFO 18980 --- [main] o.s.cloud.commons.util.InetUtils         : Cannot determine local hostname
+2023-05-08 21:59:29.414  INFO 18980 --- [main] com.ttsx.order.OrderApplication          : Started OrderApplication in 14.449 seconds (JVM running for 15.62)
+2023-05-08 21:59:29.431  INFO 18980 --- [main] c.a.c.n.refresh.NacosContextRefresher    : [Nacos Config] Listening config: dataId=ttsx-order.yml, group=DEFAULT_GROUP
+2023-05-08 21:59:29.432  INFO 18980 --- [main] c.a.c.n.refresh.NacosContextRefresher    : [Nacos Config] Listening config: dataId=ttsx-order-prod.yml, group=DEFAULT_GROUP
+2023-05-08 21:59:29.434  INFO 18980 --- [main] c.a.c.n.refresh.NacosContextRefresher    : [Nacos Config] Listening config: dataId=ttsx-mysql.yml, group=DEFAULT_GROUP
+2023-05-08 21:59:29.435  INFO 18980 --- [main] c.a.c.n.refresh.NacosContextRefresher    : [Nacos Config] Listening config: dataId=ttsx-order, group=DEFAULT_GROUP
+2023-05-08 21:59:30.581  INFO 18980 --- [RMI TCP Connection(5)-192.168.100.1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-05-08 21:59:30.583  INFO 18980 --- [RMI TCP Connection(5)-192.168.100.1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2023-05-08 21:59:30.584  INFO 18980 --- [RMI TCP Connection(5)-192.168.100.1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2023-05-08 21:59:37.917  INFO 1868 --- [main] com.ttsx.goods.GoodApplication           : The following 1 profile is active: "prod"
+2023-05-08 21:59:38.591  INFO 1868 --- [main] o.s.cloud.context.scope.GenericScope     : BeanFactory id=5dd3e6ca-64af-392d-b615-fb1778a81fc7
+2023-05-08 21:59:38.820  INFO 1868 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2023-05-08 21:59:38.821  INFO 1868 --- [main] o.a.catalina.core.AprLifecycleListener   : Loaded Apache Tomcat Native library [1.2.35] using APR version [1.7.0].
+2023-05-08 21:59:38.821  INFO 1868 --- [main] o.a.catalina.core.AprLifecycleListener   : APR capabilities: IPv6 [true], sendfile [true], accept filters [false], random [true], UDS [true].
+2023-05-08 21:59:38.821  INFO 1868 --- [main] o.a.catalina.core.AprLifecycleListener   : APR/OpenSSL configuration: useAprConnector [false], useOpenSSL [true]
+2023-05-08 21:59:38.824  INFO 1868 --- [main] o.a.catalina.core.AprLifecycleListener   : OpenSSL successfully initialized [OpenSSL 1.1.1q  5 Jul 2022]
+2023-05-08 21:59:38.831  INFO 1868 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-05-08 21:59:38.831  INFO 1868 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.63]
+2023-05-08 21:59:38.950  INFO 1868 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2023-05-08 21:59:38.950  INFO 1868 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1022 ms
+2023-05-08 21:59:39.003  INFO 1868 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2023-05-08 21:59:39.093  INFO 1868 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2023-05-08 21:59:42.165  INFO 1868 --- [main] o.s.cloud.commons.util.InetUtils         : Cannot determine local hostname
+2023-05-08 21:59:44.814  INFO 1868 --- [main] o.s.cloud.commons.util.InetUtils         : Cannot determine local hostname
+2023-05-08 21:59:44.835  INFO 1868 --- [main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 19 endpoint(s) beneath base path '/actuator'
+2023-05-08 21:59:44.902  INFO 1868 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2023-05-08 21:59:44.911  INFO 1868 --- [main] c.a.n.p.a.s.c.ClientAuthPluginManager    : [ClientAuthPluginManager] Load ClientAuthService com.alibaba.nacos.client.auth.impl.NacosClientAuthServiceImpl success.
+2023-05-08 21:59:44.912  INFO 1868 --- [main] c.a.n.p.a.s.c.ClientAuthPluginManager    : [ClientAuthPluginManager] Load ClientAuthService com.alibaba.nacos.client.auth.ram.RamClientAuthServiceImpl success.
+2023-05-08 21:59:45.102  INFO 1868 --- [main] c.a.c.n.registry.NacosServiceRegistry    : nacos registry, DEFAULT_GROUP ttsx-foods 192.168.62.1:7777 register finished
+2023-05-08 21:59:46.655  INFO 1868 --- [main] o.s.cloud.commons.util.InetUtils         : Cannot determine local hostname
+2023-05-08 21:59:46.671  INFO 1868 --- [main] com.ttsx.goods.GoodApplication           : Started GoodApplication in 15.089 seconds (JVM running for 16.499)
+2023-05-08 21:59:46.684  INFO 1868 --- [main] c.a.c.n.refresh.NacosContextRefresher    : [Nacos Config] Listening config: dataId=ttsx-foods, group=DEFAULT_GROUP
+2023-05-08 21:59:46.686  INFO 1868 --- [main] c.a.c.n.refresh.NacosContextRefresher    : [Nacos Config] Listening config: dataId=ttsx-mysql.yml, group=DEFAULT_GROUP
+2023-05-08 21:59:46.687  INFO 1868 --- [main] c.a.c.n.refresh.NacosContextRefresher    : [Nacos Config] Listening config: dataId=ttsx-foods-prod.yml, group=DEFAULT_GROUP
+2023-05-08 21:59:46.687  INFO 1868 --- [main] c.a.c.n.refresh.NacosContextRefresher    : [Nacos Config] Listening config: dataId=ttsx-foods.yml, group=DEFAULT_GROUP
+2023-05-08 21:59:47.460  INFO 1868 --- [RMI TCP Connection(4)-192.168.100.1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-05-08 21:59:47.461  INFO 1868 --- [RMI TCP Connection(4)-192.168.100.1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2023-05-08 21:59:47.463  INFO 1868 --- [RMI TCP Connection(4)-192.168.100.1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms

@@ -1,6 +1,8 @@
 package com.ttsx.feignApi;
 
+import com.ttsx.bean.Goodsinfo;
 import com.ttsx.feignApi.config.FeignLogConfig;
+import com.ttsx.utils.R;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +20,7 @@ public interface FeignApp {
 
     //open feign 支持SpringMVC 注解
     @RequestMapping("findById/{fid}")
-    public Map<String,Object> findById(@PathVariable Integer fid);
+    public R<Goodsinfo> findById(@PathVariable Integer fid);
 //
 //    @RequestMapping("findAll")
 //    public Map<String,Object> findAll();

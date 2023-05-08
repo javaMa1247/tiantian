@@ -8,6 +8,7 @@ import com.ttsx.bean.Cartinfo;
 import com.ttsx.bean.Goodsinfo;
 import com.ttsx.feignApi.FeignApp;
 import com.ttsx.order.dao.CartDao;
+import com.ttsx.utils.R;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
@@ -39,17 +40,10 @@ public class CartBiz {
         for (Cartinfo cartinfo : cartinfos) {
             cartinfo.setCount(cartinfo.getCount()+1);
             //TODO: 到nacos中查找res-foods服务中的   findById ，要得到菜品对象goods
-            Map<String,Object> resultMap=this.feignApp.findById(   Integer.valueOf(cartinfo.getGno()) );
-            Goodsinfo gs = null;
-            if( "1".equalsIgnoreCase(  resultMap.get("code").toString())){
-                Map m= (Map) resultMap.get("data");
-                //如何将一个Map转为  一个  Resfood对象  -> 反射.
-                // spring的底层对json的处理使用 jackson框架，这个框架有将map转为对象的方法
-                ObjectMapper mapper=new ObjectMapper();
-                gs=mapper.convertValue(     m,  Goodsinfo.class );
-                cartinfo.setSmallCount(gs.getPrice()*cartinfo.getNum());
-                cartinfo.setGoodsinfo(gs);
-            }
+            R<Goodsinfo> resultMap=this.feignApp.findById(   Integer.valueOf(cartinfo.getGno()) );
+            Goodsinfo gs = resultMap.getData();
+            cartinfo.setSmallCount(gs.getPrice()*cartinfo.getNum());
+            cartinfo.setGoodsinfo(gs);
 
         }
         return cartinfos;
