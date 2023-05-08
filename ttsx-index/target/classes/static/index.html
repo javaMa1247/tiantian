@@ -1,0 +1,256 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+	<title>天天生鲜-首页</title>
+	<link rel="stylesheet" type="text/css" href="css/reset.css">
+	<link rel="stylesheet" type="text/css" href="css/main.css">
+	<script type="text/javascript" src="js/jquery-1.12.4.min.js"></script>
+	<script type="text/javascript" src="js/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="js/slide.js"></script>
+</head>
+<body>
+<div id="app">
+	<div class="header_con">
+		<div class="header">
+			<div class="welcome fl">欢迎来到天天生鲜!</div>
+			<div class="fr">
+				<div class="login_btn fl" v-if="isLogin" v-cloak>
+					欢迎您：{{userdata.nickName}}
+				</div>
+				<div class="login_btn fl" v-else>
+					<a href="login.html">登录</a>
+					<span>|</span>
+					<a href="register.html">注册</a>
+				</div>
+				<div class="user_link fl" v-if="isLogin">
+					<span>|</span>
+					<a href="user_center_info.html">用户中心</a>
+					<span>|</span>
+					<a href="cart.html">我的购物车</a>
+					<span>|</span>
+					<a href="user_center_order.html">我的订单</a>
+					<span>|</span>
+					<a href="" @click.prevent="history()">历史记录</a>
+					<span>|</span>
+					<a href="" @click.prevent="logout()">退出登录</a>
+				</div>
+			</div>
+		</div>		
+	</div>
+
+	<div class="search_bar clearfix">
+		<a href="index.html" class="logo fl"><img src="images/logo.png"></a>
+		<div class="search_con fl">
+			<input type="text" class="input_text fl" name="" placeholder="搜索商品" v-model="findgoods">
+			<input type="button" class="input_btn fr" name="" value="搜索" @click="findGoods()">
+		</div>
+		<div class="guest_cart fr">
+			<a href="#" class="cart_name fl">我的购物车</a>
+			<div class="goods_count fl" id="show_count">1</div>
+		</div>
+	</div>
+
+	<div class="navbar_con">
+		<div class="navbar">
+			<h1 class="fl">全部商品分类</h1>
+			<ul class="navlist fl">
+				<li><a href="index.html">首页</a></li>
+			</ul>
+		</div>
+	</div>
+
+	<div class="center_con clearfix">
+		<ul class="subnav fl">
+			<li><a href="#model01" class="fruit">新鲜水果</a></li>
+			<li><a href="#model02" class="seafood">海鲜水产</a></li>
+			<li><a href="#model03" class="meet">猪牛羊肉</a></li>
+			<li><a href="#model04" class="egg">禽类蛋品</a></li>
+			<li><a href="#model05" class="vegetables">新鲜蔬菜</a></li>
+			<li><a href="#model06" class="ice">速冻食品</a></li>
+		</ul>
+		<div class="slide fl">
+			<ul class="slide_pics">
+				<li><img src="images/slide.jpg" alt="幻灯片" @click="toList(5,'新鲜蔬菜')"></li>
+				<li><img src="images/slide02.jpg" alt="幻灯片" @click="toList(1,'新鲜水果')"></li>
+				<li><img src="images/slide03.jpg" alt="幻灯片" @click="toList(3,'猪羊牛肉')"></li>
+				<li><img src="images/slide04.jpg" alt="幻灯片" @click="toList(2,'海鲜水产')"></li>
+			</ul>
+			<div class="prev"></div>
+			<div class="next"></div>
+			<ul class="points"></ul>
+		</div>
+		<div class="adv fl">
+			<a href="#"><img src="images/adv01.jpg"></a>
+			<a href="#"><img src="images/adv02.jpg"></a>
+		</div>
+	</div>
+
+	<div class="list_model" v-for="(value,index) in goodsType" :key="index">
+		<div class="list_title clearfix">
+			<h3 class="fl" :id="idd(index)">{{value.tname}}</h3>
+			<div class="subtitle fl">
+				<span>|</span>
+			</div>
+			<a href="list.html" class="goods_more fr" id="fruit_more" @click="toList(value.tno,value.tname)">查看更多 ></a>
+		</div>
+
+		<div class="goods_con clearfix">
+			<div class="goods_banner fl"><img :src="value.pic" @click="toList(value.tno,value.tname)"></div>
+			<ul class="goods_list fl">
+				<div v-for="(item,index) in goods">
+					<li v-if="show(item.tno,value.tno)">
+						<h4><a href="detail.html" @click="toDetail(item.gno,value.tname)">{{item.gname}}</a></h4>
+						<a href="detail.html" @click="toDetail(item.gno,value.tname)"><img :src="item.pics"></a>
+						<div class="prize">¥ {{item.price}}</div>
+					</li>
+				</div>
+			</ul>
+		</div>
+	</div>
+
+
+	<div class="footer">
+		<div class="foot_link">
+			<a href="#">关于我们</a>
+			<span>|</span>
+			<a href="#">联系我们</a>
+			<span>|</span>
+			<a href="#">招聘人才</a>
+			<span>|</span>
+			<a href="#">友情链接</a>		
+		</div>
+		<p>CopyRight © 2016 北京天天生鲜信息技术有限公司 All Rights Reserved</p>
+		<p>电话：010-****888    京ICP备*******8号</p>
+	</div>
+
+</div>
+<script src="js/vue.js"></script>
+<script src="js/axios.js"></script>
+<script type="text/javascript">
+	const vm=new Vue({
+		el:'#app',
+		data:{
+			findgoods:'',//搜索框内输入的关键字
+			leng:1,//限制搜索商品排版数量
+			shows:0,//限制显示商品排版数量 4个
+			goods:[],//存放商品对象
+			goodsType:[],//存放商品类别对象
+			isLogin:false,
+			userdata:{},
+		},
+		methods:{
+			findGoods:function (){
+				if(this.findgoods==''){
+					return;
+				}
+				let a={Findgoods:this.findgoods};
+				sessionStorage.setItem("findgoods",JSON.stringify(a));
+				let x={Pageno:1};
+				sessionStorage.setItem("pageno",JSON.stringify(x));
+				let y={Tno:999};
+				sessionStorage.setItem("goodsTno",JSON.stringify(y));
+				let z={Tname:'搜索结果'};
+				sessionStorage.setItem("goodsTname",JSON.stringify(z));
+				window.location.href="list.html";
+
+			},
+			//到达list.html
+			toList:function (tno,tname){
+				let x={Pageno:1}
+				sessionStorage.setItem("pageno",JSON.stringify(x));
+				let y={Tno:tno};
+				sessionStorage.setItem("goodsTno",JSON.stringify(y));
+				let z={Tname:tname};
+				sessionStorage.setItem("goodsTname",JSON.stringify(z));
+				window.location.href="list.html";
+			},
+			//toDetail.html页面
+			toDetail:function (gno,tname){
+				let x={Pageno:1}
+				sessionStorage.setItem("pageno",JSON.stringify(x));
+				let y={Gno:gno};
+				sessionStorage.setItem("goodsGno",JSON.stringify(y));
+				let z={Tname:tname};
+				sessionStorage.setItem("goodsTname",JSON.stringify(z));
+			},
+			//动态添加属性id
+			idd:function (index){
+				index++;
+				return 'model0'+index;
+			},
+			//判断是否属于相应的类型
+			show:function (tno1,tno2){
+				let flag=false;
+				if(this.leng!=tno2){
+					this.leng=tno2;
+					this.shows=0;
+				}
+				if(this.shows==4){
+					flag=false;
+					return flag;
+				}
+				if(tno1==tno2){
+					flag=true;
+					this.shows++;
+				}
+				return flag;
+			},
+			//显示商品信息
+			showGoodsInfo:function (){
+				axios.post("goodsInfo.action?op=showGoodsInfo").then(data=>{
+					if(data.data.code==1) {
+						this.goods = data.data.data;
+						return;
+					};
+					alert("showGoodsInfo失败");
+					return false;
+				})
+			},
+			//查询商品类型
+			showGoodsType:function(){
+				axios.post("goodsInfo.action?op=showGoodsType").then(data=>{
+					if(data.data.code==1) {
+						this.goodsType = data.data.data;
+						return;
+					};
+					alert("showGoodsType失败");
+					return false;
+				})
+			},
+			selectLogin() {
+				let params = new URLSearchParams();
+				params.append("op", "selectUserInfo");
+				axios.post("admin.action", params).then(data => {
+					if (data.data.code == 1) {
+						this.userdata = data.data.data;
+						this.isLogin = true;
+					}
+				})
+			},
+			logout(){
+				let params = new URLSearchParams();
+				params.append("op", "logout");
+				axios.post("admin.action", params).then(data => {
+					if (data.data.code == 1) {
+						alert("退出登录成功!")
+						this.isLogin = false;
+					}else {
+						alert(data.data.msg);
+					}
+				})
+			},
+			history() {
+				window.location.href = 'user_center_info.html'
+			}
+		},
+		mounted(){
+			axios.all([this.showGoodsInfo(),this.showGoodsType(),this.selectLogin()]);
+		},
+		created(){
+
+		},
+	})
+</script>
+</body>
+</html>
