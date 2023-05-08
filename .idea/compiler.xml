@@ -11,7 +11,6 @@
         <module name="ttsx-order" />
         <module name="ttsx-foods" />
         <module name="ttsx-feign" />
-        <module name="ttsx-user" />
         <module name="ttsx-gateway" />
         <module name="ttsx-background" />
         <module name="shengxian" />
@@ -29,7 +28,6 @@
       <module name="ttsx-gateway" options="-parameters" />
       <module name="ttsx-index" options="-parameters" />
       <module name="ttsx-order" options="-parameters" />
-      <module name="ttsx-user" options="-parameters" />
     </option>
   </component>
 </project>

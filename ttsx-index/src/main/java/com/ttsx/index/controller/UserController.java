@@ -1,15 +1,12 @@
 package com.ttsx.index.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.ttsx.bean.Memberinfo;
-import com.ttsx.index.Servlet.impl.UserServletImpl;
+import com.ttsx.index.Service.UserService;
 import com.ttsx.utils.R;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Map;
 
 /**
  * @Description:
@@ -19,12 +16,12 @@ import java.util.Map;
 @RestController("/user")
 public class UserController {
     @Autowired
-    private UserServletImpl userServlet;
+    private UserService userService;
     @RequestMapping("login")
     public R<Memberinfo> login(Memberinfo memberinfo){
         LambdaQueryWrapper<Memberinfo> qw =new LambdaQueryWrapper<>();
         qw.eq(Memberinfo::getNickName,memberinfo.getNickName());
-        Memberinfo one = userServlet.getOne(qw);
+        Memberinfo one = userService.getOne(qw);
         return R.success(one);
     }
 }
