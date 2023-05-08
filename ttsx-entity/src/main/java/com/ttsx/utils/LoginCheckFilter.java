@@ -35,9 +35,6 @@ public class LoginCheckFilter implements Filter {
         //不需要处理的请求路径
         String[] urls = new String[]{
                 "/employee/login",
-                "/employee/logout",
-                "/backend/**",
-                "/front/**",
                 "/common/**",
                 "/user/sendMsg", //移动端发送短信
                 "/user/login"  //移动端登录
