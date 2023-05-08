@@ -13,7 +13,7 @@ spring:
         - id: ttsx-foods
           uri: lb://ttsx-foods
           predicates:
-           - Path=/foods/**
+           - Path=/goods/**
           filters:
 #           - RewritePath=/foods/(?<segment>.*), /$\{segment}
         - id: ttsx-order

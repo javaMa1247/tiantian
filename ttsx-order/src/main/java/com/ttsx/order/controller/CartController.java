@@ -7,7 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Description:
@@ -27,5 +31,20 @@ public class CartController {
 
         List<Cartinfo> cartinfos = this.biz.showAllCart();
         return cartinfos;
+    }
+
+    @RequestMapping("addCart")
+    public Map<String,Object> addCart(HttpServletRequest request, HttpServletResponse response) {
+        //取出gno和num
+        String gno = request.getParameter("gno");
+        String num = request.getParameter("num");
+        Map<String,Object> map = new HashMap<>();
+        int i = this.biz.addCart(gno, num);
+        if(i!=0) {
+            map.put("code", 1);
+            map.put("data", "添加成功");
+        }
+        return map;
+
     }
 }
