@@ -1,5 +1,6 @@
 package com.ttsx.order.biz;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
@@ -87,5 +88,20 @@ public class CartBiz {
             return 0;
         }
         return 1;
+    }
+    public int delgoods(String cno,String gno){
+        int result = 0;
+        try{
+            LambdaQueryWrapper<Cartinfo> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+            lambdaQueryWrapper.eq(Cartinfo::getCno, cno)
+                    .eq(Cartinfo::getMno, mno)
+                    .eq(Cartinfo::getGno, gno);
+            result =  dao.delete(lambdaQueryWrapper);
+
+        }catch (Exception e){
+            return result;
+        }
+
+        return result;
     }
 }

@@ -20,6 +20,11 @@ spring:
           uri: lb://ttsx-order
           predicates:
             - Path=/order/**
+
+        - id: ttsx-order-cart
+          uri: lb://ttsx-order
+          predicates:
+            - Path=/cart/**
           filters:
 #            - RewritePath=/foods/(?<segment>.*), /$\{segment}
       globalcors:  #全局跨域处理

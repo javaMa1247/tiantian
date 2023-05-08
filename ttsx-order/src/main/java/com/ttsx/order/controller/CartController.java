@@ -26,9 +26,6 @@ public class CartController {
     @RequestMapping("showAllcartInfo")
     public List<Cartinfo> showAllcartInfo(){
 
-        String sql = "select cno,mno,num,goodsinfo.*,goodsinfo.price*num as smallCount " +
-                "from goodsinfo,cartinfo where goodsinfo.gno=cartinfo.gno and mno= ? ";
-
         List<Cartinfo> cartinfos = this.biz.showAllCart();
         return cartinfos;
     }
@@ -46,5 +43,18 @@ public class CartController {
         }
         return map;
 
+    }
+    @RequestMapping("delgoods")
+    public Map<String,Object> delgoods(HttpServletRequest request, HttpServletResponse response){
+        String cno=request.getParameter("cno");
+        String gno=request.getParameter("gno");
+
+        Map<String,Object> map = new HashMap<>();
+        int i = this.biz.delgoods(cno,gno);
+        if(i!=0) {
+            map.put("code", 1);
+            map.put("data", "删除成功");
+        }
+        return map;
     }
 }
