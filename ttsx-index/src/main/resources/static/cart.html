@@ -83,6 +83,8 @@
 <script src="js/vue.js"></script>
 <script src="js/axios.js"></script>
 <script>
+
+	var addr_order="http://localhost:20001/order/";
 	var vm  = new Vue({
 		el:'#app',
 		data:{
@@ -93,7 +95,7 @@
 		},
 		methods:{
 			showAllcartInfo:function(){
-				axios.post("cart.action?op=showAllcartInfo").then(data=>{
+				axios.post(addr_order+"showAllcartInfo").then(data=>{
 					var jsonmodel = data.data;
 					if(jsonmodel.code==1){
 						jsonmodel.data.cart.forEach((item,index)=>{

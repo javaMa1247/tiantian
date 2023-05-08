@@ -10,12 +10,18 @@ spring:
         namespace: ttsx-prod
     gateway:
       routes:
-      #        - id: res-order
-      #          uri: lb://res-order
-      #          predicates:
-      #            - Path=/resorder/**
-      #          filters:
-      #            - RewritePath=/resorder/(?<segment>.*), /$\{segment}
+        - id: ttsx-foods
+          uri: lb://ttsx-foods
+          predicates:
+           - Path=/foods/**
+          filters:
+#           - RewritePath=/foods/(?<segment>.*), /$\{segment}
+        - id: ttsx-order
+          uri: lb://ttsx-order
+          predicates:
+            - Path=/order/**
+          filters:
+#            - RewritePath=/foods/(?<segment>.*), /$\{segment}
       globalcors:  #全局跨域处理
         cors-configurations:
           '[/**]':

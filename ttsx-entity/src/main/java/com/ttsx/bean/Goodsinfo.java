@@ -1,8 +1,11 @@
 package com.ttsx.bean;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.lang.reflect.Type;
 
 /**
  * @Author: mqb
@@ -12,6 +15,7 @@ import java.io.Serializable;
  */
 @Data
 public class Goodsinfo implements Serializable {
+    @TableId(type = IdType.AUTO)    //主键且自增
     private Integer gno;
     private Integer tno;
     private String gname;
@@ -21,7 +25,8 @@ public class Goodsinfo implements Serializable {
     private String pics;
     private String unit;
     private String qperied;
-    private String tname;
+//    private String tname;
     private String weight;
     private String descr;
+
 }

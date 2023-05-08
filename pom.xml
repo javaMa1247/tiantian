@@ -16,6 +16,7 @@
         <module>ttsx-gateway</module>
         <module>ttsx-entity</module>
         <module>ttsx-background</module>
+        <module>ttsx-user</module>
     </modules>
 
     <parent>
