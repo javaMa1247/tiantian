@@ -24,10 +24,14 @@ public class CartController {
     @Autowired
     private CartBiz biz;
     @RequestMapping("showAllcartInfo")
-    public List<Cartinfo> showAllcartInfo(){
+    public Map<String,Object> showAllcartInfo(){
 
         List<Cartinfo> cartinfos = this.biz.showAllCart();
-        return cartinfos;
+        Map<String,Object> map = new HashMap<>();
+        map.put("code",1);
+        map.put("cart",cartinfos);
+        map.put("count",cartinfos.size());
+        return map;
     }
 
     @RequestMapping("addCart")
