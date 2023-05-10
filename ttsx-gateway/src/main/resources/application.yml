@@ -10,6 +10,11 @@ spring:
         namespace: ttsx-prod
     gateway:
       routes:
+        - id: ttsx-order-addr
+          uri: lb://ttsx-order
+          predicates:
+           - Path=/addr/**
+
         - id: ttsx-foods
           uri: lb://ttsx-foods
           predicates:
