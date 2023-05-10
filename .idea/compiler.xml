@@ -8,19 +8,22 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="ttsx-entity" />
-        <module name="ttsx-foods" />
-        <module name="ttsx-feign" />
-        <module name="ttsx-index" />
-        <module name="ttsx-gateway" />
         <module name="ttsx-order" />
-        <module name="ttsx-background" />
+        <module name="ttsx-foods" />
+        <module name="ttsx-alipay" />
+        <module name="ttsx-feign" />
         <module name="ttsx-user" />
+        <module name="ttsx-gateway" />
+        <module name="ttsx-background" />
+        <module name="shengxian" />
+        <module name="ttsx-index" />
       </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="-" options="-parameters" />
+      <module name="ttsx-alipay" options="-parameters" />
       <module name="ttsx-background" options="-parameters" />
       <module name="ttsx-entity" options="-parameters" />
       <module name="ttsx-feign" options="-parameters" />

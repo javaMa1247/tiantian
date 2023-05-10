@@ -130,6 +130,8 @@
 	<script type="text/javascript" src="js/vue.js"></script>
 	<script type="text/javascript" src="js/axios.js"></script>
 	<script type="text/javascript">
+		var addr_order="http://localhost:20001/order/";
+		var addr_addr="http://localhost:20001/addr/";
 		var vm = new Vue({
 			el:"#app",
 			data:{
@@ -142,7 +144,7 @@
 			},
 			methods:{
 				showAddr:function () {
-					axios.post("addr.action?op=showAddr").then(data=>{
+					axios.post(addr_addr+"showAddr").then(data=>{
 						let jsonmodel = data.data;
 						if(jsonmodel.code==1){
 							this.addr = jsonmodel.data;

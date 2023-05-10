@@ -44,10 +44,10 @@
 	</ul>
 	<ul class="cart_list_td clearfix" v-for="(value,index) in cart">
 		<li class="col01"><input type="checkbox" v-model="value.status" ></li>
-		<li class="col02"><img :src=`${value.pics}`></li>
-		<li class="col03">{{value.gname}}<br><em>{{value.price}}元/{{value.weight}}</em></li>
-		<li class="col04">{{value.weight}}</li>
-		<li class="col05">{{value.price}}</li>
+		<li class="col02"><img :src=`${value.goodsinfo.pics}`></li>
+		<li class="col03">{{value.goodsinfo.gname}}<br><em>{{value.goodsinfo.price}}元/{{value.goodsinfo.weight}}</em></li>
+		<li class="col04">{{value.goodsinfo.weight}}</li>
+		<li class="col05">{{value.goodsinfo.price}}</li>
 		<li class="col06">
 			<div class="num_add">
 				<a href="javascript:;" class="add fl" @click="addCart(value.gno,1)">+</a>
@@ -84,7 +84,7 @@
 <script src="js/axios.js"></script>
 <script>
 
-	var addr_order="http://localhost:20001/order/";
+	var addr_cart="http://localhost:20001/cart/";
 	var vm  = new Vue({
 		el:'#app',
 		data:{
@@ -95,7 +95,7 @@
 		},
 		methods:{
 			showAllcartInfo:function(){
-				axios.post(addr_order+"showAllcartInfo").then(data=>{
+				axios.post(addr_cart+"showAllcartInfo").then(data=>{
 					var jsonmodel = data.data;
 					if(jsonmodel.code==1){
 						jsonmodel.data.cart.forEach((item,index)=>{
@@ -112,7 +112,7 @@
 					var params = new URLSearchParams();
 					params.append("cno",cno);
 					params.append("gno",gno);
-					axios.post("cart.action?op=delgoods",params).then(data=>{
+					axios.post(addr_cart+"delgoods",params).then(data=>{
 						var jsonmodel2 = data.data;
 						if(jsonmodel2.code==1){
 							alert("删除成功");
@@ -138,7 +138,7 @@
 				var params = new URLSearchParams();
 				params.append("gno",gno);
 				params.append("num",num);
-				axios.post("cart.action?op=addCart",params).then(data=>{
+				axios.post(addr_cart+"addCart",params).then(data=>{
 					var jsnomodel2 = data.data;
 					if(jsnomodel2.code==1) {
 						this.showAllcartInfo();
@@ -186,7 +186,7 @@
 			},
 		},
 		mounted:function(){
-			axios.all([this.selectLogin(), this.showAllcartInfo()]).then();
+			axios.all([/*this.selectLogin(),*/ this.showAllcartInfo()]).then();
 		}
 	})
 </script>

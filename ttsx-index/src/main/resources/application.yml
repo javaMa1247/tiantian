@@ -17,7 +17,7 @@ spring:
 logging:
   level:
     root: info
-    com.yc: info
+    com.ttsx: info
     org.springframewok.web: info
 management:
   endpoints:
