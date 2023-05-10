@@ -234,7 +234,7 @@
 				params.append("pageno",this.Pageno);
 				params.append("tno",this.Tno);
 				params.append("pagesize","5");
-				axios.get("goods/showGoodsTno",params).then(result=>{
+				axios.post("goods/showGoodsTno",params).then(result=>{
 					let data=result.data;
 					if(data.code==1){
 						this.goods=data.data.dataset;

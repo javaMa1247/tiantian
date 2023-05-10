@@ -72,7 +72,7 @@ public class GoodController {
     }
 
     //根据Gno查询分类下的商品信息
-    @GetMapping("showGoodsTno")
+    @PostMapping("showGoodsTno")
     public R<List<Goodsinfo>> showGoodsByTno(@RequestBody String pageno,@RequestBody String pagesize,@RequestBody String tno){
         Page<Goodsinfo> page = new Page<>(Integer.parseInt(pageno),Integer.parseInt(pagesize));
         LambdaQueryWrapper<Goodsinfo> lambdaQueryWrapper = new LambdaQueryWrapper<>();
