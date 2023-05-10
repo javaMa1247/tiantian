@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>后台管理</title>
+  <script src="js/vue.js"></script>
+  <script src="js/axios.js"></script>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui@2.15.10/lib/theme-chalk/index.css">
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui@2.15.10/lib/index.js"></script>
+  <style>
+    .el-header{background-color:#eee}
+    .el-main{background-color:#ddd}
+    .el-footer{background-color:#ccc}
+    .el-aside{background-color:#ccc}
+    .el-container,html,body,#app{height:100%;margin:0px;}
+    .el-menu{
+      background-color:transparent;
+    }
+    .el-menu--horizontal>.el-menu-item,.el-menu--horizontal>.el-submenu{
+      float:right;
+    }
+    iframe{
+      width:100%;height:100%;border:0px;
+    }
+    .el-tabs{
+      height:100%;
+    }
+    .el-tabs__content{
+      height:calc(100% - 80px);
+    }
+    div[id^='pane-']{
+      height:100%;
+    }
+
+  </style>
+</head>
+<body>
+<div id="app">
+  <el-container>
+    <el-header>
+      <el-row>
+        <el-col :span="6">
+          <h1>天天生鲜后台管理系统</h1>
+        </el-col>
+        <el-col :span="18">
+          <el-menu mode="horizontal">
+              <el-menu-item>
+                  <template>
+                      <el-button type="text" @click="logout()">退出登录</el-button>
+                  </template>
+              </el-menu-item>
+              <el-menu-item >
+                  <el-button type="text" @click="dialogFormVisible = true">修改密码</el-button>
+                  <el-dialog title="修改密码" :visible.sync="dialogFormVisible" width="460px">
+                      <el-form :model="form">
+                          <el-form-item label="旧密码:" label-width="60px">
+                              <el-input v-model="form.pwd1" autocomplete="off" show-password></el-input>
+                          </el-form-item>
+                          <el-form-item label="新密码:" label-width="60px">
+                              <el-input v-model="form.pwd2" autocomplete="off" show-password></el-input>
+                          </el-form-item>
+                          <el-form-item label="请再次输入新密码:" label-width="120px">
+                              <el-input v-model="form.pwd3" autocomplete="off" show-password></el-input>
+                          </el-form-item>
+                      </el-form>
+                      <div slot="footer" class="dialog-footer">
+                          <el-button @click="dialogFormVisible = false">取 消</el-button>
+                          <el-button type="primary" @click="modifypwd(),dialogFormVisible = false">确 定</el-button>
+                      </div>
+                  </el-dialog>
+              </el-menu-item>
+          </el-menu>
+        </el-col>
+      </el-row>
+    </el-header>
+    <el-container>
+      <el-aside width="200px">
+        <el-menu @select="doMenu">
+<!--          <el-submenu>-->
+<!--            <template slot="title">用户信息查看</template>-->
+<!--            -->
+<!--          </el-submenu>-->
+          <el-menu-item index="1">用户管理</el-menu-item>
+          <el-menu-item index="2">订单管理</el-menu-item>
+          <el-menu-item index="3">商品管理</el-menu-item>
+          <el-menu-item index="4">图片增加/修改</el-menu-item>
+          <el-menu-item index="5">销售占比表</el-menu-item>
+        </el-menu>
+      </el-aside>
+      <el-main>
+        <el-tabs type="border-card" v-model="current" :editable="true" @tab-remove="delTab" >
+          <el-tab-pane v-for="tab in tabs" :label="tab.title" :name="tab.name">
+            <span v-if="tab.type == 'text'">{{tab.content}}</span>
+            <iframe v-else-if="tab.type == 'href'" :src="tab.content"></iframe>
+            <div v-else-if="tab.type == 'html'" v-html="tab.content"></div>
+          </el-tab-pane>
+        </el-tabs>
+      </el-main>
+    </el-container>
+    <el-footer></el-footer>
+  </el-container>
+
+  <!--  总结:<el-tabs>为起始,type=定义类型,v-model定义初始标签页  -->
+  <!--  <el-tab-pane定义标签,:label定义标签命 :name定义标签id    -->
+</div>
+
+<script>
+  var v = new Vue({
+    el:"#app",
+    data:{
+        loginuserinfo:{},
+      tabs:[
+        {title:"首页",content:"<img src='https://www.llcxxy.xyz/index.php/s/g4xN3wzaLw45oLk/download/023.png' style='width:100%;height:100%'>",name:"0",type:"html"},
+      ],
+      tabs1:[
+        {title:"用户管理",content:"userinfo.html",name:"1",type:"href"},
+        {title:"订单管理",content:"ordersinfo.html",name:"2",type:"href"},
+        {title:"商品管理",content:"goodsinfo.html",name:"3",type:"href"},
+        {title:"图片修改/增加",content:"addphoto.html",name:"4",type:"href"},
+        {title:"销售占比表",content:"echarts.html",name:"5",type:"href"}
+      ],
+      current:"0",
+      dialogFormVisible: false,
+      form: {
+          pwd1: '',
+          pwd2:'',
+          pwd3:'',
+          delivery: false,
+          type: [],
+        },
+    },
+    methods:{
+        selectl(){
+            let params = new URLSearchParams();
+            params.append("op","selectLogin");
+            axios.post("admin.action",params).then(data => {
+                if(data.data.code != 1){
+                    alert("登录状态失效!请重新登录!");
+                    window.location.href = "login_admin.html";
+                }
+            });
+        },
+        modifypwd(){
+            let params = new URLSearchParams();
+            params.append("op","modifyPwd");
+            params.append("pwd1",this.form.pwd1);
+            params.append("pwd2",this.form.pwd2);
+            params.append("pwd3",this.form.pwd3);
+            axios.post("loginedAdmin.action",params).then(data => {
+                if(data.data.code == 1){
+                    alert("密码修改成功,请重新登录...");
+                    axios.get("loginedAdmin.action?op=logout").then(data => {
+                        if(data.data.code != 1){
+                            this.$message.error(data.data.msg);
+                        }else{
+                            window.location.href="login_admin.html";
+                        }
+                    })
+                }else {
+                    this.$message.error(data.data.msg);
+                }
+            })
+        },
+      doMenu(index,indexPath){
+        console.info(index+"---"+indexPath)
+        if(index == null)return;
+        let tab = this.tabs.find(t => t.name == index)
+        if(tab){
+          this.current = tab.name;
+        }else {
+          tab = this.tabs1.find(t=>t.name == index);
+          this.tabs.push(tab);
+          this.current = tab.name;
+        }
+      },
+      delTab(name){
+        if(name == 0)return;
+        this.tabs = this.tabs.filter(t=>t.name != name)
+      },
+        logout(){
+            this.$confirm('您是否要退出后台管理系统?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                let params = new URLSearchParams();
+                params.append("op","logout");
+                axios.post("loginedAdmin.action",params).then(data => {
+                    if(data.data.code == 1){
+                        alert("退出成功...");
+                        window.location.href="login_admin.html";
+                    }else {
+                        this.$message.error(data.data.msg);
+                    }
+                });
+            })
+        }
+    },
+      created(){
+        let params = new URLSearchParams();
+        params.append("op","selectLogin");
+        axios.post("admin.action",params).then(data => {
+            if(data.data.code == 1){
+                this.loginuserinfo = data.data.data
+                this.$message("欢迎您!" + data.data.data.aname);
+                // alert("欢迎您!" + data.data.data.aname);
+            }else{
+                alert(data.data.msg);
+                window.location.href = "login_admin.html";
+            }
+        });
+      }
+  })
+</script>
+</body>
+</html>
