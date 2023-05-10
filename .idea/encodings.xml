@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
-    <file url="file://$PROJECT_DIR$/ttsx-alipay/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/ttsx-background/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ttsx-entity/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ttsx-feign/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ttsx-foods/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ttsx-gateway/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ttsx-index/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ttsx-order/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/ttsx-user/src/main/java" charset="UTF-8" />
   </component>
 </project>
