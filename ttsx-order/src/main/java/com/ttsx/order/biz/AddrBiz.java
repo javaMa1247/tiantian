@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.ttsx.bean.Addrinfo;
 import com.ttsx.order.dao.AddrDao;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,7 @@ import java.util.Map;
  * @CreateDate: 2023-05-10 下午 6:52
  */
 @Service
+@Slf4j
 public class AddrBiz {
     @Autowired
     private AddrDao dao;
@@ -42,14 +44,15 @@ public class AddrBiz {
     }
     public Integer addAddr(Addrinfo newaddrinfo){
         try{
-            Addrinfo addrinfo = dao.selectOne(new QueryWrapper<Addrinfo>().select("MAX(ano)"));
-            String ano = Integer.valueOf(addrinfo.getAno())+1+"";
 
+            String ano = Integer.valueOf(dao.getMaxAno())+1+"";
+
+            log.info(ano);
             newaddrinfo.setAno(ano);
             newaddrinfo.setMno(mno);
             newaddrinfo.setFlag(1);
             newaddrinfo.setStatus(1);
-            int result = dao.insert(addrinfo);
+            int result = dao.insert(newaddrinfo);
             if(result!=0){
                 return 1;
             }else{
@@ -64,19 +67,10 @@ public class AddrBiz {
 
     public Integer updateAddr(Addrinfo addrinfo){
 
-        Addrinfo newAddrinfo = new Addrinfo();
-        newAddrinfo.setName(addrinfo.getName());
-        newAddrinfo.setTel(addrinfo.getTel());
-        newAddrinfo.setArea(addrinfo.getArea());
-        newAddrinfo.setCity(addrinfo.getCity());
-        newAddrinfo.setAddr(addrinfo.getAddr());
+        log.info("addrinfo:{}",addrinfo);
+        addrinfo.setMno(mno);
 
-        newAddrinfo.setProvince(addrinfo.getProvince());
-        LambdaQueryWrapper<Addrinfo> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(Addrinfo::getAno, addrinfo.getAno())
-                .eq(Addrinfo::getMno,mno);
-
-        int result = dao.update(newAddrinfo, wrapper);
+        int result = dao.updateById(addrinfo);
         return result;
     }
 

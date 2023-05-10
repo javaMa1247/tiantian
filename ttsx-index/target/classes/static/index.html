@@ -198,7 +198,7 @@
 			},
 			//显示商品信息
 			showGoodsInfo:function (){
-				axios.post("goodsInfo.action?op=showGoodsInfo").then(data=>{
+				axios.get("goods/showGoodsInfo").then(data=>{
 					if(data.data.code==1) {
 						this.goods = data.data.data;
 						return;
@@ -209,7 +209,7 @@
 			},
 			//查询商品类型
 			showGoodsType:function(){
-				axios.post("goodsInfo.action?op=showGoodsType").then(data=>{
+				axios.get("goods/showGoodsType").then(data=>{
 					if(data.data.code==1) {
 						this.goodsType = data.data.data;
 						return;

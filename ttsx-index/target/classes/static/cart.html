@@ -84,7 +84,8 @@
 <script src="js/axios.js"></script>
 <script>
 
-	var addr_order="http://localhost:20001/order/";
+
+	var addr_cart="http://localhost:20001/cart/";
 	var vm  = new Vue({
 		el:'#app',
 		data:{
@@ -95,7 +96,7 @@
 		},
 		methods:{
 			showAllcartInfo:function(){
-				axios.post(addr_order+"showAllcartInfo").then(data=>{
+				axios.post(addr_cart+"showAllcartInfo").then(data=>{
 					var jsonmodel = data.data;
 					if(jsonmodel.code==1){
 						jsonmodel.data.cart.forEach((item,index)=>{
@@ -112,7 +113,7 @@
 					var params = new URLSearchParams();
 					params.append("cno",cno);
 					params.append("gno",gno);
-					axios.post("cart.action?op=delgoods",params).then(data=>{
+					axios.post(addr_cart+"delgoods",params).then(data=>{
 						var jsonmodel2 = data.data;
 						if(jsonmodel2.code==1){
 							alert("删除成功");
@@ -138,7 +139,7 @@
 				var params = new URLSearchParams();
 				params.append("gno",gno);
 				params.append("num",num);
-				axios.post("cart.action?op=addCart",params).then(data=>{
+				axios.post(addr_cart+"addCart",params).then(data=>{
 					var jsnomodel2 = data.data;
 					if(jsnomodel2.code==1) {
 						this.showAllcartInfo();

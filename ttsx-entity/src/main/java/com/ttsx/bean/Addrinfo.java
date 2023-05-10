@@ -1,5 +1,6 @@
 package com.ttsx.bean;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -12,6 +13,7 @@ import java.io.Serializable;
  */
 @Data
 public class Addrinfo implements Serializable {
+    @TableId
     private String ano;
     private int mno;
     private String name;
