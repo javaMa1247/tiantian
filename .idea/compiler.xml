@@ -10,6 +10,7 @@
         <module name="ttsx-entity" />
         <module name="ttsx-order" />
         <module name="ttsx-foods" />
+        <module name="ttsx-alipay" />
         <module name="ttsx-feign" />
         <module name="ttsx-user" />
         <module name="ttsx-gateway" />
@@ -22,6 +23,7 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="-" options="-parameters" />
+      <module name="ttsx-alipay" options="-parameters" />
       <module name="ttsx-background" options="-parameters" />
       <module name="ttsx-entity" options="-parameters" />
       <module name="ttsx-feign" options="-parameters" />

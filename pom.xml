@@ -17,6 +17,7 @@
         <module>ttsx-entity</module>
         <module>ttsx-background</module>
         <module>ttsx-user</module>
+        <module>ttsx-alipay</module>
     </modules>
 
     <parent>
