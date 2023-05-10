@@ -99,6 +99,7 @@
 <script type="text/javascript" src="js/vue.js"></script>
 <script type="text/javascript" src="js/axios.js"></script>
 <script type="text/javascript">
+	var addr_addr="http://localhost:20001/addr/";
 	var vm = new Vue({
 		el:'#app',
 		data:{
@@ -116,7 +117,7 @@
 			showAddrinfo:function (ano) {
 				var params = new URLSearchParams();
 				params.append("ano",ano);
-				axios.post("addr.action?op=showAddrinfo",params).then(data=>{
+				axios.post(addr_addr+"showAddrinfo",params).then(data=>{
 					var jsonmodel = data.data;
 					if(jsonmodel.code==1){
 						this.address = jsonmodel.data.address;
@@ -144,7 +145,7 @@
 				params.append("addr",this.addr);
 				params.append("tel",this.tel);
 				params.append("ano",this.ano);
-				axios.post("addr.action?op=updateAddr",params).then(data=>{
+				axios.post(addr_addr+"updateAddr",params).then(data=>{
 					var jsonmodel4 = data.data;
 					if(jsonmodel4.code==1){
 						alert("修改成功");
@@ -165,7 +166,7 @@
 				params.append("area",this.area);
 				params.append("addr",this.addr);
 				params.append("tel",this.tel);
-				axios.post("addr.action?op=addAddr",params).then(data=>{
+				axios.post(addr_addr+"addAddr",params).then(data=>{
 					var jsonmodel3 = data.data;
 					if(jsonmodel3.code==1){
 						alert("添加成功");
