@@ -44,10 +44,10 @@
 	</ul>
 	<ul class="cart_list_td clearfix" v-for="(value,index) in cart">
 		<li class="col01"><input type="checkbox" v-model="value.status" ></li>
-		<li class="col02"><img :src=`${value.pics}`></li>
-		<li class="col03">{{value.gname}}<br><em>{{value.price}}元/{{value.weight}}</em></li>
-		<li class="col04">{{value.weight}}</li>
-		<li class="col05">{{value.price}}</li>
+		<li class="col02"><img :src=`${value.goodsinfo.pics}`></li>
+		<li class="col03">{{value.goodsinfo.gname}}<br><em>{{value.goodsinfo.price}}元/{{value.goodsinfo.weight}}</em></li>
+		<li class="col04">{{value.goodsinfo.weight}}</li>
+		<li class="col05">{{value.goodsinfo.price}}</li>
 		<li class="col06">
 			<div class="num_add">
 				<a href="javascript:;" class="add fl" @click="addCart(value.gno,1)">+</a>
@@ -83,7 +83,6 @@
 <script src="js/vue.js"></script>
 <script src="js/axios.js"></script>
 <script>
-
 
 	var addr_cart="http://localhost:20001/cart/";
 	var vm  = new Vue({

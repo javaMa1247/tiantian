@@ -10,6 +10,11 @@ spring:
         namespace: ttsx-prod
     gateway:
       routes:
+        - id: ttsx-order-addr
+          uri: lb://ttsx-order
+          predicates:
+           - Path=/addr/**
+
         - id: ttsx-foods
           uri: lb://ttsx-foods
           predicates:
@@ -33,8 +38,8 @@ spring:
             allowedMethods: "*"
             allowedHeaders: "*"
             #要注意的是，当 Access-Control-Allow-Credentials 的值为 true 时，Access-Control-Allow-Origin 的值只能是请求的 Origin，不能是 *
-            #allowedOrigins: "*"
-            allowCredentials: true   #并且允许携带身份凭证
+            allowedOrigins: "*"
+#            allowCredentials: true   #并且允许携带身份凭证
 server:
   port: 20001  #网关端口
 
