@@ -159,7 +159,7 @@
 				params.append("pageno",this.Pageno);
 				params.append("goodsname",this.findGoods);
 				params.append("pagesize","5");
-				axios.get("goods/findGoods",params).then(res=>{
+				axios.post("goods/findGoods",params).then(res=>{
 					if(res.data.code==1){
 						let y={Tno:999};
 						let z={Tname:'搜索结果'};

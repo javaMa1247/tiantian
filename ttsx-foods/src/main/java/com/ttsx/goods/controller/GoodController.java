@@ -51,8 +51,8 @@ public class GoodController {
     }
 
     //页面搜索查询，模糊查询商品并分页
-    @GetMapping("findGoods")
-    public R<Page> findGoods(@RequestBody String pageno,@RequestBody String goodsname,@RequestBody String pagesize){
+    @PostMapping("findGoods")
+    public R<Page> findGoods( String pageno, String goodsname, String pagesize){
         Page<Goodsinfo> page = new Page<>(Integer.parseInt(pageno),Integer.parseInt(pagesize));
         LambdaQueryWrapper<Goodsinfo> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.like(Goodsinfo::getGname,goodsname);
@@ -73,7 +73,7 @@ public class GoodController {
 
     //根据Gno查询分类下的商品信息
     @PostMapping("showGoodsTno")
-    public R<List<Goodsinfo>> showGoodsByTno(@RequestBody String pageno,@RequestBody String pagesize,@RequestBody String tno){
+    public R<List<Goodsinfo>> showGoodsByTno( String pageno, String pagesize, String tno){
         Page<Goodsinfo> page = new Page<>(Integer.parseInt(pageno),Integer.parseInt(pagesize));
         LambdaQueryWrapper<Goodsinfo> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.eq(Goodsinfo::getTno,tno);

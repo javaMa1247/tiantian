@@ -233,3 +233,52 @@ Caused by: com.alibaba.nacos.api.exception.NacosException: Client not connected,
 2023-05-10 21:42:14.212  INFO 14740 --- [RMI TCP Connection(6)-172.20.90.239] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
 2023-05-10 21:42:14.213  INFO 14740 --- [RMI TCP Connection(6)-172.20.90.239] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
 2023-05-10 21:42:26.306  WARN 14740 --- [http-nio-7777-exec-1] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.http.converter.HttpMessageNotReadableException: Required request body is missing: public com.ttsx.utils.R<java.util.List<com.ttsx.bean.Goodsinfo>> com.ttsx.goods.controller.GoodController.showGoodsByTno(java.lang.String,java.lang.String,java.lang.String)]
+2023-05-10 21:42:54.957  INFO 8960 --- [main] com.ttsx.goods.GoodApplication           : The following 1 profile is active: "prod"
+2023-05-10 21:42:55.530  INFO 8960 --- [main] o.s.cloud.context.scope.GenericScope     : BeanFactory id=b42d0dee-f7dd-3690-b177-e2836426ab79
+2023-05-10 21:42:55.720  INFO 8960 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2023-05-10 21:42:55.725  INFO 8960 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-05-10 21:42:55.725  INFO 8960 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.63]
+2023-05-10 21:42:55.840  INFO 8960 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2023-05-10 21:42:55.840  INFO 8960 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 872 ms
+2023-05-10 21:42:55.882  INFO 8960 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2023-05-10 21:42:55.954  INFO 8960 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2023-05-10 21:42:57.470  INFO 8960 --- [main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 19 endpoint(s) beneath base path '/actuator'
+2023-05-10 21:42:57.530  INFO 8960 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2023-05-10 21:42:57.539  INFO 8960 --- [main] c.a.n.p.a.s.c.ClientAuthPluginManager    : [ClientAuthPluginManager] Load ClientAuthService com.alibaba.nacos.client.auth.impl.NacosClientAuthServiceImpl success.
+2023-05-10 21:42:57.539  INFO 8960 --- [main] c.a.n.p.a.s.c.ClientAuthPluginManager    : [ClientAuthPluginManager] Load ClientAuthService com.alibaba.nacos.client.auth.ram.RamClientAuthServiceImpl success.
+2023-05-10 21:42:57.729  INFO 8960 --- [main] c.a.c.n.registry.NacosServiceRegistry    : nacos registry, DEFAULT_GROUP ttsx-foods 172.20.90.239:7777 register finished
+2023-05-10 21:42:57.931  INFO 8960 --- [main] com.ttsx.goods.GoodApplication           : Started GoodApplication in 5.089 seconds (JVM running for 5.745)
+2023-05-10 21:42:57.944  INFO 8960 --- [main] c.a.c.n.refresh.NacosContextRefresher    : [Nacos Config] Listening config: dataId=ttsx-foods, group=DEFAULT_GROUP
+2023-05-10 21:42:57.945  INFO 8960 --- [main] c.a.c.n.refresh.NacosContextRefresher    : [Nacos Config] Listening config: dataId=ttsx-mysql.yml, group=DEFAULT_GROUP
+2023-05-10 21:42:57.946  INFO 8960 --- [main] c.a.c.n.refresh.NacosContextRefresher    : [Nacos Config] Listening config: dataId=ttsx-foods-prod.yml, group=DEFAULT_GROUP
+2023-05-10 21:42:57.946  INFO 8960 --- [main] c.a.c.n.refresh.NacosContextRefresher    : [Nacos Config] Listening config: dataId=ttsx-foods.yml, group=DEFAULT_GROUP
+2023-05-10 21:42:58.126  INFO 8960 --- [RMI TCP Connection(1)-172.20.90.239] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-05-10 21:42:58.127  INFO 8960 --- [RMI TCP Connection(1)-172.20.90.239] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2023-05-10 21:42:58.139  INFO 8960 --- [RMI TCP Connection(1)-172.20.90.239] o.s.web.servlet.DispatcherServlet        : Completed initialization in 12 ms
+2023-05-10 21:43:01.436  WARN 8960 --- [http-nio-7777-exec-1] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.http.converter.HttpMessageNotReadableException: Required request body is missing: public com.ttsx.utils.R<java.util.List<com.ttsx.bean.Goodsinfo>> com.ttsx.goods.controller.GoodController.showGoodsByTno(java.lang.String,java.lang.String,java.lang.String)]
+2023-05-10 21:43:07.951  WARN 8960 --- [http-nio-7777-exec-2] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.http.converter.HttpMessageNotReadableException: Required request body is missing: public com.ttsx.utils.R<java.util.List<com.ttsx.bean.Goodsinfo>> com.ttsx.goods.controller.GoodController.showGoodsByTno(java.lang.String,java.lang.String,java.lang.String)]
+2023-05-10 22:28:38.913  INFO 15668 --- [main] com.ttsx.goods.GoodApplication           : The following 1 profile is active: "prod"
+2023-05-10 22:28:41.996  INFO 15668 --- [main] o.s.cloud.context.scope.GenericScope     : BeanFactory id=b42d0dee-f7dd-3690-b177-e2836426ab79
+2023-05-10 22:28:43.064  INFO 15668 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2023-05-10 22:28:43.095  INFO 15668 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-05-10 22:28:43.096  INFO 15668 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.63]
+2023-05-10 22:28:43.755  INFO 15668 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2023-05-10 22:28:43.756  INFO 15668 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 4775 ms
+2023-05-10 22:28:44.052  INFO 15668 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2023-05-10 22:28:44.522  INFO 15668 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2023-05-10 22:28:52.957  INFO 15668 --- [main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 19 endpoint(s) beneath base path '/actuator'
+2023-05-10 22:28:53.315  INFO 15668 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2023-05-10 22:28:53.358  INFO 15668 --- [main] c.a.n.p.a.s.c.ClientAuthPluginManager    : [ClientAuthPluginManager] Load ClientAuthService com.alibaba.nacos.client.auth.impl.NacosClientAuthServiceImpl success.
+2023-05-10 22:28:53.359  INFO 15668 --- [main] c.a.n.p.a.s.c.ClientAuthPluginManager    : [ClientAuthPluginManager] Load ClientAuthService com.alibaba.nacos.client.auth.ram.RamClientAuthServiceImpl success.
+2023-05-10 22:28:53.900  INFO 15668 --- [main] c.a.c.n.registry.NacosServiceRegistry    : nacos registry, DEFAULT_GROUP ttsx-foods 172.17.52.170:7777 register finished
+2023-05-10 22:28:55.007  INFO 15668 --- [main] com.ttsx.goods.GoodApplication           : Started GoodApplication in 28.317 seconds (JVM running for 31.928)
+2023-05-10 22:28:55.061  INFO 15668 --- [main] c.a.c.n.refresh.NacosContextRefresher    : [Nacos Config] Listening config: dataId=ttsx-foods, group=DEFAULT_GROUP
+2023-05-10 22:28:55.067  INFO 15668 --- [main] c.a.c.n.refresh.NacosContextRefresher    : [Nacos Config] Listening config: dataId=ttsx-mysql.yml, group=DEFAULT_GROUP
+2023-05-10 22:28:55.072  INFO 15668 --- [main] c.a.c.n.refresh.NacosContextRefresher    : [Nacos Config] Listening config: dataId=ttsx-foods-prod.yml, group=DEFAULT_GROUP
+2023-05-10 22:28:55.074  INFO 15668 --- [main] c.a.c.n.refresh.NacosContextRefresher    : [Nacos Config] Listening config: dataId=ttsx-foods.yml, group=DEFAULT_GROUP
+2023-05-10 22:28:56.781  INFO 15668 --- [RMI TCP Connection(2)-172.17.52.170] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-05-10 22:28:56.784  INFO 15668 --- [RMI TCP Connection(2)-172.17.52.170] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2023-05-10 22:28:56.790  INFO 15668 --- [RMI TCP Connection(2)-172.17.52.170] o.s.web.servlet.DispatcherServlet        : Completed initialization in 6 ms
+2023-05-10 22:29:28.752  WARN 15668 --- [http-nio-7777-exec-2] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.http.converter.HttpMessageNotReadableException: Required request body is missing: public com.ttsx.utils.R<java.util.List<com.ttsx.bean.Goodsinfo>> com.ttsx.goods.controller.GoodController.showGoodsByTno(java.lang.String,java.lang.String,java.lang.String)]
+2023-05-10 22:29:49.931  WARN 15668 --- [http-nio-7777-exec-3] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.http.converter.HttpMessageNotReadableException: Required request body is missing: public com.ttsx.utils.R<java.util.List<com.ttsx.bean.Goodsinfo>> com.ttsx.goods.controller.GoodController.showGoodsByTno(java.lang.String,java.lang.String,java.lang.String)]
+2023-05-10 22:32:32.331  WARN 15668 --- [http-nio-7777-exec-4] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.http.converter.HttpMessageNotReadableException: Required request body is missing: public com.ttsx.utils.R<java.util.List<com.ttsx.bean.Goodsinfo>> com.ttsx.goods.controller.GoodController.showGoodsByTno(java.lang.String,java.lang.String,java.lang.String)]
