@@ -156,11 +156,10 @@
 					return;
 				}
 				let params=new URLSearchParams();
-				params.append("op","findGoods");
 				params.append("pageno",this.Pageno);
 				params.append("goodsname",this.findGoods);
 				params.append("pagesize","5");
-				axios.post("findGoods.action",params).then(res=>{
+				axios.get("goods/findGoods",params).then(res=>{
 					if(res.data.code==1){
 						let y={Tno:999};
 						let z={Tname:'搜索结果'};
@@ -215,7 +214,7 @@
 			},
 			//查询最新的两个商品
 			newGoods:function (){
-				axios.post("goodsInfo.action?op=showNewGoods").then(result=>{
+				axios.get("goods/showNewGoods").then(result=>{
 					let data=result.data;
 					if(data.code==1){
 						this.newgoods=data.data;
@@ -232,11 +231,10 @@
 			//显示当前页面所有商品
 			showGoodsTno:function (){
 				let params=new URLSearchParams();
-				params.append("op","showGoodsTno");
 				params.append("pageno",this.Pageno);
 				params.append("tno",this.Tno);
 				params.append("pagesize","5");
-				axios.post("goodsInfo.action",params).then(result=>{
+				axios.get("goods/showGoodsTno",params).then(result=>{
 					let data=result.data;
 					if(data.code==1){
 						this.goods=data.data.dataset;
