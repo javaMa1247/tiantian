@@ -2606,3 +2606,25 @@ java.sql.SQLSyntaxErrorException: Unknown column 'ban' in 'field list'
 	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61) [tomcat-embed-core-9.0.63.jar:9.0.63]
 	at java.lang.Thread.run(Thread.java:745) [na:1.8.0_65]
 
+2023-05-11 21:56:04.221  INFO 15180 --- [main] com.ttsx.goods.GoodApplication           : The following 1 profile is active: "prod"
+2023-05-11 21:56:04.979  INFO 15180 --- [main] o.s.cloud.context.scope.GenericScope     : BeanFactory id=cc4ae373-7f5f-326c-8bd5-9a3fcac5f343
+2023-05-11 21:56:05.270  INFO 15180 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2023-05-11 21:56:05.281  INFO 15180 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-05-11 21:56:05.281  INFO 15180 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.63]
+2023-05-11 21:56:05.420  INFO 15180 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2023-05-11 21:56:05.421  INFO 15180 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1187 ms
+2023-05-11 21:56:05.480  INFO 15180 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2023-05-11 21:56:05.577  INFO 15180 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2023-05-11 21:56:07.199  INFO 15180 --- [main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 19 endpoint(s) beneath base path '/actuator'
+2023-05-11 21:56:07.268  INFO 15180 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2023-05-11 21:56:07.276  INFO 15180 --- [main] c.a.n.p.a.s.c.ClientAuthPluginManager    : [ClientAuthPluginManager] Load ClientAuthService com.alibaba.nacos.client.auth.impl.NacosClientAuthServiceImpl success.
+2023-05-11 21:56:07.276  INFO 15180 --- [main] c.a.n.p.a.s.c.ClientAuthPluginManager    : [ClientAuthPluginManager] Load ClientAuthService com.alibaba.nacos.client.auth.ram.RamClientAuthServiceImpl success.
+2023-05-11 21:56:07.468  INFO 15180 --- [main] c.a.c.n.registry.NacosServiceRegistry    : nacos registry, DEFAULT_GROUP ttsx-foods 172.16.124.80:7777 register finished
+2023-05-11 21:56:07.694  INFO 15180 --- [main] com.ttsx.goods.GoodApplication           : Started GoodApplication in 5.73 seconds (JVM running for 6.363)
+2023-05-11 21:56:07.704  INFO 15180 --- [main] c.a.c.n.refresh.NacosContextRefresher    : [Nacos Config] Listening config: dataId=ttsx-foods, group=DEFAULT_GROUP
+2023-05-11 21:56:07.706  INFO 15180 --- [main] c.a.c.n.refresh.NacosContextRefresher    : [Nacos Config] Listening config: dataId=ttsx-mysql.yml, group=DEFAULT_GROUP
+2023-05-11 21:56:07.707  INFO 15180 --- [main] c.a.c.n.refresh.NacosContextRefresher    : [Nacos Config] Listening config: dataId=ttsx-foods-prod.yml, group=DEFAULT_GROUP
+2023-05-11 21:56:07.708  INFO 15180 --- [main] c.a.c.n.refresh.NacosContextRefresher    : [Nacos Config] Listening config: dataId=ttsx-foods.yml, group=DEFAULT_GROUP
+2023-05-11 21:56:08.267  INFO 15180 --- [RMI TCP Connection(8)-172.16.124.80] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-05-11 21:56:08.267  INFO 15180 --- [RMI TCP Connection(8)-172.16.124.80] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2023-05-11 21:56:08.268  INFO 15180 --- [RMI TCP Connection(8)-172.16.124.80] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
