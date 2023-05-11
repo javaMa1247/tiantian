@@ -8,14 +8,14 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="ttsx-entity" />
-        <module name="ttsx-foods" />
-        <module name="ttsx-alipay" />
-        <module name="ttsx-feign" />
-        <module name="ttsx-index" />
-        <module name="ttsx-gateway" />
         <module name="ttsx-order" />
+        <module name="ttsx-foods" />
+        <module name="ttsx-feign" />
         <module name="ttsx-user" />
         <module name="ttsx-background" />
+        <module name="ttsx-gateway" />
+        <module name="ttsx-alipay" />
+        <module name="ttsx-index" />
       </profile>
     </annotationProcessing>
   </component>

@@ -1,5 +1,6 @@
 package com.ttsx.order.controller;
 
+import com.alibaba.nacos.shaded.com.google.gson.Gson;
 import com.ttsx.bean.Cartinfo;
 import com.ttsx.order.biz.CartBiz;
 import com.ttsx.utils.R;
@@ -57,6 +58,18 @@ public class CartController {
 
         Map<String,Object> map = new HashMap<>();
         int i = this.biz.delgoods(cno,gno);
+        if(i!=0) {
+            map.put("code", 1);
+            map.put("data", "删除成功");
+        }
+        return map;
+    }
+    @RequestMapping("cleanCart")
+    public Map<String,Object> cleanCart(HttpServletRequest request, HttpServletResponse response){
+        String cartgoods = request.getParameter("cartgoods");
+        List<Map<String, Object>> lists = (List<Map<String, Object>>) new Gson().fromJson(cartgoods, List.class);
+        Map<String,Object> map = new HashMap<>();
+        int i = this.biz.cleanCart(lists);
         if(i!=0) {
             map.put("code", 1);
             map.put("data", "删除成功");

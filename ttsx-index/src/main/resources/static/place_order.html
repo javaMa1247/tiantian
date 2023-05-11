@@ -82,10 +82,10 @@
 		</ul>
 		<ul class="goods_list_td clearfix" v-for="(value,key,index) in cartgoods">
 			<li class="col01">{{key+1}}</li>
-			<li class="col02"><img :src=`${value.pics}`></li>
-			<li class="col03">{{value.gname}}</li>
-			<li class="col04">{{value.weight}}</li>
-			<li class="col05">{{value.price}}</li>
+			<li class="col02"><img :src=`${value.goodsinfo.pics}`></li>
+			<li class="col03">{{value.goodsinfo.gname}}</li>
+			<li class="col04">{{value.goodsinfo.weight}}</li>
+			<li class="col05">{{value.goodsinfo.price}}</li>
 			<li class="col06">{{value.num}}</li>
 			<li class="col07">{{value.smallCount}}元</li>
 		</ul>
@@ -174,14 +174,14 @@
 					let params = new URLSearchParams();
 					params.append("ano",this.ano);
 					params.append("cartgoods",JSON.stringify(this.cartgoods))
-					axios.post("order.action?op=addOrder",params).then(data=>{
+					axios.post(addr_order+"addOrder",params).then(data=>{
 						let jsonmodel2 = data.data;
 						if(jsonmodel2.code==1){
 							alert("订单提交成功");
 							let params2 = new URLSearchParams();
 							params2.append("cartgoods",JSON.stringify(this.cartgoods))
 							if(this.status==1){
-								axios.post("order.action?op=cleanCart",params2).then(data=>{
+								axios.post(addr_cart+"cleanCart",params2).then(data=>{
 									let jsonmodel2 = data.data;
 									if(jsonmodel2.code==1){
 										alert("购物车已清空");
@@ -218,7 +218,7 @@
 				this.status = data.status;
 			},
 			mounted:function () {
-				axios.all([this.showAddr(),this.selectLogin()]).then();
+				axios.all([this.showAddr(),/*this.selectLogin()*/]).then();
 			}
 		})
 	</script>
