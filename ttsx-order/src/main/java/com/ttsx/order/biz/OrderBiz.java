@@ -7,6 +7,7 @@ import com.ttsx.bean.Orderinfo;
 import com.ttsx.feignApi.FeignApp;
 import com.ttsx.order.dao.OrderDao;
 import com.ttsx.order.dao.OrderItemDao;
+import com.ttsx.utils.PageBean;
 import com.ttsx.utils.R;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,8 +32,7 @@ public class OrderBiz {
     private OrderItemDao itemDao;
 
     @Autowired
-    private FeignApp feignApp;
-
+    private OrderBizTmpl orderBizTmpl;
     private String mno = "3"; //TODO: mno
     public Integer addOrder(List<Map<String, Object>> orders,String ano){
 
@@ -75,25 +75,13 @@ public class OrderBiz {
         return res;
     }
 
-    public List<Orderinfo> showOrderbyPage(){
-
-        List<Orderinfo> list = this.dao.selectAllOrder(mno);
-        if(list.size()<=0){
+    public PageBean showOrderbyPage(PageBean pageBean){
+        PageBean page = this.orderBizTmpl.findByPage(pageBean, mno);
+        if(page!=null){
+            return page;
+        }else {
             return null;
         }
-        for(Orderinfo order:list){
-            String ono = order.getOno();
-            List<OrderIteminfo> orderItemList = dao.selectOrderItemByOno(ono);
-            for (OrderIteminfo iteminfo : orderItemList) {
-                R<Goodsinfo> gno = this.feignApp.findById(Integer.valueOf(iteminfo.getGno()));
-                iteminfo.setGoodsinfo(gno.getData());
-            }
-            order.setOrderItem(orderItemList);
-        }
-        if(list!=null&&list.size()>0){
-            return list;
-        }else{
-           return null;
-        }
+
     }
 }

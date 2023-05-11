@@ -1,11 +1,12 @@
 package com.ttsx.order.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ttsx.bean.OrderIteminfo;
 import com.ttsx.bean.Orderinfo;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
-
 import java.util.List;
 
 /**
@@ -14,12 +15,20 @@ import java.util.List;
  * @CreateDate: 2023-05-11 上午 11:19
  */
 public interface OrderDao extends BaseMapper<Orderinfo> {
-    @Select("select ono,date_format(odate,'%Y-%m-%d %H:%I:%S') odate,orderinfo.ano,rdate,orderinfo.status,price,invoice  from addrinfo,orderinfo\n" +
-            "                    where orderinfo.ano = addrinfo.ano and mno=#{mno} order by odate desc;")
-    List<Orderinfo> selectAllOrder(@Param("mno") String mno);
-
     @Select("select orderiteminfo.ino ,ono,goodsinfo.*,nums,orderiteminfo.price smallCount from orderiteminfo,goodsinfo\n" +
             "where goodsinfo.gno=orderiteminfo.gno and ono=#{ono}")
     List<OrderIteminfo> selectOrderItemByOno(@Param("ono") String ono);
 
+    @Select("select ono,date_format(odate,'%Y-%m-%d %H:%I:%S') odate,orderinfo.ano,rdate,orderinfo.status,price,invoice  from addrinfo,orderinfo\n" +
+            "where orderinfo.ano = addrinfo.ano and mno= #{mno} order by odate desc limit 1, 2")
+    List<Orderinfo> selectAllOrderByPage(@Param("mno") String mno, @Param("start") Integer start,
+                                         @Param("pagesize") Integer pagesize);
+
+//    IPage<Orderinfo> selectAllOrderByPage(Page<Orderinfo> page, @Param("mno") String mno);
+
+    @Select("SELECT COUNT(*) " +
+            "FROM orderinfo o " +
+            "INNER JOIN addrinfo a ON (o.ano = a.ano) " +
+            "WHERE a.mno = #{mno}")
+    Integer getOrderInfoCountByMno(@Param("mno") String mno);
 }
