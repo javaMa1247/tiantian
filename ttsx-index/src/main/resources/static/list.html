@@ -137,6 +137,7 @@
 <script src="js/vue.js"></script>
 <script src="js/axios.js"></script>
 <script type="text/javascript">
+	var addr_good ="http://localhost:20001/goods/";
 	const vm=new Vue({
 		el:'#app',
 		data:{
@@ -159,7 +160,7 @@
 				params.append("pageno",this.Pageno);
 				params.append("goodsname",this.findGoods);
 				params.append("pagesize","5");
-				axios.post("goods/findGoods",params).then(res=>{
+				axios.post(addr_good+"findGoods",params).then(res=>{
 					if(res.data.code==1){
 						let y={Tno:999};
 						let z={Tname:'搜索结果'};
@@ -214,7 +215,7 @@
 			},
 			//查询最新的两个商品
 			newGoods:function (){
-				axios.get("goods/showNewGoods").then(result=>{
+				axios.get(addr_good+"showNewGoods").then(result=>{
 					let data=result.data;
 					if(data.code==1){
 						this.newgoods=data.data;
@@ -234,7 +235,7 @@
 				params.append("pageno",this.Pageno);
 				params.append("tno",this.Tno);
 				params.append("pagesize","5");
-				axios.post("goods/showGoodsTno",params).then(result=>{
+				axios.post(addr_good+"showGoodsTno",params).then(result=>{
 					let data=result.data;
 					if(data.code==1){
 						this.goods=data.data.dataset;
