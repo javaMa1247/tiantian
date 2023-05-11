@@ -128,6 +128,7 @@
 <script src="js/vue.js"></script>
 <script src="js/axios.js"></script>
 <script type="text/javascript">
+	var addr_good ="http://localhost:20001/goods/";
 	const vm=new Vue({
 		el:'#app',
 		data:{
@@ -198,7 +199,7 @@
 			},
 			//显示商品信息
 			showGoodsInfo:function (){
-				axios.get("goods/showGoodsInfo").then(data=>{
+				axios.get(addr_good+"showGoodsInfo").then(data=>{
 					if(data.data.code==1) {
 						this.goods = data.data.data;
 						return;
@@ -209,7 +210,7 @@
 			},
 			//查询商品类型
 			showGoodsType:function(){
-				axios.get("goods/showGoodsType").then(data=>{
+				axios.get(addr_good+"showGoodsType").then(data=>{
 					if(data.data.code==1) {
 						this.goodsType = data.data.data;
 						return;
