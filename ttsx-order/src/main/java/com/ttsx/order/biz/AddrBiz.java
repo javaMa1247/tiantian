@@ -99,7 +99,7 @@ public class AddrBiz {
 //        北京市 海淀区 东北旺西路8号中关村软件园 （李思 收） 182****7528
         StringBuffer sb = new StringBuffer();
         String tel = (addr.getTel().substring(0,3)+"****"+addr.getTel().substring(addr.getTel().length()-4,addr.getTel().length()));
-        sb.append(addr.getProvince()+" "+addr.getCity()+" "+addr.getArea()+addr.getAddr()+" ("+addr.getName()+"  )"+" "+tel);
+        sb.append(addr.getProvince()+" "+addr.getCity()+" "+addr.getArea()+" "+addr.getAddr()+" ("+addr.getName()+"  )"+" "+tel);
 
         return sb.toString();
     }
