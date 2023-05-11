@@ -160,7 +160,7 @@
 <script src="js/vue.js"></script>
 <script src="js/axios.js"></script>
 <script type="text/javascript">
-
+	var addr_good ="http://localhost:20001/goods/";
 	//后续添加功能 商品历史评论  新品推荐
 	const lm=new Vue({
 		el:'#app',
@@ -186,7 +186,7 @@
 			del:function (did){
 				let params=new URLSearchParams();
 				params.append("did",did);
-				axios.delete("goods/del",params).then(res=>{
+				axios.delete(addr_good+"del",params).then(res=>{
 					if(res.data.code==1){
 						alert("删除成功");
 						window.location.href='detail.html';
@@ -198,7 +198,7 @@
 			showDiscuss:function (){
 				let params=new URLSearchParams();
 				params.append("Gno",this.Gno);
-				axios.get("goods/showDiscuss",params).then(res=>{
+				axios.post(addr_good+"showDiscuss",params).then(res=>{
 					this.discusses=res.data.data;
 				})
 			},
@@ -206,7 +206,7 @@
 				let params=new URLSearchParams();
 				params.append("Gno",this.Gno);
 				params.append("discuss",this.discuss);
-				axios.put("goods/addDiscuss",params).then(result=>{
+				axios.put(addr_good+"addDiscuss",params).then(result=>{
 					if(result.data.code==1){
 						alert("评论成功");
 						window.location.href='detail.html';
@@ -236,7 +236,7 @@
 				sessionStorage.setItem("goodsGno",JSON.stringify(x));
 			},
 			newGoods:function (){
-				axios.get("goods/showNewGoods").then(result=>{
+				axios.get(addr_good+"showNewGoods").then(result=>{
 					let data=result.data;
 					if(data.code==1){
 						this.newgoods=data.data;
@@ -266,9 +266,8 @@
 			//显示商品的信息
 			showGoodsInformation:function (){
 				let params=new URLSearchParams();
-				params.append("op","showGoodsInformation");
-				params.append("gno",this.Gno);
-				axios.post("goodsInfo.action",params).then(result=>{
+				params.append("Gno",this.Gno);
+				axios.post(addr_good+"showGoodsInformation",params).then(result=>{
 					let data=result.data;
 					if(data.code==1){
 						this.goods=data.data;

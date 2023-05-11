@@ -11,6 +11,7 @@ import com.ttsx.goods.Service.DiscussService;
 import com.ttsx.goods.Service.GoodsService;
 import com.ttsx.goods.Service.GoodsTypeService;
 import com.ttsx.goods.Service.MemberinfoService;
+import com.ttsx.goods.common.CustomException;
 import com.ttsx.utils.BaseContext;
 import com.ttsx.utils.R;
 import lombok.extern.slf4j.Slf4j;
@@ -54,10 +55,20 @@ public class GoodController {
 
     }
 
+    @PostMapping("showGoodsInformation")
+    public R<Goodsinfo> showGoodsInformation(String Gno){
+        LambdaQueryWrapper<Goodsinfo> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(Goodsinfo::getGno,Gno);
+        Goodsinfo goods = goodsService.getOne(lambdaQueryWrapper);
+
+        return R.success(goods);
+    }
+
     //展示商品信息
     @GetMapping("showGoodsInfo")
     public R<List<Goodsinfo>> selectGoodsInfo(){
         List<Goodsinfo> list = goodsService.list();
+
         return R.success(list);
     }
 
@@ -65,16 +76,18 @@ public class GoodController {
     @GetMapping("showGoodsType")
     public R<List<Goodstype>> selectGoodsType(){
         List<Goodstype> list = goodsTypeService.list();
+
         return R.success(list);
     }
 
     //页面搜索查询，模糊查询商品并分页
     @PostMapping("findGoods")
     public R<Page> findGoods( String pageno, String goodsname, String pagesize){
-        Page<Goodsinfo> page = new Page<>(Integer.parseInt(pageno),Integer.parseInt(pagesize));
+        Page<Goodsinfo> page = new Page<>(Integer.parseInt(pageno),Integer.parseInt(pagesize),true);
         LambdaQueryWrapper<Goodsinfo> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.like(Goodsinfo::getGname,goodsname);
         goodsService.page(page,lambdaQueryWrapper);
+
         return R.success(page);
     }
 
@@ -86,17 +99,19 @@ public class GoodController {
         lambdaQueryWrapper.orderByDesc(Goodsinfo::getGno)
                           .last(" limit 2 ");
         List<Goodsinfo> list = goodsService.list(lambdaQueryWrapper);
+
         return R.success(list);
     }
 
     //根据Gno查询分类下的商品信息
     @PostMapping("showGoodsTno")
-    public R<List<Goodsinfo>> showGoodsByTno( String pageno, String pagesize, String tno){
-        Page<Goodsinfo> page = new Page<>(Integer.parseInt(pageno),Integer.parseInt(pagesize));
+    public R<Page<Goodsinfo>> showGoodsByTno( String pageno, String pagesize, String tno){
+        Page<Goodsinfo> page = new Page<>(Integer.parseInt(pageno),Integer.parseInt(pagesize),true);
         LambdaQueryWrapper<Goodsinfo> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.eq(Goodsinfo::getTno,tno);
-        List<Goodsinfo> list = goodsService.list(lambdaQueryWrapper);
-        return R.success(list);
+        goodsService.page(page,lambdaQueryWrapper);
+
+        return R.success(page);
     }
 
     //删除评论
@@ -107,13 +122,17 @@ public class GoodController {
         LambdaQueryWrapper<Discuss> lambdaQueryWrapper = new LambdaQueryWrapper<Discuss>();
         lambdaQueryWrapper.eq(Discuss::getDid,did)
                           .eq(Discuss::getMno,currentId);
-        discussService.remove(lambdaQueryWrapper);
+        boolean remove = discussService.remove(lambdaQueryWrapper);
+        if(remove==false){
+            throw new CustomException("删除失败");
+        }
+
         return R.success("删除评论成功");
     }
 
     //根据商品id显示评论
     //" select * from discuss,memberinfo where gno=? and discuss.mno=memberinfo.mno;";
-    @GetMapping("showDiscuss")
+    @PostMapping("showDiscuss")
     public R<List<DiscussDto>> selectDiscuss(String Gno){
         LambdaQueryWrapper<Discuss> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.eq(Discuss::getGno,Gno);
