@@ -230,8 +230,7 @@
 			},
 			logout(){
 				let params = new URLSearchParams();
-				params.append("op", "logout");
-				axios.post("admin.action", params).then(data => {
+				axios.post("user/logout", params).then(data => {
 					if (data.data.code == 1) {
 						alert("退出登录成功!")
 						this.isLogin = false;
