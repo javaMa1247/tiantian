@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.rmi.CORBA.Util;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -113,12 +114,10 @@ public class GoodController {
     //根据商品id显示评论
     //" select * from discuss,memberinfo where gno=? and discuss.mno=memberinfo.mno;";
     @GetMapping("showDiscuss")
-    public R<List<DiscussDto> selectDiscuss(String Gno){
-        List<Discuss> list = new ArrayList<>();
-        Long currentId = BaseContext.getCurrentId();
+    public R<List<DiscussDto>> selectDiscuss(String Gno){
         LambdaQueryWrapper<Discuss> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.eq(Discuss::getGno,Gno);
-        list = discussService.list(lambdaQueryWrapper);
+        List<Discuss> list = discussService.list(lambdaQueryWrapper);
         List<DiscussDto> listDto = list.stream().map((item)->{
             DiscussDto discussDto = new DiscussDto();
             BeanUtils.copyProperties(item,discussDto);
@@ -133,7 +132,15 @@ public class GoodController {
     //评论
     //"insert into discuss(mno,gno,dis,publishtime) values(?,?,?,now()); "
     @PutMapping("addDiscuss")
-    public R<String> addDiscuss(String Gno,String discuss){
+    public R<String> addDiscuss(int Gno,@RequestParam(value = "discuss") String dis){
+        Discuss discuss = new Discuss();
+        Long currentId = BaseContext.getCurrentId();
+        Integer mno=(currentId).intValue() ;
+        discuss.setMno(mno);
+        discuss.setGno(Gno);
+        discuss.setDis(dis);
+        discuss.setPublishtime(LocalDateTime.now().toString());
+        discussService.save(discuss);
 
         return R.success("评论成功");
     }

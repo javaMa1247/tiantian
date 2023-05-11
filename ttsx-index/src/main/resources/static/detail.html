@@ -236,7 +236,7 @@
 				sessionStorage.setItem("goodsGno",JSON.stringify(x));
 			},
 			newGoods:function (){
-				axios.post("goodsInfo.action?op=showNewGoods").then(result=>{
+				axios.get("goods/showNewGoods").then(result=>{
 					let data=result.data;
 					if(data.code==1){
 						this.newgoods=data.data;
