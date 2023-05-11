@@ -20,7 +20,7 @@ public interface OrderDao extends BaseMapper<Orderinfo> {
     List<OrderIteminfo> selectOrderItemByOno(@Param("ono") String ono);
 
     @Select("select ono,date_format(odate,'%Y-%m-%d %H:%I:%S') odate,orderinfo.ano,rdate,orderinfo.status,price,invoice  from addrinfo,orderinfo\n" +
-            "where orderinfo.ano = addrinfo.ano and mno= #{mno} order by odate desc limit 1, 2")
+            "where orderinfo.ano = addrinfo.ano and mno= #{mno} order by ono desc limit #{start}, #{pagesize}")
     List<Orderinfo> selectAllOrderByPage(@Param("mno") String mno, @Param("start") Integer start,
                                          @Param("pagesize") Integer pagesize);
 

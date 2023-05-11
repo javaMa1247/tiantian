@@ -106,19 +106,18 @@ public class CartBiz {
     }
     public Integer cleanCart(List<Map<String, Object>> lists){
 
+        int i = 0;
 //        String ono = String.valueOf(db.selectAggreation("select MAX(ono) from orderinfo"));
         if(lists.size()>0){
             for(Map<String, Object> list :lists){
-                String gno = (String) list.get("gno");
-                Cartinfo cartInfo = new Cartinfo();
-                cartInfo.setGno(gno);
-                cartInfo.setMno(mno+"");
-                int i = dao.delete(new QueryWrapper<>(cartInfo));
-                return i;
+                String cno = (String) list.get("cno");
+                LambdaQueryWrapper<Cartinfo> wrapper = new LambdaQueryWrapper<>();
+                wrapper.eq(Cartinfo::getCno, cno).eq(Cartinfo::getMno, mno);
+                i = dao.delete(wrapper);
             }
         }else {
             return 0;
         }
-        return 0;
+        return i;
     }
 }
