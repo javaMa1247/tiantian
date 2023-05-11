@@ -198,7 +198,7 @@
 			showDiscuss:function (){
 				let params=new URLSearchParams();
 				params.append("Gno",this.Gno);
-				axios.get(addr_good+"showDiscuss",params).then(res=>{
+				axios.post(addr_good+"showDiscuss",params).then(res=>{
 					this.discusses=res.data.data;
 				})
 			},
@@ -266,9 +266,8 @@
 			//显示商品的信息
 			showGoodsInformation:function (){
 				let params=new URLSearchParams();
-				params.append("op","showGoodsInformation");
-				params.append("gno",this.Gno);
-				axios.get(addr_good+"showGoodsInformation",params).then(result=>{
+				params.append("Gno",this.Gno);
+				axios.post(addr_good+"showGoodsInformation",params).then(result=>{
 					let data=result.data;
 					if(data.code==1){
 						this.goods=data.data;

@@ -54,8 +54,8 @@ public class GoodController {
 
     }
 
-    @GetMapping("showGoodsInformation")
-    public R<Goodsinfo> showGoodsInformation(int Gno){
+    @PostMapping("showGoodsInformation")
+    public R<Goodsinfo> showGoodsInformation(String Gno){
         LambdaQueryWrapper<Goodsinfo> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.eq(Goodsinfo::getGno,Gno);
         Goodsinfo goods = goodsService.getOne(lambdaQueryWrapper);
@@ -82,7 +82,7 @@ public class GoodController {
     //页面搜索查询，模糊查询商品并分页
     @PostMapping("findGoods")
     public R<Page> findGoods( String pageno, String goodsname, String pagesize){
-        Page<Goodsinfo> page = new Page<>(Integer.parseInt(pageno),Integer.parseInt(pagesize));
+        Page<Goodsinfo> page = new Page<>(Integer.parseInt(pageno),Integer.parseInt(pagesize),true);
         LambdaQueryWrapper<Goodsinfo> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.like(Goodsinfo::getGname,goodsname);
         goodsService.page(page,lambdaQueryWrapper);
@@ -104,13 +104,13 @@ public class GoodController {
 
     //根据Gno查询分类下的商品信息
     @PostMapping("showGoodsTno")
-    public R<List<Goodsinfo>> showGoodsByTno( String pageno, String pagesize, String tno){
-        Page<Goodsinfo> page = new Page<>(Integer.parseInt(pageno),Integer.parseInt(pagesize));
+    public R<Page<Goodsinfo>> showGoodsByTno( String pageno, String pagesize, String tno){
+        Page<Goodsinfo> page = new Page<>(Integer.parseInt(pageno),Integer.parseInt(pagesize),true);
         LambdaQueryWrapper<Goodsinfo> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.eq(Goodsinfo::getTno,tno);
-        List<Goodsinfo> list = goodsService.list(lambdaQueryWrapper);
+        goodsService.page(page,lambdaQueryWrapper);
 
-        return R.success(list);
+        return R.success(page);
     }
 
     //删除评论
@@ -128,7 +128,7 @@ public class GoodController {
 
     //根据商品id显示评论
     //" select * from discuss,memberinfo where gno=? and discuss.mno=memberinfo.mno;";
-    @GetMapping("showDiscuss")
+    @PostMapping("showDiscuss")
     public R<List<DiscussDto>> selectDiscuss(String Gno){
         LambdaQueryWrapper<Discuss> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.eq(Discuss::getGno,Gno);
