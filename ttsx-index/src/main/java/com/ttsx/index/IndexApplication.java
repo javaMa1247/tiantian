@@ -11,6 +11,7 @@ import org.springframework.context.annotation.ComponentScan;
  * @CreateDate: 2023-05-07 下午 7:02
  */
 @SpringBootApplication
+@ComponentScan(basePackages = "com.ttsx")
 @EnableDiscoveryClient
 public class IndexApplication {
     public static void main(String[] args) {
