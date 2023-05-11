@@ -185,9 +185,8 @@
 			// },
 			del:function (did){
 				let params=new URLSearchParams();
-				params.append("op","del");
 				params.append("did",did);
-				axios.post("showDiscuss.action",params).then(res=>{
+				axios.delete("goods/del",params).then(res=>{
 					if(res.data.code==1){
 						alert("删除成功");
 						window.location.href='detail.html';
@@ -198,18 +197,16 @@
 			},
 			showDiscuss:function (){
 				let params=new URLSearchParams();
-				params.append("op","showDiscuss");
 				params.append("Gno",this.Gno);
-				axios.post("showDiscuss.action",params).then(res=>{
+				axios.get("goods/showDiscuss",params).then(res=>{
 					this.discusses=res.data.data;
 				})
 			},
 			Discuss:function (){
 				let params=new URLSearchParams();
-				params.append("op","Discuss");
 				params.append("Gno",this.Gno);
 				params.append("discuss",this.discuss);
-				axios.post("showDiscuss.action",params).then(result=>{
+				axios.put("goods/addDiscuss",params).then(result=>{
 					if(result.data.code==1){
 						alert("评论成功");
 						window.location.href='detail.html';

@@ -2,16 +2,27 @@ package com.ttsx.goods.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.ttsx.BeanDto.DiscussDto;
+import com.ttsx.bean.Discuss;
 import com.ttsx.bean.Goodsinfo;
 import com.ttsx.bean.Goodstype;
+import com.ttsx.bean.Memberinfo;
+import com.ttsx.goods.Service.DiscussService;
 import com.ttsx.goods.Service.GoodsService;
 import com.ttsx.goods.Service.GoodsTypeService;
+import com.ttsx.goods.Service.MemberinfoService;
+import com.ttsx.utils.BaseContext;
 import com.ttsx.utils.R;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.rmi.CORBA.Util;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @Description:
@@ -27,6 +38,12 @@ public class GoodController {
 
     @Autowired
     private GoodsService goodsService;
+
+    @Autowired
+    private DiscussService discussService;
+
+    @Autowired
+    private MemberinfoService memberinfoService;
 
     //根据fid查询商品信息
     @RequestMapping("findById/{fid}")
@@ -79,6 +96,46 @@ public class GoodController {
         lambdaQueryWrapper.eq(Goodsinfo::getTno,tno);
         List<Goodsinfo> list = goodsService.list(lambdaQueryWrapper);
         return R.success(list);
+    }
+
+    //删除评论
+    //delete from discuss where did = ? and mno = ?
+    @DeleteMapping("del")
+    public R<String> del(String did){
+        Long currentId = BaseContext.getCurrentId();
+        LambdaQueryWrapper<Discuss> lambdaQueryWrapper = new LambdaQueryWrapper<Discuss>();
+        lambdaQueryWrapper.eq(Discuss::getDid,did)
+                          .eq(Discuss::getMno,currentId);
+        discussService.remove(lambdaQueryWrapper);
+        return R.success("删除评论成功");
+    }
+
+    //根据商品id显示评论
+    //" select * from discuss,memberinfo where gno=? and discuss.mno=memberinfo.mno;";
+    @GetMapping("showDiscuss")
+    public R<List<DiscussDto> selectDiscuss(String Gno){
+        List<Discuss> list = new ArrayList<>();
+        Long currentId = BaseContext.getCurrentId();
+        LambdaQueryWrapper<Discuss> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(Discuss::getGno,Gno);
+        list = discussService.list(lambdaQueryWrapper);
+        List<DiscussDto> listDto = list.stream().map((item)->{
+            DiscussDto discussDto = new DiscussDto();
+            BeanUtils.copyProperties(item,discussDto);
+            Memberinfo byId = memberinfoService.getById(item.getMno());
+            discussDto.setNickName(byId.getNickName());
+            return discussDto;
+        }).collect(Collectors.toList());
+
+        return R.success(listDto);
+    }
+
+    //评论
+    //"insert into discuss(mno,gno,dis,publishtime) values(?,?,?,now()); "
+    @PutMapping("addDiscuss")
+    public R<String> addDiscuss(String Gno,String discuss){
+
+        return R.success("评论成功");
     }
 
 }
