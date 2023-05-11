@@ -181,7 +181,7 @@
 							let params2 = new URLSearchParams();
 							params2.append("cartgoods",JSON.stringify(this.cartgoods))
 							if(this.status==1){
-								axios.post("order.action?op=cleanCart",params2).then(data=>{
+								axios.post(addr_cart+"cleanCart",params2).then(data=>{
 									let jsonmodel2 = data.data;
 									if(jsonmodel2.code==1){
 										alert("购物车已清空");

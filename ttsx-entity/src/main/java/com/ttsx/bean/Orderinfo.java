@@ -31,7 +31,7 @@ public class Orderinfo implements Serializable {
     private String mno;
 
 
-    private List<OrderItem> orderItem;
+    private List<OrderIteminfo> orderItem;
 
     public String getOdate() {
         if(odate==null|| "".equals(odate)){

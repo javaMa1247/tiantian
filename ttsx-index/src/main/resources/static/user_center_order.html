@@ -53,9 +53,9 @@
 							<td width="55%">
 								<ul class="order_goods_list clearfix" v-for="(value,index) in value.orderItem">
 									<li class="col01"><img :src=`${value.pics}`></li>
-									<li class="col02">{{value.gname}}<em>{{value.price}}元/{{value.weight}}</em></li>
+									<li class="col02">{{value.goodsinfo.gname}}<em>{{value.goodsinfo.price}}元/{{value.goodsinfo.weight}}</em></li>
 									<li class="col03">{{value.nums}}</li>
-									<li class="col04">{{value.price*value.nums}}元</li>
+									<li class="col04">{{value.goodsinfo.price*value.goodsinfo.nums}}元</li>
 								</ul>
 
 							</td>
@@ -121,7 +121,7 @@
 				var params = new URLSearchParams();
 				params.append("pageno",pageno);
 				//返回一个promise
-				axios.post("order.action?op=showOrderbyPage",params).then(data => {
+				axios.post(addr_order+"showOrderbyPage",params).then(data => {
 					var jsonmodel1 = data.data;
 					if(jsonmodel1.code==1){
 						vm.displayPage(jsonmodel1);
@@ -168,7 +168,7 @@
 
 		},
 		mounted:function () {
-			axios.all([this.showPage(1),this.selectLogin()]).then();
+			axios.all([this.showPage(1)*/,this.selectLogin()*/]).then();
 		}
 	});
 </script>

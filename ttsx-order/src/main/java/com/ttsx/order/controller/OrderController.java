@@ -1,6 +1,7 @@
 package com.ttsx.order.controller;
 
 import com.alibaba.nacos.shaded.com.google.gson.Gson;
+import com.ttsx.bean.Orderinfo;
 import com.ttsx.order.biz.OrderBiz;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,6 +36,19 @@ public class OrderController {
         if(integer!=0){
             map.put("code",1);
         }else{
+            map.put("code",0);
+        }
+        return map;
+    }
+
+    @RequestMapping("showOrderbyPage")
+    public Map<String,Object> showOrderbyPage(){
+        Map<String,Object> map = new HashMap<>();
+        List<Orderinfo> list = this.biz.showOrderbyPage();
+        if(list.size()>0&&this.biz.showOrderbyPage()!=null){
+            map.put("code",1);
+            map.put("data",list);
+        }else {
             map.put("code",0);
         }
         return map;
