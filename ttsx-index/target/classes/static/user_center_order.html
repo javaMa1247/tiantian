@@ -1,0 +1,176 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+	<title>天天生鲜-用户中心</title>
+	<link rel="stylesheet" type="text/css" href="css/reset.css">
+	<link rel="stylesheet" type="text/css" href="css/main.css">
+</head>
+<body>
+<div id="app">
+	<div class="header_con">
+		<div class="header">
+			<div class="welcome fl">欢迎来到天天生鲜!</div>
+			<div class="fr">
+				<div class="user_link fl">
+					<span>|</span>
+					<a href="user_center_info.html">用户中心</a>
+					<span>|</span>
+					<a href="cart.html">我的购物车</a>
+					<span>|</span>
+					<a href="user_center_order.html">我的订单</a>
+				</div>
+			</div>
+		</div>		
+	</div>
+
+	<div class="search_bar clearfix">
+		<a href="index.html" class="logo fl"><img src="images/logo.png"></a>
+		<div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;用户中心</div>
+
+	</div>
+
+	<div class="main_con clearfix">
+		<div class="left_menu_con clearfix">
+			<h3>用户中心</h3>
+			<ul>
+				<li><a href="user_center_info.html">· 个人信息</a></li>
+				<li><a href="user_center_order.html" class="active">· 全部订单</a></li>
+			</ul>
+		</div>
+		<div class="right_content clearfix">
+				<h3 class="common_title2">全部订单</h3>
+
+				<div v-for="(value,index) in Order">
+				<table class="order_list_table w980" >
+					<ul class="order_list_th w978 clearfix">
+						<li class="col01">{{value.odate}}</li>
+						<li class="col02">订单号：{{value.ono}}</li>
+						<li class="col02 stress" v-if="value.status==1" >未支付</li>
+					</ul>
+					<tbody>
+						<tr>
+							<td width="55%">
+								<ul class="order_goods_list clearfix" v-for="(value,index) in value.orderItem">
+									<li class="col01"><img :src=`${value.pics}`></li>
+									<li class="col02">{{value.goodsinfo.gname}}<em>{{value.goodsinfo.price}}元/{{value.goodsinfo.weight}}</em></li>
+									<li class="col03">{{value.nums}}</li>
+									<li class="col04">{{value.goodsinfo.price*value.goodsinfo.nums}}元</li>
+								</ul>
+
+							</td>
+							<td width="15%">{{value.price}}元</td>
+							<td width="15%" v-if="value.status==1">待付款</td>
+							<td width="15%" v-else>已付款</td>
+
+							<td width="15%" v-if="value.status==1"><a href="#" class="oper_btn" @click.prevent="gotopay(value.price,value.ono)">去付款</a></td>
+							<td width="15%" v-else-if="value.status==2"><a href="#" class="oper_btn">出货中</a></td>
+							<td width="15%" v-else-if="value.status==3"><a href="#" class="oper_btn">送货中</a></td>
+							<td width="15%" v-else><a href="#" class="oper_btn">已送达</a></td>
+						</tr>
+					</tbody>
+				</table>
+				</div>
+
+				<div class="pagenation">
+					<a @click.prevent="clickPage(1)">第一页</a>
+					<a @click.prevent="clickPage(pagebean.pre)" >&lt;上一页</a>
+					<a @click.prevent="clickPage(pagebean.next)">下一页></a>
+					<a @click.prevent="clickPage(pagebean.totalpages)" >最后一页</a>
+				</div>
+			<b>总共{{pagebean.total}}条记录、共分为{{pagebean.totalpages}}页，
+				每页{{pagebean.pagesize}}条，当前第{{pagebean.pageno}}页</b>
+		</div>
+	</div>
+
+	<div class="footer">
+		<div class="foot_link">
+			<a href="#">关于我们</a>
+			<span>|</span>
+			<a href="#">联系我们</a>
+			<span>|</span>
+			<a href="#">招聘人才</a>
+			<span>|</span>
+			<a href="#">友情链接</a>		
+		</div>
+		<p>CopyRight © 2016 北京天天生鲜信息技术有限公司 All Rights Reserved</p>
+		<p>电话：010-****888    京ICP备*******8号</p>
+	</div>
+</div>
+<script type="text/javascript" src="js/vue.js"></script>
+<script src="js/axios.js"></script>
+<script type="text/javascript">
+	var vm = new Vue({
+		el:"#app",
+		data:{
+			Order:[],
+			pagebean:[],
+		},
+		methods:{
+			showAllOrder:function () {
+				axios.post("order.action?op=showAllOrder").then(data=>{
+					var jsonmodel = data.data;
+					if(jsonmodel.code==1){
+						this.Order = jsonmodel.data;
+					}else{
+						alert("暂无订单");
+					}
+				})
+			},
+			showPage:function (pageno) {
+				var params = new URLSearchParams();
+				params.append("pageno",pageno);
+				//返回一个promise
+				axios.post(addr_order+"showOrderbyPage",params).then(data => {
+					var jsonmodel1 = data.data;
+					if(jsonmodel1.code==1){
+						vm.displayPage(jsonmodel1);
+					}
+				})
+
+			},
+			clickPage:function (pageno) {
+				var promise = this.showPage(pageno);
+				promise.then( result=>{
+					this.displayPage(result.data);
+				});
+			},
+			//result 的格式  jsonmodel(code,data:{ pageno:x,pagesize:x,detaset:[data]})
+			displayPage:function (result) {
+				var jsonmodel2 = result;
+				if(jsonmodel2.code==1){
+					vm.$data.Order=jsonmodel2.data.dataset;
+					vm.$data.pagebean=jsonmodel2.data;
+
+				}
+			},
+			selectLogin(){
+				let params = new URLSearchParams();
+				params.append("op","selectUserLogin");
+				axios.post("admin.action",params).then(data => {
+					if(data.data.code != 1){
+						alert(data.data.msg);
+						window.location.href="login.html";
+					}
+				})
+			},
+			gotopay(price,ono){
+				let params = new URLSearchParams();
+				params.append("op","saveOno");
+				params.append("ono",ono);
+				axios.post("admin.action",params).then(data => {})
+				let pr={price:price};
+				sessionStorage.setItem("Price",JSON.stringify(pr));
+				window.location.href="alipay.jsp";
+			}
+		},
+		created(){
+
+		},
+		mounted:function () {
+			axios.all([this.showPage(1)*/,this.selectLogin()*/]).then();
+		}
+	});
+</script>
+</body>
+</html>
