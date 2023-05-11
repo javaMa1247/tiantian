@@ -11,6 +11,7 @@ import com.ttsx.goods.Service.DiscussService;
 import com.ttsx.goods.Service.GoodsService;
 import com.ttsx.goods.Service.GoodsTypeService;
 import com.ttsx.goods.Service.MemberinfoService;
+import com.ttsx.goods.common.CustomException;
 import com.ttsx.utils.BaseContext;
 import com.ttsx.utils.R;
 import lombok.extern.slf4j.Slf4j;
@@ -121,7 +122,10 @@ public class GoodController {
         LambdaQueryWrapper<Discuss> lambdaQueryWrapper = new LambdaQueryWrapper<Discuss>();
         lambdaQueryWrapper.eq(Discuss::getDid,did)
                           .eq(Discuss::getMno,currentId);
-        discussService.remove(lambdaQueryWrapper);
+        boolean remove = discussService.remove(lambdaQueryWrapper);
+        if(remove==false){
+            throw new CustomException("删除失败");
+        }
 
         return R.success("删除评论成功");
     }
