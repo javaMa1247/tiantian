@@ -152,6 +152,7 @@
 			userdata:{},
 		},
 		methods:{
+			//搜索商品结果
 			findgoods:function (){
 				if(this.findGoods==''){
 					return;
@@ -169,7 +170,7 @@
 						this.Tname='搜索结果';
 						let a={Findgoods:this.findGoods};
 						sessionStorage.setItem("findgoods",JSON.stringify(a));
-						this.goods=res.data.data.dataset;
+						this.goods=res.data.data.records;
 					}
 
 				})

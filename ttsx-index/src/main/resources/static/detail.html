@@ -268,7 +268,7 @@
 				let params=new URLSearchParams();
 				params.append("op","showGoodsInformation");
 				params.append("gno",this.Gno);
-				axios.post(addr_good+"goodsInfo.action",params).then(result=>{
+				axios.get(addr_good+"showGoodsInformation",params).then(result=>{
 					let data=result.data;
 					if(data.code==1){
 						this.goods=data.data;

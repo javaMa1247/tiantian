@@ -54,10 +54,20 @@ public class GoodController {
 
     }
 
+    @GetMapping("showGoodsInformation")
+    public R<Goodsinfo> showGoodsInformation(int Gno){
+        LambdaQueryWrapper<Goodsinfo> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+        lambdaQueryWrapper.eq(Goodsinfo::getGno,Gno);
+        Goodsinfo goods = goodsService.getOne(lambdaQueryWrapper);
+
+        return R.success(goods);
+    }
+
     //展示商品信息
     @GetMapping("showGoodsInfo")
     public R<List<Goodsinfo>> selectGoodsInfo(){
         List<Goodsinfo> list = goodsService.list();
+
         return R.success(list);
     }
 
@@ -65,6 +75,7 @@ public class GoodController {
     @GetMapping("showGoodsType")
     public R<List<Goodstype>> selectGoodsType(){
         List<Goodstype> list = goodsTypeService.list();
+
         return R.success(list);
     }
 
@@ -75,6 +86,7 @@ public class GoodController {
         LambdaQueryWrapper<Goodsinfo> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.like(Goodsinfo::getGname,goodsname);
         goodsService.page(page,lambdaQueryWrapper);
+
         return R.success(page);
     }
 
@@ -86,6 +98,7 @@ public class GoodController {
         lambdaQueryWrapper.orderByDesc(Goodsinfo::getGno)
                           .last(" limit 2 ");
         List<Goodsinfo> list = goodsService.list(lambdaQueryWrapper);
+
         return R.success(list);
     }
 
@@ -96,6 +109,7 @@ public class GoodController {
         LambdaQueryWrapper<Goodsinfo> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.eq(Goodsinfo::getTno,tno);
         List<Goodsinfo> list = goodsService.list(lambdaQueryWrapper);
+
         return R.success(list);
     }
 
@@ -108,6 +122,7 @@ public class GoodController {
         lambdaQueryWrapper.eq(Discuss::getDid,did)
                           .eq(Discuss::getMno,currentId);
         discussService.remove(lambdaQueryWrapper);
+
         return R.success("删除评论成功");
     }
 
