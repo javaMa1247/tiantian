@@ -888,3 +888,29 @@ java.lang.ClassCastException: java.math.BigDecimal cannot be cast to java.lang.S
 2023-05-11 13:17:05.977  INFO 21480 --- [http-nio-7777-exec-7] c.ttsx.goods.controller.GoodController   : 进来了
 2023-05-11 13:17:05.984  INFO 21480 --- [http-nio-7777-exec-8] c.ttsx.goods.controller.GoodController   : 进来了
 2023-05-11 13:17:11.187  INFO 4136 --- [http-nio-8888-exec-8] com.ttsx.order.biz.OrderBiz              : 21
+2023-05-11 13:31:44.940  INFO 5176 --- [main] com.ttsx.goods.GoodApplication           : The following 1 profile is active: "prod"
+2023-05-11 13:31:46.671  INFO 5176 --- [main] o.s.cloud.context.scope.GenericScope     : BeanFactory id=b42d0dee-f7dd-3690-b177-e2836426ab79
+2023-05-11 13:31:47.238  INFO 5176 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 7777 (http)
+2023-05-11 13:31:47.240  INFO 5176 --- [main] o.a.catalina.core.AprLifecycleListener   : Loaded Apache Tomcat Native library [1.2.35] using APR version [1.7.0].
+2023-05-11 13:31:47.240  INFO 5176 --- [main] o.a.catalina.core.AprLifecycleListener   : APR capabilities: IPv6 [true], sendfile [true], accept filters [false], random [true], UDS [true].
+2023-05-11 13:31:47.241  INFO 5176 --- [main] o.a.catalina.core.AprLifecycleListener   : APR/OpenSSL configuration: useAprConnector [false], useOpenSSL [true]
+2023-05-11 13:31:47.249  INFO 5176 --- [main] o.a.catalina.core.AprLifecycleListener   : OpenSSL successfully initialized [OpenSSL 1.1.1q  5 Jul 2022]
+2023-05-11 13:31:47.262  INFO 5176 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2023-05-11 13:31:47.263  INFO 5176 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.63]
+2023-05-11 13:31:47.518  INFO 5176 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2023-05-11 13:31:47.519  INFO 5176 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2557 ms
+2023-05-11 13:31:47.615  INFO 5176 --- [main] c.a.d.s.b.a.DruidDataSourceAutoConfigure : Init DruidDataSource
+2023-05-11 13:31:47.759  INFO 5176 --- [main] com.alibaba.druid.pool.DruidDataSource   : {dataSource-1} inited
+2023-05-11 13:31:54.602  INFO 5176 --- [main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 19 endpoint(s) beneath base path '/actuator'
+2023-05-11 13:31:54.723  INFO 5176 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 7777 (http) with context path ''
+2023-05-11 13:31:54.739  INFO 5176 --- [main] c.a.n.p.a.s.c.ClientAuthPluginManager    : [ClientAuthPluginManager] Load ClientAuthService com.alibaba.nacos.client.auth.impl.NacosClientAuthServiceImpl success.
+2023-05-11 13:31:54.740  INFO 5176 --- [main] c.a.n.p.a.s.c.ClientAuthPluginManager    : [ClientAuthPluginManager] Load ClientAuthService com.alibaba.nacos.client.auth.ram.RamClientAuthServiceImpl success.
+2023-05-11 13:31:55.010  INFO 5176 --- [main] c.a.c.n.registry.NacosServiceRegistry    : nacos registry, DEFAULT_GROUP ttsx-foods 192.168.62.1:7777 register finished
+2023-05-11 13:31:56.058  INFO 5176 --- [main] com.ttsx.goods.GoodApplication           : Started GoodApplication in 17.746 seconds (JVM running for 18.836)
+2023-05-11 13:31:56.078  INFO 5176 --- [main] c.a.c.n.refresh.NacosContextRefresher    : [Nacos Config] Listening config: dataId=ttsx-foods, group=DEFAULT_GROUP
+2023-05-11 13:31:56.080  INFO 5176 --- [main] c.a.c.n.refresh.NacosContextRefresher    : [Nacos Config] Listening config: dataId=ttsx-mysql.yml, group=DEFAULT_GROUP
+2023-05-11 13:31:56.082  INFO 5176 --- [main] c.a.c.n.refresh.NacosContextRefresher    : [Nacos Config] Listening config: dataId=ttsx-foods-prod.yml, group=DEFAULT_GROUP
+2023-05-11 13:31:56.083  INFO 5176 --- [main] c.a.c.n.refresh.NacosContextRefresher    : [Nacos Config] Listening config: dataId=ttsx-foods.yml, group=DEFAULT_GROUP
+2023-05-11 13:31:57.275  INFO 5176 --- [RMI TCP Connection(6)-192.168.100.1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-05-11 13:31:57.276  INFO 5176 --- [RMI TCP Connection(6)-192.168.100.1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2023-05-11 13:31:57.281  INFO 5176 --- [RMI TCP Connection(6)-192.168.100.1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 4 ms
