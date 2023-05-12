@@ -76,4 +76,17 @@ public class CartController {
         }
         return map;
     }
+
+    @RequestMapping("showOnecartInfo")
+    public Map<String,Object> showOnecartInfo(HttpServletRequest request, HttpServletResponse response){
+        Map<String,Object> map = new HashMap<>();
+        String gno = request.getParameter("gno");
+        String num = request.getParameter("num");
+        List<Cartinfo> list= this.biz.showOnecartInfo(gno,num);
+        if(list.size()>0) {
+            map.put("code", 1);
+            map.put("data", list);
+        }
+        return map;
+    }
 }

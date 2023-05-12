@@ -5,7 +5,29 @@
 	<title>天天生鲜-登录</title>
 	<link rel="stylesheet" type="text/css" href="css/reset.css">
 	<link rel="stylesheet" type="text/css" href="css/main.css">
+	<script src="js/vue.js"></script>
+	<script src="js/axios.js"></script>
+	<script type="text/javascript">
+		//使用axios
+		Vue.prototype.axios = axios;
+		//在每次请求时，前端携带token到请求头中
+		axios.interceptors.request.use(config=>{
+			//从localStorage或vuex中获取token
+			const token = localStorage.getItem('token');//||this.$stire.stste.token;
+			//如果token，就添加到请求头中
+			if (token){
+				config.headers.Authorization = token;
+			}
+			console.log(token);
+			console.log(config);
+			return config;
+		},error=>{
+			return Promise.reject(error);
+		});
+
+	</script>
 </head>
+
 <body>
 <div id="app">
 
@@ -54,9 +76,9 @@
 		<p>电话：010-****888    京ICP备*******8号</p>
 	</div>
 </div>
-<script src="js/vue.js"></script>
-<script src="js/axios.js"></script>
+
 <script type="text/javascript">
+	var login_addr = "http://localhost:20001/user";
 	let vm=new Vue({
 				el: "#app",
 				data: {
@@ -70,20 +92,21 @@
 				var params = new URLSearchParams();
 				params.append("nickName",this.nickName);
 				params.append("pwd",this.pwd);
-				axios.post("/user/login",params).then(data=>{
+				axios.post(login_addr+"/login",params).then(data=>{
 					var result = data.data;
 					if(result.code==1){
 						alert("登录成功,欢迎您"+result.data.nickName);
 						const data = {nickName:result.data.nickName};
 						sessionStorage.setItem("nickName",JSON.stringify(data));//转成Json对象传
 						window.location.href="index.html";
+						localStorage.setItem('token', result.data.token);
 						return;
 					}
 					alert("登录失败 ："+ result.msg);
 				})
 			},
 			showName:function () {
-				 axios.post("resuser.action?op=showName").then(result=>{
+				 axios.post(login_addr+"/showName").then(result=>{
 					let jsonModel=result.data;
 					if(jsonModel.code==1) {
 						this.nickName = jsonModel.data.user;
@@ -94,6 +117,7 @@
 		},
 		mounted:function () {
 			axios.all([this.showName()]);
+
 		}
 	});
 </script>

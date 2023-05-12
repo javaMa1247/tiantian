@@ -1,5 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
 <head>
 	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
 	<title>天天生鲜-注册</title>
@@ -7,7 +8,29 @@
 	<link rel="stylesheet" type="text/css" href="css/main.css">
 	<script type="text/javascript" src="js/jquery-1.12.4.min.js"></script>
 	<script type="text/javascript" src="js/register.js"></script>
+	<script src="js/axios.js"></script>
+	<script src="js/vue.js"></script>
+	<script type="text/javascript">
+		//使用axios
+		Vue.prototype.axios = axios;
+		//在每次请求时，前端携带token到请求头中
+		axios.interceptors.request.use(config=>{
+			//从localStorage或vuex中获取token
+			const token = localStorage.getItem('token');//||this.$stire.stste.token;
+			//如果token，就添加到请求头中
+			if (token){
+				config.headers.Authorization = token;
+			}
+			console.log(token);
+			console.log(config);
+			return config;
+		},error=>{
+			return Promise.reject(error);
+		});
+
+	</script>
 </head>
+
 <body>
 <div id="app">
 	<div class="register_con">
@@ -75,9 +98,9 @@
 		<p>电话：010-****888    京ICP备*******8号</p>
 	</div>
 </div>
-<script src="js/axios.js"></script>
-<script src="js/vue.js"></script>
+
 <script>
+	var reg_addr = "http://localhost:20001/user/";
 	let vm=new Vue({
 		el: "#app",
 		data: {
@@ -102,7 +125,7 @@
 				params.append("pwd",this.pwd);
 				params.append("pwd1",this.pwd1);
 				params.append("email",this.email);
-				axios.post("resuser.action",params).then(result=>{
+				axios.post(reg_addr+ "/logon",params).then(result=>{
 				if (result.data.code==1){
 					alert("注册成功");
 					window.location.href="login.html";
@@ -115,7 +138,7 @@
 				let params = new URLSearchParams();
 				params.append("nickName",this.nickName);
 				params.append("op","checkUname");
-				axios.post("resuser.action",params).then(data=>{
+				axios.post(reg_addr+"/checkUname",params).then(data=>{
 					var result = data.data;
 					if(result.code==1){
 						alert("用户名已存在");

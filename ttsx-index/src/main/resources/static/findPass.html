@@ -7,6 +7,28 @@
     <link rel="stylesheet" type="text/css" href="css/main.css">
     <script type="text/javascript" src="js/jquery-1.12.4.min.js"></script>
     <script type="text/javascript" src="js/register.js"></script>
+    <script src="js/vue.js"></script>
+    <script src="js/axios.js"></script>
+    <script type="text/javascript">
+        //使用axios
+        Vue.prototype.axios = axios;
+        //在每次请求时，前端携带token到请求头中
+        axios.interceptors.request.use(config=>{
+            //从localStorage或vuex中获取token
+            const token = localStorage.getItem('token');//||this.$stire.stste.token;
+            //如果token，就添加到请求头中
+            if (token){
+                config.headers.Authorization = token;
+            }
+            console.log(token);
+            console.log(config);
+            return config;
+        },error=>{
+            return Promise.reject(error);
+        });
+
+
+    </script>
 </head>
 <body>
 <div id="app">
@@ -76,6 +98,7 @@
 <script src="js/axios.js"></script>
 <script src="js/vue.js"></script>
 <script>
+    var deli_addr ="";
     let vm=new Vue({
         el: "#app",
         data: {

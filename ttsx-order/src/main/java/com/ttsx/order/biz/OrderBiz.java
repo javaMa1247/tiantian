@@ -7,6 +7,7 @@ import com.ttsx.bean.Orderinfo;
 import com.ttsx.feignApi.FeignApp;
 import com.ttsx.order.dao.OrderDao;
 import com.ttsx.order.dao.OrderItemDao;
+import com.ttsx.utils.BaseContext;
 import com.ttsx.utils.PageBean;
 import com.ttsx.utils.R;
 import lombok.extern.slf4j.Slf4j;
@@ -33,7 +34,7 @@ public class OrderBiz {
 
     @Autowired
     private OrderBizTmpl orderBizTmpl;
-    private String mno = "3"; //TODO: mno
+    private String mno = Utils.getMNO().intValue()+"";//String.valueOf(BaseContext.getCurrentId());
     public Integer addOrder(List<Map<String, Object>> orders,String ano){
 
         Integer res = 0;

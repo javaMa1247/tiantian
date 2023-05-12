@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.ttsx.bean.Addrinfo;
 import com.ttsx.order.dao.AddrDao;
+import com.ttsx.utils.BaseContext;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,7 +24,8 @@ import java.util.Map;
 public class AddrBiz {
     @Autowired
     private AddrDao dao;
-    private int mno=3;
+
+    private int mno= Utils.getMNO().intValue();
     public List<Addrinfo> showAddr(){
         List<Addrinfo> list = new ArrayList<>();
         try{

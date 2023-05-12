@@ -161,6 +161,7 @@
 <script src="js/axios.js"></script>
 <script type="text/javascript">
 	var addr_good ="http://localhost:20001/goods/";
+	var addr_cart = "http://localhost:20001/cart/";
 	//后续添加功能 商品历史评论  新品推荐
 	const lm=new Vue({
 		el:'#app',
@@ -179,10 +180,7 @@
 			userdata:{},
 		},
 		methods:{
-			//需要用户名 数量 商品gno
-			// addCart:function (){
-			// 	let params=new URLSearchParams();
-			// },
+
 			del:function (did){
 				let params=new URLSearchParams();
 				params.append("did",did);
@@ -222,12 +220,10 @@
 				var params = new URLSearchParams();
 				params.append("gno",gno);
 				params.append("num",num);
-				axios.post("cart.action?op=addCart",params).then(data=>{
+				axios.post(addr_cart+"addCart",params).then(data=>{
 					var jsnomodel2 = data.data;
-					if(jsnomodel2.code==1){
-						alert("添加至购物车成功");
-					}else {
-						alert(jsnomodel2.msg);
+					if(jsnomodel2.code==1) {
+						alert("添加成功");
 					}
 				})
 			},
@@ -311,7 +307,7 @@
 				let params=new URLSearchParams();
 				params.append("gno",Gno);
 				params.append("num",price);
-				axios.post("cart.action?op=showOnecartInfo",params).then(data=>{
+				axios.post(addr_cart+"showOnecartInfo",params).then(data=>{
 					var jsonmodel = data.data;
 					if(jsonmodel.code==1){
 						cartgoods = jsonmodel.data;

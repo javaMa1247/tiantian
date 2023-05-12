@@ -7,6 +7,7 @@
 	<link rel="stylesheet" type="text/css" href="css/main.css">
 	<script type="text/javascript" src="js/vue.js"></script>
 	<script type="text/javascript" src="js/axios.js"></script>
+	<script type="text/javascript" src="js/checkToken1.js"></script>
 </head>
 <body>
 <div id="app">
@@ -84,6 +85,7 @@
 	</div>
 </div>
 <script>
+	var admin_addr="http://localhost:20001/user/"
 	let vm = new Vue({
 		el:"#app",
 		data:{
@@ -105,7 +107,7 @@
 			getUserInfo(){
 				let params = new URLSearchParams();
 				params.append("op","selectUserInfo");
-				axios.post("admin.action",params).then(data => {
+				axios.post(admin_addr+"selectUserInfo",params).then(data => {
 					if(data.data.code == 1) {
 						this.userinfo = data.data.data;
 						this.getHistory();

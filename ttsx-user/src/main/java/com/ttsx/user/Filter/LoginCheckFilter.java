@@ -1,7 +1,13 @@
-package com.ttsx.utils;
+package com.ttsx.user.Filter;
 
 import com.alibaba.fastjson.JSON;
+import com.ttsx.user.util.JWTUtils;
+import com.ttsx.utils.BaseContext;
+import com.ttsx.utils.R;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.http.MediaType;
 import org.springframework.util.AntPathMatcher;
 
 import javax.servlet.*;
@@ -9,6 +15,8 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @Author: mqb
@@ -19,6 +27,8 @@ import java.io.IOException;
 @WebFilter(filterName = "loginCheckFilter",urlPatterns = "/*")
 @Slf4j
 public class LoginCheckFilter implements Filter {
+    @Autowired
+    private RedisTemplate redisTemplate;
     //路径匹配器，支持通配符
     public static final AntPathMatcher PATH_MATCHER = new AntPathMatcher();
 
@@ -38,6 +48,7 @@ public class LoginCheckFilter implements Filter {
                 "/common/**",
                 "/user/sendMsg", //移动端发送短信
                 "/user/login"  //移动端登录
+
         };
 
         //2.判断本次请求是否需要处理
@@ -52,23 +63,31 @@ public class LoginCheckFilter implements Filter {
         }
 
         //4-1.判断登录状态，如果已经登录，则直接放行
-        if(request.getSession().getAttribute("employee") != null){
-            log.info("用户已经登录,用户id为:{}",request.getSession().getAttribute("employee"));
+        if(request.getHeader("Authorization") != null){
 
-            Long empId = (Long) request.getSession().getAttribute("employee");
+            String token = request.getHeader("Authorization");
+//            JWTUtils.getTokenInfo(token);
+//            log.info("待检测的token为:"+ token );
+            System.out.println(token);
+            boolean flag=this.redisTemplate.hasKey(token);
+            String mno ="";
+            if(  flag) {
+                String t= (String) this.redisTemplate.opsForHash().get(token,"token");
+                Map<String,Object> info=JWTUtils.getTokenInfo(   t   );
+                mno = info.get("userid").toString();
+            }else{
+                log.info("token已过期");
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+                response.getWriter().write("{\"message\": \"token已过期\"}");
+                response.getWriter().flush();
+                return;
+            }
+
+            log.info("用户已经登录,用户id为:{}",mno);
+
+            Long empId = Long.parseLong(mno) ;
             BaseContext.setCurrentId(empId);
-
-            filterChain.doFilter(request,response);
-
-            return;
-        }
-
-        //4-2.判断登录状态，如果已经登录，则直接放行
-        if(request.getSession().getAttribute("user") != null){
-            log.info("用户已经登录,用户id为:{}",request.getSession().getAttribute("user"));
-
-            Long userId = (Long) request.getSession().getAttribute("user");
-            BaseContext.setCurrentId(userId);
 
             filterChain.doFilter(request,response);
 
@@ -77,8 +96,10 @@ public class LoginCheckFilter implements Filter {
 
         log.info("用户未登录");
         //5.如果未登录则返回未登录结果,通过输出流方式向客户端页面响应
-        response.getWriter().write(JSON.toJSONString(R.error("NOTLOGIN")));
-        return;
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        response.getWriter().write("{\"message\": \"用户未登录\"}");
+        response.getWriter().flush();
 
     }
 

@@ -32,6 +32,17 @@ spring:
             - Path=/cart/**
           filters:
 #            - RewritePath=/foods/(?<segment>.*), /$\{segment}
+        - id: ttsx-index
+          uri: lb:/ttsx-index
+          predicates:
+            - Path=/index/**
+          filters:
+            - RewritePath=/index/(?<segment>.*), /$\{segment}
+        - id: ttsx-user
+          uri: lb:/ttsx-user
+          predicates:
+            - Path=/user/**
+
       globalcors:  #全局跨域处理
         cors-configurations:
           '[/**]':

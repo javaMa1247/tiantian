@@ -9,11 +9,13 @@ import com.ttsx.bean.Cartinfo;
 import com.ttsx.bean.Goodsinfo;
 import com.ttsx.feignApi.FeignApp;
 import com.ttsx.order.dao.CartDao;
+import com.ttsx.utils.BaseContext;
 import com.ttsx.utils.R;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -28,7 +30,7 @@ public class CartBiz {
     private FeignApp feignApp;
     @Autowired
     private CartDao dao;
-    private Integer mno=3;   //TODO:  mno
+    private Integer mno= Utils.getMNO().intValue();//Integer.valueOf(BaseContext.getCurrentId().intValue());
 
 
     public List<Cartinfo> showAllCart(){
@@ -119,5 +121,20 @@ public class CartBiz {
             return 0;
         }
         return i;
+    }
+
+    public List<Cartinfo> showOnecartInfo(String gno, String num) {
+        Cartinfo cart = null;
+        List<Cartinfo> list = new ArrayList<>();
+        Goodsinfo goodsinfo = feignApp.findById(Integer.parseInt(gno)).getData();
+        try{
+            cart.setNum(Integer.parseInt(num));
+            cart.setSmallCount(goodsinfo.getPrice()*cart.getNum());
+            list.add(cart);
+            return list;
+
+        }catch (Exception e){
+            return  list;
+        }
     }
 }
