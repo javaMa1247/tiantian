@@ -1,17 +1,14 @@
 package com.ttsx.order.biz;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.ttsx.bean.Goodsinfo;
 import com.ttsx.bean.OrderIteminfo;
 import com.ttsx.bean.Orderinfo;
-import com.ttsx.feignApi.FeignApp;
 import com.ttsx.order.dao.OrderDao;
 import com.ttsx.order.dao.OrderItemDao;
-import com.ttsx.utils.BaseContext;
 import com.ttsx.utils.PageBean;
-import com.ttsx.utils.R;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -34,9 +31,13 @@ public class OrderBiz {
 
     @Autowired
     private OrderBizTmpl orderBizTmpl;
-    private String mno = Utils.getMNO().intValue()+"";//String.valueOf(BaseContext.getCurrentId());
+
+    @Autowired
+    private RedisTemplate redisTemplate;
+
     public Integer addOrder(List<Map<String, Object>> orders,String ano){
 
+        int mno= Integer.parseInt(redisTemplate.opsForValue().get("mno")+"");
         Integer res = 0;
 
         Orderinfo orderinfo = new Orderinfo();
@@ -77,7 +78,8 @@ public class OrderBiz {
     }
 
     public PageBean showOrderbyPage(PageBean pageBean){
-        PageBean page = this.orderBizTmpl.findByPage(pageBean, mno);
+        int mno= Integer.parseInt(redisTemplate.opsForValue().get("mno")+"");
+        PageBean page = this.orderBizTmpl.findByPage(pageBean, mno+"");
         if(page!=null){
             return page;
         }else {

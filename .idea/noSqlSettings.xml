@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="NoSqlConfiguration">
+    <option name="serverConfigurations">
+      <list>
+        <ServerConfiguration>
+          <option name="connectOnIdeStartup" value="true" />
+          <option name="databaseVendor" value="DatabaseVendor{name='RedisDB'}" />
+          <option name="label" value="t" />
+          <option name="serverUrl" value="localhost:6379" />
+          <option name="userDatabase" value="3" />
+        </ServerConfiguration>
+      </list>
+    </option>
+  </component>
+</project>

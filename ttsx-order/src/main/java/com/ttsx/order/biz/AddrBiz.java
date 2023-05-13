@@ -4,9 +4,9 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.ttsx.bean.Addrinfo;
 import com.ttsx.order.dao.AddrDao;
-import com.ttsx.utils.BaseContext;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -25,8 +25,10 @@ public class AddrBiz {
     @Autowired
     private AddrDao dao;
 
-    private int mno= Utils.getMNO().intValue();
+    @Autowired
+    private RedisTemplate redisTemplate;
     public List<Addrinfo> showAddr(){
+        int mno= Integer.parseInt(redisTemplate.opsForValue().get("mno")+"");
         List<Addrinfo> list = new ArrayList<>();
         try{
             QueryWrapper<Addrinfo> queryWrapper = new QueryWrapper<>();
@@ -45,6 +47,7 @@ public class AddrBiz {
 
     }
     public Integer addAddr(Addrinfo newaddrinfo){
+        int mno= Integer.parseInt(redisTemplate.opsForValue().get("mno")+"");
         try{
 
             String ano = Integer.valueOf(dao.getMaxAno())+1+"";
@@ -68,6 +71,7 @@ public class AddrBiz {
 
 
     public Integer updateAddr(Addrinfo addrinfo){
+        int mno= Integer.parseInt(redisTemplate.opsForValue().get("mno")+"");
 
         log.info("addrinfo:{}",addrinfo);
         addrinfo.setMno(mno);
@@ -77,6 +81,7 @@ public class AddrBiz {
     }
 
     public Map<String ,Object> showAddrinfo(Addrinfo addrinfo){
+        int mno= Integer.parseInt(redisTemplate.opsForValue().get("mno")+"");
         Map<String ,Object> map1 = new HashMap<>();
         String ano = addrinfo.getAno();
         LambdaQueryWrapper<Addrinfo> wrapper = new LambdaQueryWrapper<>();

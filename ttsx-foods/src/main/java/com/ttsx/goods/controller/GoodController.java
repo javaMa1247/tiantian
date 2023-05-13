@@ -12,18 +12,15 @@ import com.ttsx.goods.Service.GoodsService;
 import com.ttsx.goods.Service.GoodsTypeService;
 import com.ttsx.goods.Service.MemberinfoService;
 import com.ttsx.goods.common.CustomException;
-import com.ttsx.utils.BaseContext;
 import com.ttsx.utils.R;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
-import javax.rmi.CORBA.Util;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -47,6 +44,8 @@ public class GoodController {
     @Autowired
     private MemberinfoService memberinfoService;
 
+    @Autowired
+    private RedisTemplate redisTemplate;
     //根据fid查询商品信息
     @RequestMapping("findById/{fid}")
     public R<Goodsinfo> findById(@PathVariable Integer fid){
@@ -118,10 +117,10 @@ public class GoodController {
     //delete from discuss where did = ? and mno = ?
     @DeleteMapping("del")
     public R<String> del(String did){
-        Long currentId = BaseContext.getCurrentId();
+        int mno= Integer.parseInt(redisTemplate.opsForValue().get("mno")+"");
         LambdaQueryWrapper<Discuss> lambdaQueryWrapper = new LambdaQueryWrapper<Discuss>();
         lambdaQueryWrapper.eq(Discuss::getDid,did)
-                          .eq(Discuss::getMno,currentId);
+                          .eq(Discuss::getMno,mno);
         boolean remove = discussService.remove(lambdaQueryWrapper);
         if(remove==false){
             throw new CustomException("删除失败");
@@ -153,8 +152,7 @@ public class GoodController {
     @PutMapping("addDiscuss")
     public R<String> addDiscuss(int Gno,@RequestParam(value = "discuss") String dis){
         Discuss discuss = new Discuss();
-        Long currentId = BaseContext.getCurrentId();
-        Integer mno=(currentId).intValue() ;
+        int mno= Integer.parseInt(redisTemplate.opsForValue().get("mno")+"");
         discuss.setMno(mno);
         discuss.setGno(Gno);
         discuss.setDis(dis);

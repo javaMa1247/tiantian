@@ -24,7 +24,7 @@ import java.util.Map;
  * @Time: 22:54
  * @Description:
  */
-@WebFilter(filterName = "loginCheckFilter",urlPatterns = "/*")
+//@WebFilter(filterName = "loginCheckFilter",urlPatterns = "/*")
 @Slf4j
 public class LoginCheckFilter implements Filter {
     @Autowired

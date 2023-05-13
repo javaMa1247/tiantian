@@ -15,7 +15,7 @@ spring:
         shared-configs:
           - {dataId: ttsx-mysql.yml,refresh: true}   #
         #          - mysql119.yml
-  #          - {dataId: mysql119.yml,refresh: true}   #
+          - {dataId: ttsx-redis.yml,refresh: true}   #
   profiles:
     active: prod #它用来指定当前应用的配置环境
 
