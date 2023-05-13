@@ -11,6 +11,11 @@
 
     <artifactId>ttsx-user</artifactId>
     <dependencies>
+        <dependency>
+            <groupId>org.example</groupId>
+            <artifactId>ttsx-entity</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
         <!-- mail-->
         <dependency>
             <groupId>javax.mail</groupId>
@@ -82,11 +87,21 @@
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
         </dependency>
+        <!--Session-->
         <dependency>
-            <groupId>org.example</groupId>
-            <artifactId>ttsx-entity</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>org.springframework.session</groupId>
+            <artifactId>spring-session-data-redis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+
     </dependencies>
 
 </project>

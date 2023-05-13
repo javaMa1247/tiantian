@@ -11,11 +11,11 @@
         <module name="ttsx-order" />
         <module name="ttsx-foods" />
         <module name="ttsx-feign" />
-        <module name="ttsx-user" />
-        <module name="ttsx-background" />
         <module name="ttsx-gateway" />
-        <module name="ttsx-alipay" />
         <module name="ttsx-index" />
+        <module name="ttsx-background" />
+        <module name="ttsx-alipay" />
+        <module name="ttsx-user" />
       </profile>
     </annotationProcessing>
   </component>

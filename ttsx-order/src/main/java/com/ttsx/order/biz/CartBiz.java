@@ -2,17 +2,15 @@ package com.ttsx.order.biz;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ttsx.bean.Cartinfo;
 import com.ttsx.bean.Goodsinfo;
 import com.ttsx.feignApi.FeignApp;
 import com.ttsx.order.dao.CartDao;
-import com.ttsx.utils.BaseContext;
 import com.ttsx.utils.R;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -25,16 +23,18 @@ import java.util.Map;
  * @CreateDate: 2023-05-08 下午 2:55
  */
 @Service
+@Slf4j
 public class CartBiz {
     @Autowired
     private FeignApp feignApp;
     @Autowired
     private CartDao dao;
-    private Integer mno= Utils.getMNO().intValue();//Integer.valueOf(BaseContext.getCurrentId().intValue());
 
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     public List<Cartinfo> showAllCart(){
-
+        int mno= Integer.parseInt(redisTemplate.opsForValue().get("mno")+"");
         QueryWrapper<Cartinfo> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda()
                 .eq(Cartinfo::getMno, mno);
@@ -52,6 +52,8 @@ public class CartBiz {
         return cartinfos;
     }
     public int addCart(String gno,String num) {
+        int mno= Integer.parseInt(redisTemplate.opsForValue().get("mno")+"");
+//        mno = BaseContext.getCurrentId().intValue();
         int result = 0;
         try {
             //判断购物项是否已经存在
@@ -82,6 +84,7 @@ public class CartBiz {
                 Integer maxCno = re == null ? null : (Integer.valueOf(re.toString()))+1 ;
 
                 Cartinfo cartinfo = new Cartinfo(maxCno+"",gno,mno+"", Integer.valueOf(num));
+                log.info(mno+"");
                 int rows = dao.insert(cartinfo);
             }
 
@@ -92,6 +95,7 @@ public class CartBiz {
         return 1;
     }
     public int delgoods(String cno,String gno){
+        int mno= Integer.parseInt(redisTemplate.opsForValue().get("mno")+"");
         int result = 0;
         try{
             LambdaQueryWrapper<Cartinfo> lambdaQueryWrapper = new LambdaQueryWrapper<>();
@@ -107,7 +111,7 @@ public class CartBiz {
         return result;
     }
     public Integer cleanCart(List<Map<String, Object>> lists){
-
+        int mno= Integer.parseInt(redisTemplate.opsForValue().get("mno")+"");
         int i = 0;
 //        String ono = String.valueOf(db.selectAggreation("select MAX(ono) from orderinfo"));
         if(lists.size()>0){
