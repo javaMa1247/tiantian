@@ -167,7 +167,7 @@
 <script src="js/axios.js"></script>
 <script src="js/checkToken1.js"></script>
 <script type="text/javascript">
-	var index_addr = "http://localhost:20001/user"
+	var index_addr = "http://localhost:20001/user";
 	var addr_good ="http://localhost:20001/goods/";
 	const vm=new Vue({
 		el:'#app',
@@ -178,7 +178,9 @@
 			goods:[],//存放商品对象
 			goodsType:[],//存放商品类别对象
 			isLogin:false,
-			userdata:{},
+			userdata:{
+				nickName: '',
+			},
 		},
 		methods:{
 			findGoods:function (){
@@ -290,13 +292,12 @@
 		},
 		mounted(){
 			axios.all([this.showGoodsInfo(),this.showGoodsType(),this.selectLogin()]);
-			var item = sessionStorage.getItem("nickName");
-			console.log(item);
+			var item = JSON.parse(sessionStorage.getItem("nickName")).nickName;
 			if (item==null){
 				return;
 			}
 			this.isLogin = true;
-			this.data.userdata= {nickName:item};
+			this.userdata= {nickName:item};
 		},
 		created(){
 
