@@ -273,9 +273,8 @@
 			},
 			setHistory(){
 				let params=new URLSearchParams();
-				params.append("op","setHistory");
 				params.append("gno",this.Gno);
-				axios.post("history.action",params).then();
+				axios.post(addr_good+"setHistory",params).then();
 			},
 			selectLogin() {
 				let params = new URLSearchParams();
@@ -318,12 +317,9 @@
 						const data = {cartgoods:cartgoods,totalprice:this.sum,totalcount:1,status:2};
 						sessionStorage.setItem("cartinfo",JSON.stringify(data));//转成Json对象传
 						window.location.href="place_order.html";
-					}else {
-						alert(jsonmodel.msg);
-						window.location.href="login.html";
 					}
 				})
-				//利用浏览器会话 sessionStorage传参
+
 			},
 		},
 		mounted(){

@@ -21,8 +21,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -48,6 +51,8 @@ public class GoodController {
 
     @Autowired
     private FeignAppUser user;
+    @Autowired
+    private RedisTemplate<String,String> redisTemplate;
     //根据fid查询商品信息
     @RequestMapping("findById/{fid}")
     public R<Goodsinfo> findById(@PathVariable Integer fid){
@@ -162,6 +167,39 @@ public class GoodController {
         discussService.save(discuss);
 
         return R.success("评论成功");
+    }
+
+    //历史记录
+
+    @PostMapping("setHistory")
+    public R<String> setHistory (HttpServletRequest request){
+
+        String userId = user.getUserId()+"";
+        // 构造 Redis 键名
+        String productId = request.getParameter("gno");
+        // 将浏览记录添加到 ZSET 中，得分为当前时间戳
+        String key = "user:" + userId + ":views";
+        // 判断该用户是否已经浏览过该商品
+        boolean exists = redisTemplate.opsForZSet().score(key, productId) != null;
+        if (!exists) {
+            redisTemplate.opsForZSet().add(key, productId, System.currentTimeMillis());
+            // 只保留最新的 5 条浏览记录
+            redisTemplate.opsForZSet().removeRange(key, 0, -6);
+        }
+
+        return R.success("添加成功");
+    }
+    @PostMapping("getHistory")
+    public R<List<Goodsinfo>> getHistory (){
+        String userId = user.getUserId()+"";
+        String key = "user:" + userId + ":views";
+        Set<String> productIds = redisTemplate.opsForZSet().reverseRange(key, 0, 4);
+        List<Goodsinfo> goodsinfos = new ArrayList<>();
+        for (String id : productIds) {
+            Goodsinfo goodsinfo = findById(Integer.parseInt(id)).getData();
+            goodsinfos.add(goodsinfo);
+        }
+        return R.success(goodsinfos);
     }
 
 }

@@ -86,6 +86,7 @@
 </div>
 <script>
 	var admin_addr="http://localhost:20001/user/admin/"
+	var addr_goods = "http://localhost:20001/goods/"
 	let vm = new Vue({
 		el:"#app",
 		data:{
@@ -95,8 +96,7 @@
 		methods:{
 			getHistory(){
 				let params = new URLSearchParams();
-				params.append("op","getHistory");
-				axios.post("history.action",params).then(data => {
+				axios.post(addr_goods+"getHistory",params).then(data => {
 					if(data.data.code == 1){
 						this.historydata = data.data.data;
 					}else {
@@ -106,7 +106,6 @@
 			},
 			getUserInfo(){
 				let params = new URLSearchParams();
-				params.append("op","selectUserInfo");
 				axios.post(admin_addr+"selectUserInfo",params).then(data => {
 					if(data.data.code == 1) {
 						this.userinfo = data.data.data;
