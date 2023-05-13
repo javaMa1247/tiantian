@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>商品管理</title>
-  <script src="js/vue.js"></script>
-  <script src="js/axios.js"></script>
+    <script src="js/vue.js"></script>
+    <script src="js/axios.js"></script>
+    <script src="js/checkToken_admin.js"></script>
     <!-- 引入样式 -->
     <link rel="stylesheet" href="https://unpkg.com/element-ui@2.15.10/lib/theme-chalk/index.css">
     <!-- 引入组件库 -->
@@ -17,7 +18,7 @@
         <el-dialog title="新增数据" :visible.sync="dialogFormVisible2" :modal-append-to-body="abcd">
             <el-form :model="goodinfo" size="mini">
                 <el-form-item label="商品名称:" label-width="100px">
-                    <el-input v-model="goodinfo.gname" autocomplete="off" ></el-input>
+                    <el-input v-model="goodinfo.gname" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="商品价格:" label-width="100px">
                     <el-input v-model="goodinfo.price" autocomplete="off"></el-input>
@@ -53,7 +54,6 @@
                 <el-button type="primary" @click="adddata(),dialogFormVisible2 = false">确 定</el-button>
             </div>
         </el-dialog>
-
 
 
         <template>
@@ -112,12 +112,14 @@
                         label="操作"
                         width="200">
                     <template slot-scope="scope">
-        <!--                goodinfo = goodsinfo[scope.$index],-->
-                        <el-button type="text" @click="goodinfo = goodsinfo[scope.$index],dialogFormVisible = true">修改数据</el-button>
+                        <!--                goodinfo = goodsinfo[scope.$index],-->
+                        <el-button type="text" @click="goodinfo = goodsinfo[scope.$index],dialogFormVisible = true">
+                            修改数据
+                        </el-button>
                         <el-dialog title="修改数据" :visible.sync="dialogFormVisible" :modal-append-to-body="abcd">
                             <el-form :model="goodinfo" size="mini">
                                 <el-form-item label="商品名称:" label-width="100px">
-                                    <el-input v-model="goodinfo.gname" autocomplete="off" ></el-input>
+                                    <el-input v-model="goodinfo.gname" autocomplete="off"></el-input>
                                 </el-form-item>
                                 <el-form-item label="商品价格:" label-width="100px">
                                     <el-input v-model="goodinfo.price" autocomplete="off"></el-input>
@@ -150,7 +152,8 @@
                             </el-form>
                             <div slot="footer" class="dialog-footer">
                                 <el-button @click="dialogFormVisible = false">取 消</el-button>
-                                <el-button type="primary" @click="modifydata(),dialogFormVisible = false">确 定</el-button>
+                                <el-button type="primary" @click="modifydata(),dialogFormVisible = false">确 定
+                                </el-button>
                             </div>
                         </el-dialog>
 
@@ -163,7 +166,8 @@
                             <span>是否确定下架{{goodinfo.gname}}?</span>
                             <span slot="footer" class="dialog-footer">
                                 <el-button @click="deletex = false">取 消</el-button>
-                                <el-button type="primary" @click="todeletex(goodinfo.gno),deletex = false">确 定</el-button>
+                                <el-button type="primary"
+                                           @click="todeletex(goodinfo.gno),deletex = false">确 定</el-button>
                             </span>
                         </el-dialog>
 
@@ -189,111 +193,112 @@
     </div>
 </div>
 <script>
-  let vm = new Vue({
-    el:"#app",
-      data: {
-          flags:false,
-          addp:false,
-          abcd: false,
-          goodsinfo: [],
-          goodinfo: {},
-          dialogFormVisible: false,
-          dialogFormVisible2: false,
-          selectDatas: [],
-          deletex: false
-      },
-    methods:{
-        modifydescr(){
-            let params = new URLSearchParams(this.goodinfo);
-            params.append("op","modifyGoodDescr");
-            axios.post("loginedAdmin.action",params).then(data => {
-                if(data.data.code == 1){
-                    this.$message({type: 'success', message:'修改成功!'});
-                }else {
-                    this.$message.error(data.data.msg);
-                }
-            })
+    var admin_addr = "http://localhost:20001/user/admin/"
+    let vm = new Vue({
+        el: "#app",
+        data: {
+            flags: false,
+            addp: false,
+            abcd: false,
+            goodsinfo: [],
+            goodinfo: {},
+            dialogFormVisible: false,
+            dialogFormVisible2: false,
+            selectDatas: [],
+            deletex: false
         },
-        todeletex(gno){
-            let params = new URLSearchParams();
-            params.append("op","toDeletX");
-            params.append("gno",gno);
-            axios.post("loginedAdmin.action",params).then(data => {
-               if(data.data.code == 1){
-                   this.$message({type: 'success', message:'下架成功!'});
-                   this.getdatas();
-               } else {
-                   this.$message.error(data.data.msg);
-                   this.getdatas();
-               }
-            });
-        },
-        adddata(){
-            let params = new URLSearchParams(this.goodinfo);
-            params.append("op","addGoodInfo");
-            axios.post("loginedAdmin.action",params).then(data => {
-                if(data.data.code == 1){
-                    this.$message({type: 'success', message:'添加成功!'});
-                    this.getdatas();
-                }else {
-                    this.$message.error(data.data.msg);
-                    this.getdatas();
-                }
-            })
-        },
-        modifydata(){
-            let params = new URLSearchParams(this.goodinfo);
-            params.append("op","modifyGoodInfo");
-            axios.post("loginedAdmin.action",params).then(data => {
-                if(data.data.code == 1){
-                    this.$message({type: 'success', message:'修改成功!'});
-                    this.getdatas();
-                }else {
-                    this.$message.error(data.data.msg);
-                    this.getdatas();
-                }
-            })
-        },
-        getdatas(){
-            let params = new URLSearchParams();
-            params.append("op","getGoodsInfo");
-            axios.post("loginedAdmin.action",params).then(data => {
-                if(data.data.code == 1){
-                    this.goodsinfo = data.data.data;
-                }else{
-                    this.$message.error(data.data.msg);
-                }
-            })
-        },
-        getselectdata(){
-            let params = new URLSearchParams();
-            params.append("op","getSelectData");
-            axios.post("loginedAdmin.action",params).then(data => {
-                if(data.data.code == 1){
-                    this.selectDatas = data.data.data;
-                }else {
-                    this.$message.error(data.data.msg);
-                }
-            });
-        },
-        modify(index){
-            // this.goodsinfo[index].gno
-        }
-    },
-    mounted(){
-        axios.all(this.getselectdata(),this.getdatas()).then();
-    },
-    created(){
-        let params = new URLSearchParams();
-        params.append("op","selectLogin");
-        axios.post("admin.action",params).then(data => {
-            if(data.data.code != 1) {
-                this.$message.error(data.data.msg);
-                window.location.href = "404.html";
+        methods: {
+            modifydescr() {
+                let params = new URLSearchParams(this.goodinfo);
+                params.append("op", "modifyGoodDescr");
+                axios.post(admin_addr+ "modifyGoodDescrn", params).then(data => {
+                    if (data.data.code == 1) {
+                        this.$message({type: 'success', message: '修改成功!'});
+                    } else {
+                        this.$message.error(data.data.msg);
+                    }
+                })
+            },
+            todeletex(gno) {
+                let params = new URLSearchParams();
+                params.append("op", "toDeletX");
+                params.append("gno", gno);
+                axios.post(admin_addr+"toDeletX", params).then(data => {
+                    if (data.data.code == 1) {
+                        this.$message({type: 'success', message: '下架成功!'});
+                        this.getdatas();
+                    } else {
+                        this.$message.error(data.data.msg);
+                        this.getdatas();
+                    }
+                });
+            },
+            adddata() {
+                let params = new URLSearchParams(this.goodinfo);
+                params.append("op", "addGoodInfo");
+                axios.post(admin_addr+ "addGoodInfo", params).then(data => {
+                    if (data.data.code == 1) {
+                        this.$message({type: 'success', message: '添加成功!'});
+                        this.getdatas();
+                    } else {
+                        this.$message.error(data.data.msg);
+                        this.getdatas();
+                    }
+                })
+            },
+            modifydata() {
+                let params = new URLSearchParams(this.goodinfo);
+                params.append("op", "modifyGoodInfo");
+                axios.post(admin_addr+ "modifyGoodInfo", params).then(data => {
+                    if (data.data.code == 1) {
+                        this.$message({type: 'success', message: '修改成功!'});
+                        this.getdatas();
+                    } else {
+                        this.$message.error(data.data.msg);
+                        this.getdatas();
+                    }
+                })
+            },
+            getdatas() {
+                let params = new URLSearchParams();
+                params.append("op", "getGoodsInfo");
+                axios.post(admin_addr+ "getGoodsInfo", params).then(data => {
+                    if (data.data.code == 1) {
+                        this.goodsinfo = data.data.data;
+                    } else {
+                        this.$message.error(data.data.msg);
+                    }
+                })
+            },
+            getselectdata() {
+                let params = new URLSearchParams();
+                params.append("op", "getSelectData");
+                axios.post(admin_addr+ "getSelectData", params).then(data => {
+                    if (data.data.code == 1) {
+                        this.selectDatas = data.data.data;
+                    } else {
+                        this.$message.error(data.data.msg);
+                    }
+                });
+            },
+            modify(index) {
+                // this.goodsinfo[index].gno
             }
-        });
-    }
-  })
+        },
+        mounted() {
+            axios.all(this.getselectdata(), this.getdatas()).then();
+        },
+        created() {
+            let params = new URLSearchParams();
+            params.append("op", "selectLogin");
+            axios.post(admin_addr+"selectLogin", params).then(data => {
+                if (data.data.code != 1) {
+                    this.$message.error(data.data.msg);
+                    window.location.href = "404.html";
+                }
+            });
+        }
+    })
 </script>
 </body>
 </html>

@@ -12,6 +12,7 @@
     <script src="js/vue.js"></script>
 <script src="js/axios.js"></script>
     <script type="text/javascript">
+        var admin_addr = "http://localhost:20001/user/admin/"
         const app=new Vue({
             el:'#main',
             data:{
@@ -22,7 +23,7 @@
             },
             methods: {
                 query: function () {
-                    axios.post("test.action?op=test1").then(res => {
+                    axios.post(admin_addr+"test1").then(res => {
                         if (res.data.code == 1) {
                             this.opdata = res.data.data;
                             const chartDom = document.getElementById('main');

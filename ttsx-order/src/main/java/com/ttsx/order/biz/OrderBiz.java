@@ -3,6 +3,7 @@ package com.ttsx.order.biz;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.ttsx.bean.OrderIteminfo;
 import com.ttsx.bean.Orderinfo;
+import com.ttsx.feignApi.FeignAppUser;
 import com.ttsx.order.dao.OrderDao;
 import com.ttsx.order.dao.OrderItemDao;
 import com.ttsx.utils.PageBean;
@@ -31,13 +32,12 @@ public class OrderBiz {
 
     @Autowired
     private OrderBizTmpl orderBizTmpl;
-
     @Autowired
-    private RedisTemplate redisTemplate;
+    private FeignAppUser user;
 
     public Integer addOrder(List<Map<String, Object>> orders,String ano){
 
-        int mno= Integer.parseInt(redisTemplate.opsForValue().get("mno")+"");
+        int mno= user.getUserId();
         Integer res = 0;
 
         Orderinfo orderinfo = new Orderinfo();
@@ -78,7 +78,7 @@ public class OrderBiz {
     }
 
     public PageBean showOrderbyPage(PageBean pageBean){
-        int mno= Integer.parseInt(redisTemplate.opsForValue().get("mno")+"");
+        int mno= user.getUserId();
         PageBean page = this.orderBizTmpl.findByPage(pageBean, mno+"");
         if(page!=null){
             return page;

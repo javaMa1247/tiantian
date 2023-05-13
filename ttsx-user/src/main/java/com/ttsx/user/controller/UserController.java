@@ -1,6 +1,5 @@
 package com.ttsx.user.controller;
 
-import com.alibaba.nacos.api.naming.pojo.healthcheck.impl.Http;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -11,19 +10,15 @@ import com.ttsx.user.mapper.UserMapper;
 import com.ttsx.user.util.JWTUtils;
 import com.ttsx.user.util.Md5;
 import com.ttsx.user.util.QQ_util;
-import com.ttsx.utils.BaseContext;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -52,13 +47,11 @@ public class UserController {
     @Autowired
     private UserMapper userMapper;
     @RequestMapping("login")
-    public Map login(Memberinfo memberinfo, HttpServletResponse response, HttpSession session){
+    public Map login(Memberinfo memberinfo,HttpServletResponse response){
         LambdaQueryWrapper<Memberinfo> qw =new LambdaQueryWrapper<>();
         qw.eq(Memberinfo::getNickName,memberinfo.getNickName()).eq(Memberinfo::getPwd,(Md5.MD5Encode(memberinfo.getPwd(),"utf-8")) );
         Memberinfo one = userServlet.getOne(qw);
-
         Map map=new HashMap();
-
         if( one!=null ){
             if (one.getStatus()!=1){
                 map.put("code",0);
@@ -70,7 +63,6 @@ public class UserController {
             m.put("nickName", one.getNickName());
             m.put("userid",one.getMno().toString());
             m.put("pwd",one.getPwd());
-            session.setAttribute("userId", one.getMno().toString());
             String token=  JWTUtils.creatToken(   m,  expireTime  );
 
             //TODO:  对cookie里存入token
@@ -90,15 +82,20 @@ public class UserController {
             data.put("nickName",one.getNickName());
             map.put("data",data) ;  //   data:{   token:xxx, usernmae:xxx}
             redisTemplate.opsForHash().put(  token, "token",token);
-            redisTemplate.opsForValue().set("mno", one.getMno().toString(),expireTime, TimeUnit.SECONDS);
-            redisTemplate.expire(token,expireTime, TimeUnit.SECONDS);
+            redisTemplate.opsForValue().set("mno",one.getMno().toString());
             log.info(redisTemplate.opsForValue().get("mno")+"");
+            redisTemplate.expire(token,expireTime, TimeUnit.SECONDS);
             return map;
         }
         map.put("code",0);
         map.put("msg","查无此用户名和密码");
         return map;
     }
+    @GetMapping("getUserId")
+    public Integer getUserId(){
+        return Integer.parseInt(redisTemplate.opsForValue().get("mno")+"");
+    }
+
     @GetMapping("/checkLogin")
     public Map checkLogin(@RequestHeader String token){
         log.info("待检测的token为:"+ token );
@@ -119,20 +116,12 @@ public class UserController {
         return map;
     }
 
-    @GetMapping("getUserById")
-    public Integer getUserById() {
-        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-        Integer userId = Integer.valueOf(request.getSession().getAttribute("userId")+"");
-        if (userId != null) {
-            return userId;
-        } else {
-            return 0;
-        }
-    }
-
     @PostMapping("/logout")
-    public Map logout(@RequestHeader("Authorization") String token) {
-        this.redisTemplate.delete(token);
+    public Map logout(HttpServletRequest request,HttpServletResponse response) {
+        String token = request.getHeader("Authorization");
+        if (token!=null){
+            this.redisTemplate.delete(token);
+        }
         Map map=new HashMap();
         map.put("code",1);
         return map;
@@ -318,22 +307,4 @@ public class UserController {
         Matcher m = p.matcher(email);
         return m.matches();
     }
-    //用户中心  用户数据
-    @RequestMapping("selectUserInfo")
-    public Map selectUserInfo(HttpServletRequest request, HttpServletResponse response) {
-        Map map = new HashMap();
-        try {
-            Long currentId = BaseContext.getCurrentId();
-            Memberinfo memberinfo = this.userMapper.selectById(currentId);
-            map.put("code", 1);
-            map.put("data", memberinfo);
-            return map;
-        } catch (Exception e) {
-            e.printStackTrace();
-            map.put("code", 0);
-            map.put("msg", e.getMessage());
-            return map;
-        }
-    }
-
 }

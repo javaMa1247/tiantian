@@ -1,6 +1,7 @@
 package com.ttsx.bean;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import lombok.Data;
@@ -28,9 +29,9 @@ public class Orderinfo implements Serializable {
     private Double price;
     private int invoice;
 
+    @TableField(exist = false,select = false)
     private String mno;
-
-
+    @TableField(exist = false,select = false)
     private List<OrderIteminfo> orderItem;
 
     public String getOdate() {

@@ -7,6 +7,8 @@ import com.ttsx.bean.Discuss;
 import com.ttsx.bean.Goodsinfo;
 import com.ttsx.bean.Goodstype;
 import com.ttsx.bean.Memberinfo;
+import com.ttsx.feignApi.FeignApp;
+import com.ttsx.feignApi.FeignAppUser;
 import com.ttsx.goods.Service.DiscussService;
 import com.ttsx.goods.Service.GoodsService;
 import com.ttsx.goods.Service.GoodsTypeService;
@@ -45,7 +47,7 @@ public class GoodController {
     private MemberinfoService memberinfoService;
 
     @Autowired
-    private RedisTemplate redisTemplate;
+    private FeignAppUser user;
     //根据fid查询商品信息
     @RequestMapping("findById/{fid}")
     public R<Goodsinfo> findById(@PathVariable Integer fid){
@@ -117,7 +119,7 @@ public class GoodController {
     //delete from discuss where did = ? and mno = ?
     @DeleteMapping("del")
     public R<String> del(String did){
-        int mno= Integer.parseInt(redisTemplate.opsForValue().get("mno")+"");
+        int mno= user.getUserId();
         LambdaQueryWrapper<Discuss> lambdaQueryWrapper = new LambdaQueryWrapper<Discuss>();
         lambdaQueryWrapper.eq(Discuss::getDid,did)
                           .eq(Discuss::getMno,mno);
@@ -152,7 +154,7 @@ public class GoodController {
     @PutMapping("addDiscuss")
     public R<String> addDiscuss(int Gno,@RequestParam(value = "discuss") String dis){
         Discuss discuss = new Discuss();
-        int mno= Integer.parseInt(redisTemplate.opsForValue().get("mno")+"");
+        int mno= user.getUserId();
         discuss.setMno(mno);
         discuss.setGno(Gno);
         discuss.setDis(dis);

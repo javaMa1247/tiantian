@@ -28,7 +28,7 @@
 						<div class="user_error">输入错误</div>
 						<input type="password" name="pwd" class="pass_input" placeholder="请输入管理员密码" v-model="admininfo.apwd">
 						<div class="pwd_error">输入错误</div>
-						<input type="submit" name="" value="登录" class="input_submit" @click.prevent="adiminlogin()">
+						<input type="submit" name="" value="登录" class="input_submit" @click.prevent="adminLogin()">
 					</form>
 				</div>
 			</div>
@@ -51,6 +51,7 @@
 </div>
 
 <script>
+	var admin_addr = "http://localhost:20001/user/admin/"
 	let vm = new Vue({
 		el:"#app",
 		data:{
@@ -61,7 +62,7 @@
 			}
 		},
 		methods:{
-			adiminlogin(){
+			adminLogin(){
 				if(this.admininfo.aname == ""){
 					alert("管理员用户名不能为空!")
 					return;
@@ -71,8 +72,9 @@
 					return;
 				}
 				let params = new URLSearchParams(this.admininfo);
-				axios.post("admin.action",params).then(data => {
+				axios.post(admin_addr+"adminLogin",params).then(data => {
 					if(data.data.code == 1){
+						localStorage.setItem('token_admin', data.data.token);
 						alert("登录成功!");
 						window.location.href="backstage.html";
 					}else {

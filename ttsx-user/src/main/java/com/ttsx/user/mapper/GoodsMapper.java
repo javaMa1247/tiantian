@@ -1,15 +1,15 @@
 package com.ttsx.user.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.ttsx.bean.Memberinfo;
+import com.ttsx.bean.Goodsinfo;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
  * @Author: mqb
- * @Date: 2023/5/11
- * @Time: 19:57
+ * @Date: 2023/5/8
+ * @Time: 19:45
  * @Description:
  */
 @Mapper
-public interface UserMapper extends BaseMapper<Memberinfo> {
+public interface GoodsMapper extends BaseMapper<Goodsinfo> {
 }
