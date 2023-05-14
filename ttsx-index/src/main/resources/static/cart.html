@@ -153,16 +153,6 @@
 				this.cart.forEach((item,index)=>{
 					item.status=op.checked;
 				});
-			},
-			selectLogin(){
-				let params = new URLSearchParams();
-				params.append("op","selectUserLogin");
-				axios.post("admin.action",params).then(data => {
-					if(data.data.code != 1){
-						alert(data.data.msg);
-						window.location.href="login.html";
-					}
-				})
 			}
 		},
 		computed:{
@@ -188,7 +178,7 @@
 			},
 		},
 		mounted:function(){
-			axios.all([/*this.selectLogin(),*/ this.showAllcartInfo()]).then();
+			axios.all([this.showAllcartInfo()]).then();
 		}
 	})
 </script>

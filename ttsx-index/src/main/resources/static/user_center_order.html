@@ -138,16 +138,6 @@
 
 				}
 			},
-			selectLogin(){
-				let params = new URLSearchParams();
-				params.append("op","selectUserLogin");
-				axios.post("admin.action",params).then(data => {
-					if(data.data.code != 1){
-						alert(data.data.msg);
-						window.location.href="login.html";
-					}
-				})
-			},
 			gotopay(price,ono){
 				let params = new URLSearchParams();
 				params.append("op","saveOno");
@@ -162,7 +152,7 @@
 
 		},
 		mounted:function () {
-			axios.all([this.showPage(1)*/,this.selectLogin()*/]).then();
+			axios.all([this.showPage(1)]).then();
 		}
 	});
 </script>

@@ -276,16 +276,7 @@
 				params.append("gno",this.Gno);
 				axios.post(addr_good+"setHistory",params).then();
 			},
-			selectLogin() {
-				let params = new URLSearchParams();
-				params.append("op", "selectUserInfo");
-				axios.post("admin.action", params).then(data => {
-					if (data.data.code == 1) {
-						this.userdata = data.data.data;
-						this.isLogin = true;
-					}
-				})
-			},
+
 			logout(){
 				let params = new URLSearchParams();
 				params.append("op", "logout");
@@ -323,7 +314,7 @@
 			},
 		},
 		mounted(){
-			axios.all([this.showGoodsInformation(),this.newGoods(),this.setHistory(),this.selectLogin()]);
+			axios.all([this.showGoodsInformation(),this.newGoods(),this.setHistory()]);
 		},
 		created(){
 			let x={Pageno:1}
