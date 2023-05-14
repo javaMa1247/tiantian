@@ -179,7 +179,22 @@
 		},
 		mounted:function(){
 			axios.all([this.showAllcartInfo()]).then();
+		},
+		created() {
+			var nickNameObj = sessionStorage.getItem("nickName");
+			if (nickNameObj) {
+				const nickName = JSON.parse(nickNameObj).nickName;
+				console.log("nickName: ", nickName);
+				if (nickName != null) {
+					this.isLogin = true;
+				}
+				// 使用 nickName 进行后续操作
+			} else {
+				this.isLogin = false;
+				alert("未登录");
+			}
 		}
+
 	})
 </script>
 </body>

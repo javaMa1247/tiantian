@@ -19,6 +19,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -47,7 +48,7 @@ public class UserController {
     @Autowired
     private UserMapper userMapper;
     @RequestMapping("login")
-    public Map login(Memberinfo memberinfo,HttpServletResponse response){
+    public Map login(Memberinfo memberinfo, HttpServletResponse response, HttpSession session){
         LambdaQueryWrapper<Memberinfo> qw =new LambdaQueryWrapper<>();
         qw.eq(Memberinfo::getNickName,memberinfo.getNickName()).eq(Memberinfo::getPwd,(Md5.MD5Encode(memberinfo.getPwd(),"utf-8")) );
         Memberinfo one = userServlet.getOne(qw);
@@ -64,6 +65,8 @@ public class UserController {
             m.put("userid",one.getMno().toString());
             m.put("pwd",one.getPwd());
             String token=  JWTUtils.creatToken(   m,  expireTime  );
+
+            session.setAttribute("token", token);
 
             //TODO:  对cookie里存入token
             Boolean Flag = true;

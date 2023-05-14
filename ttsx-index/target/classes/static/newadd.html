@@ -153,16 +153,6 @@
           }
         })
       },
-      selectLogin(){
-        let params = new URLSearchParams();
-        params.append("op","selectUserLogin");
-        axios.post("admin.action",params).then(data => {
-          if(data.data.code != 1){
-            alert(data.data.msg);
-            window.location.href="login.html";
-          }
-        })
-      },
       addAddr:function () {
         if(this.addr==null||this.name==null||this.province==null||this.tel==null||this.area==null
                 ||this.city==null){

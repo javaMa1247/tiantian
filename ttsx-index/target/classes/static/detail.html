@@ -16,14 +16,6 @@
 		<div class="header">
 			<div class="welcome fl">欢迎来到天天生鲜!</div>
 			<div class="fr">
-				<div class="login_btn fl" v-if="isLogin" v-cloak>
-					欢迎您：{{userdata.nickName}}
-				</div>
-				<div class="login_btn fl" v-else>
-					<a href="login.html">登录</a>
-					<span>|</span>
-					<a href="register.html">注册</a>
-				</div>
 				<div class="user_link fl" v-if="isLogin">
 					<span>|</span>
 					<a href="user_center_info.html">用户中心</a>
@@ -35,6 +27,11 @@
 					<a href="" @click.prevent="history()">历史记录</a>
 					<span>|</span>
 					<a href="" @click.prevent="logout()">退出登录</a>
+				</div>
+				<div class="login_btn fl" v-else>
+					<a href="login.html">登录</a>
+					<span>|</span>
+					<a href="register.html">注册</a>
 				</div>
 			</div>
 		</div>
@@ -176,8 +173,7 @@
 			discuss:'',
 			discusses:[],
 			mno:0,
-			isLogin:false,
-			userdata:{},
+			isLogin:false
 		},
 		methods:{
 
@@ -276,16 +272,7 @@
 				params.append("gno",this.Gno);
 				axios.post(addr_good+"setHistory",params).then();
 			},
-			selectLogin() {
-				let params = new URLSearchParams();
-				params.append("op", "selectUserInfo");
-				axios.post("admin.action", params).then(data => {
-					if (data.data.code == 1) {
-						this.userdata = data.data.data;
-						this.isLogin = true;
-					}
-				})
-			},
+
 			logout(){
 				let params = new URLSearchParams();
 				params.append("op", "logout");
@@ -323,9 +310,20 @@
 			},
 		},
 		mounted(){
-			axios.all([this.showGoodsInformation(),this.newGoods(),this.setHistory(),this.selectLogin()]);
+			axios.all([this.showGoodsInformation(),this.newGoods(),this.setHistory()]);
 		},
 		created(){
+			var nickNameObj = sessionStorage.getItem("nickName");
+			if (nickNameObj) {
+				const nickName =  JSON.parse(nickNameObj).nickName;
+				console.log("nickName: ", nickName);
+				if(nickName!=null){
+					this.isLogin = true;
+				}
+				// 使用 nickName 进行后续操作
+			} else {
+				this.isLogin = false;
+			}
 			let x={Pageno:1}
 			sessionStorage.setItem("pageno",JSON.stringify(x));
 			this.Gno=JSON.parse(sessionStorage.getItem("goodsGno")).Gno;
