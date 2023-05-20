@@ -54,8 +54,8 @@
 				<ul class="goods_type_list clearfix">
 					<div v-for="his in historydata">
 						<li>
-							<a href="detail.html"><img :src="his.pics"></a>
-							<h4><a href="detail.html">{{his.gname}}</a></h4>
+							<a href="detail.html" @click="toDetail(his.gno,his.tname)"><img :src="his.pics"></a>
+							<h4><a href="detail.html" @click="toDetail(his.gno,his.tname)">{{his.gname}}</a></h4>
 							<div class="operate">
 								<span class="prize">￥{{his.price}}</span>
 								<span class="unit">{{his.price}}/{{his.unit}}</span>
@@ -85,7 +85,7 @@
 	</div>
 </div>
 <script>
-	var admin_addr="http://localhost:20001/user/admin/"
+	var admin_addr="http://localhost:20001/user/"
 	var addr_goods = "http://localhost:20001/goods/"
 	let vm = new Vue({
 		el:"#app",
@@ -103,6 +103,15 @@
 						alert(data.data.msg);
 					}
 				})
+			},
+			//toDetail.html页面
+			toDetail:function (gno,tname){
+				let x={Pageno:1}
+				sessionStorage.setItem("pageno",JSON.stringify(x));
+				let y={Gno:gno};
+				sessionStorage.setItem("goodsGno",JSON.stringify(y));
+				let z={Tname:tname};
+				sessionStorage.setItem("goodsTname",JSON.stringify(z));
 			},
 			getUserInfo(){
 				let params = new URLSearchParams();

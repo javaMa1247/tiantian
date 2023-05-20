@@ -99,6 +99,26 @@ public class UserController {
         return Integer.parseInt(redisTemplate.opsForValue().get("mno")+"");
     }
 
+    @PostMapping("selectUserInfo")
+    public Map selectUserInfo(@RequestHeader(value = "Authorization",required = false) String token) {
+        Map map = new HashMap();
+        try {
+            if (token==null){
+                map.put("code", 0);
+                map.put("msg", "用户未登录");
+            }
+            String userid = (String) JWTUtils.getTokenInfo(token).get("userid");
+            Memberinfo memberinfo = this.userMapper.selectById(userid);
+            map.put("code", 1);
+            map.put("data", memberinfo);
+            return map;
+        } catch (Exception e) {
+            e.printStackTrace();
+            map.put("code", 0);
+            map.put("msg", e.getMessage());
+            return map;
+        }
+    }
     @GetMapping("/checkLogin")
     public Map checkLogin(@RequestHeader String token){
         log.info("待检测的token为:"+ token );

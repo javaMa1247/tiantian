@@ -37,6 +37,11 @@ spring:
           predicates:
            - Path=/addr/**
 
+        - id: ttsx-user
+          uri: lb://ttsx-user
+          predicates:
+            - Path=/user/**
+
         - id: ttsx-foods
           uri: lb://ttsx-foods
           predicates:
@@ -55,10 +60,6 @@ spring:
           filters:
 #            - RewritePath=/foods/(?<segment>.*), /$\{segment}
 
-        - id: ttsx-user
-          uri: lb://ttsx-user
-          predicates:
-            - Path=/user/**
 
 
 server:

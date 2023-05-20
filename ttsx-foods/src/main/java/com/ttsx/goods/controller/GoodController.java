@@ -61,6 +61,14 @@ public class GoodController {
 
     }
 
+    //根据tno查询商品类型
+    @RequestMapping("findTypeByTno")
+    public R<Goodstype> findTypeByTno(Integer tno){
+        Goodstype goodstype = goodsTypeService.getById(tno);
+        return R.success(goodstype);
+
+    }
+
     @PostMapping("showGoodsInformation")
     public R<Goodsinfo> showGoodsInformation(String Gno){
         LambdaQueryWrapper<Goodsinfo> lambdaQueryWrapper = new LambdaQueryWrapper<>();
@@ -198,6 +206,8 @@ public class GoodController {
         for (String id : productIds) {
             Goodsinfo goodsinfo = findById(Integer.parseInt(id)).getData();
             goodsinfos.add(goodsinfo);
+            String tname = this.findTypeByTno(goodsinfo.getTno()).getData().getTname();
+            goodsinfo.setTname(tname);
         }
         return R.success(goodsinfos);
     }

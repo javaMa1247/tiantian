@@ -1,6 +1,7 @@
 package com.ttsx.bean;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
@@ -25,7 +26,8 @@ public class Goodsinfo implements Serializable {
     private String pics;
     private String unit;
     private String qperied;
-//    private String tname;
+    @TableField(exist = false,select = false)
+    private String tname;
     private String weight;
     private String descr;
 

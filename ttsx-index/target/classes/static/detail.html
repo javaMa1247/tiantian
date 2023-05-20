@@ -284,7 +284,6 @@
 					if(jsonmodel.code==1){
 						cartgoods = jsonmodel.data;
 						if(cartgoods.length==0){
-							alert("没有选择商品哦");
 							return;
 						}
 						const data = {cartgoods:cartgoods,totalprice:this.sum,totalcount:1,status:2};
