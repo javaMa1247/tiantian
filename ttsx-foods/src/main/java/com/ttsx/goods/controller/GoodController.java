@@ -188,12 +188,17 @@ public class GoodController {
         // 将浏览记录添加到 ZSET 中，得分为当前时间戳
         String key = "user:" + userId + ":views";
         // 判断该用户是否已经浏览过该商品
-        boolean exists = redisTemplate.opsForZSet().score(key, productId) != null;
-        if (!exists) {
+        Double score = redisTemplate.opsForZSet().score(key, productId);
+        if (score != null) {
+            // 如果该商品已经浏览过，则将其得分更新为当前时间戳
+            redisTemplate.opsForZSet().add(key, productId, System.currentTimeMillis());
+        } else {
+            // 如果该商品尚未浏览过，则将其添加到 ZSET 中，得分为当前时间戳
             redisTemplate.opsForZSet().add(key, productId, System.currentTimeMillis());
             // 只保留最新的 5 条浏览记录
             redisTemplate.opsForZSet().removeRange(key, 0, -6);
         }
+
 
         return R.success("添加成功");
     }
