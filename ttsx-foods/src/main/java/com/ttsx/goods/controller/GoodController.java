@@ -72,8 +72,7 @@ public class GoodController {
 
     //展示商品信息
     @GetMapping("showGoodsInfo")
-    public R<List<Goodsinfo>> selectGoodsInfo(@RequestHeader String Authorization){
-        log.info(Authorization);
+    public R<List<Goodsinfo>> selectGoodsInfo(){
         List<Goodsinfo> list = goodsService.list();
 
         return R.success(list);

@@ -25,8 +25,6 @@
 					<a href="user_center_order.html">我的订单</a>
 					<span>|</span>
 					<a href="" @click.prevent="history()">历史记录</a>
-					<span>|</span>
-					<a href="" @click.prevent="logout()">退出登录</a>
 				</div>
 				<div class="login_btn fl" v-else>
 					<a href="login.html">登录</a>
@@ -156,6 +154,7 @@
 </div>
 <script src="js/vue.js"></script>
 <script src="js/axios.js"></script>
+<script src="js/checkToken1.js"></script>
 <script type="text/javascript">
 	var addr_good ="http://localhost:20001/goods/";
 	var addr_cart = "http://localhost:20001/cart/";
@@ -271,19 +270,6 @@
 				let params=new URLSearchParams();
 				params.append("gno",this.Gno);
 				axios.post(addr_good+"setHistory",params).then();
-			},
-
-			logout(){
-				let params = new URLSearchParams();
-				params.append("op", "logout");
-				axios.post("admin.action", params).then(data => {
-					if (data.data.code == 1) {
-						alert("退出登录成功!")
-						this.isLogin = false;
-					}else {
-						alert(data.data.msg);
-					}
-				})
 			},
 			history() {
 				window.location.href = 'user_center_info.html'
