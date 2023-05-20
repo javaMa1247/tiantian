@@ -129,12 +129,14 @@ public class CartBiz {
     }
 
     public List<Cartinfo> showOnecartInfo(String gno, String num) {
-        Cartinfo cart = null;
+        Cartinfo cart = new Cartinfo();
         List<Cartinfo> list = new ArrayList<>();
         Goodsinfo goodsinfo = feignApp.findById(Integer.parseInt(gno)).getData();
         try{
             cart.setNum(Integer.parseInt(num));
             cart.setSmallCount(goodsinfo.getPrice()*cart.getNum());
+            cart.setGoodsinfo(goodsinfo);
+            cart.setGno(gno);
             list.add(cart);
             return list;
 
