@@ -1,4 +1,4 @@
-package com.ttsx.user.util;
+package com.ttsx.background.util;
 
 public class SelectVariables {
     public static boolean selectStringNull(String s){

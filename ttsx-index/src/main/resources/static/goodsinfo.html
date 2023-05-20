@@ -193,7 +193,8 @@
     </div>
 </div>
 <script>
-    var admin_addr = "http://localhost:20001/user/admin/"
+    var admin_addr = "http://localhost:20001/backgroud/goods/"
+    var admin_login = "http://localhost:20001/backgroud/"
     let vm = new Vue({
         el: "#app",
         data: {
@@ -291,7 +292,7 @@
         created() {
             let params = new URLSearchParams();
             params.append("op", "selectLogin");
-            axios.post(admin_addr+"selectLogin", params).then(data => {
+            axios.post(admin_login+"selectLogin", params).then(data => {
                 if (data.data.code != 1) {
                     this.$message.error(data.data.msg);
                     window.location.href = "404.html";

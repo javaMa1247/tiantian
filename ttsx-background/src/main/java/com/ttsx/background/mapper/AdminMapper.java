@@ -1,4 +1,4 @@
-package com.ttsx.user.mapper;
+package com.ttsx.background.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.ttsx.bean.*;
@@ -20,6 +20,7 @@ public interface AdminMapper  extends BaseMapper<TblAdmin> {
     //商品详情
     @Select("select tno,tname from goodstype where 1 = 1 ")
     List<Goodsinfo> selectGoodsData();
+    //echarts统计数据
     @Select("select sum(nums) as value,tname as name from orderiteminfo,goodsinfo,goodstype where goodsinfo.gno=orderiteminfo.gno and goodsinfo.tno=goodstype.tno group by tname ")
     List<OrderIteminfoX> selectOrderiteminfo();
 

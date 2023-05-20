@@ -1,4 +1,4 @@
-package com.ttsx.user.mapper;
+package com.ttsx.background.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.ttsx.bean.Memberinfo;
