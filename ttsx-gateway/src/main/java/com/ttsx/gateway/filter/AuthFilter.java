@@ -1,6 +1,7 @@
 package com.ttsx.gateway.filter;
 
 import com.alibaba.cloud.commons.lang.StringUtils;
+import com.ttsx.user.util.JWTUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.omg.CORBA.INTERNAL;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,8 +56,11 @@ public class AuthFilter implements GlobalFilter, Ordered {
                     return redirectToLogin(exchange);
                 }
             }
+        }else {
+            exchange.getResponse().getHeaders().set("uid",(String) JWTUtils.getTokenInfo(token).get("userid"));
         }
         // token验证通过或请求在排除列表中，则继续处理请求
+
         return chain.filter(exchange);
     }
     // 重定向到登录页面

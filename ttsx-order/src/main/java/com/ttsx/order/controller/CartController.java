@@ -4,7 +4,9 @@ import com.alibaba.nacos.shaded.com.google.gson.Gson;
 import com.ttsx.bean.Cartinfo;
 import com.ttsx.order.biz.CartBiz;
 import com.ttsx.utils.R;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,12 +23,14 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("cart")
+@Slf4j
 public class CartController {
     @Autowired
     private CartBiz biz;
     @RequestMapping("showAllcartInfo")
-    public Map<String,Object> showAllcartInfo(){
+    public Map<String,Object> showAllcartInfo(@RequestHeader("uid") String token){
 
+        log.info(token);
         List<Cartinfo> cartinfos = this.biz.showAllCart();
         Map<String,Object> map = new HashMap<>();
         map.put("code",1);
