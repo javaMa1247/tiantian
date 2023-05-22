@@ -8,44 +8,7 @@
 	<script type="text/javascript" src="js/jquery-1.12.4.min.js"></script>
 	<script type="text/javascript" src="js/jquery-ui.min.js"></script>
 	<script type="text/javascript" src="js/slide.js"></script>
-	<script type="text/javascript">
-		// import router from './router';
-		//使用axios
-		Vue.prototype.axios = axios;
-		//在每次请求时，前端携带token到请求头中
-		axios.interceptors.request.use(config=>{
-			//从localStorage或vuex中获取token
-			const token = localStorage.getItem('token');//||this.$stire.stste.token;
-			//如果token，就添加到请求头中
-			if (token){
-				config.headers.Authorization = token;
-			}
-			console.log(token);
-			console.log(config);
-			return config;
-		},error=>{
-			return Promise.reject(error);
-		});
 
-		//在每次响应时，前端检查token是否有效或过期
-		// 添加响应拦截器
-		axios.interceptors.response.use(function (response) {
-			// 对响应数据做点什么
-			return response;
-		}, function (error) {
-			// 对响应错误做点什么
-			if (error.response.status === 401) {
-				// 未登录，跳转到登录页面
-				//TODO:利用框架来做登陆的跳转
-				// router.push('/login');
-				window.location.href = "login.html"
-			} else {
-				// 其他错误，打印错误信息
-				console.error(error);
-			}
-			return Promise.reject(error);
-		});
-	</script>
 </head>
 <body>
 <div id="app">
@@ -84,7 +47,7 @@
 			<input type="button" class="input_btn fr" name="" value="搜索" @click="findGoods()">
 		</div>
 		<div class="guest_cart fr">
-			<a href="#" class="cart_name fl">我的购物车</a>
+			<a href="cart.html" class="cart_name fl">我的购物车</a>
 			<div class="goods_count fl" id="show_count">1</div>
 		</div>
 	</div>
@@ -167,7 +130,8 @@
 <script src="js/axios.js"></script>
 <script src="js/checkToken1.js"></script>
 <script type="text/javascript">
-	var index_addr = "http://localhost:20001/user"
+
+	var index_addr = "http://localhost:20001/user";
 	var addr_good ="http://localhost:20001/goods/";
 	const vm=new Vue({
 		el:'#app',
@@ -178,7 +142,9 @@
 			goods:[],//存放商品对象
 			goodsType:[],//存放商品类别对象
 			isLogin:false,
-			userdata:{},
+			userdata:{
+				nickName: '',
+			},
 		},
 		methods:{
 			findGoods:function (){
@@ -262,23 +228,14 @@
 
 			logout(){
 				let params = new URLSearchParams();
-				axios.post("user/logout", params).then(data => {
-					if (data.data.code == 1) {
-						alert("退出登录成功!")
-						this.isLogin = false;
-					}else {
-						alert(data.data.msg);
-					}
-				})
-			},
-			logout(){
-				let params = new URLSearchParams();
 
 				axios.post(index_addr+"/logout", params).then(data => {
 					if (data.data.code == 1) {
 						alert("退出登录成功!")
 						this.isLogin = false;
 						localStorage.removeItem(  "token"  );
+						this.isLogin = false;
+						sessionStorage.removeItem('nickName');
 					}else {
 						alert(data.data.msg);
 					}
@@ -289,17 +246,30 @@
 			}
 		},
 		mounted(){
-			axios.all([this.showGoodsInfo(),this.showGoodsType(),this.selectLogin()]);
-			var item = sessionStorage.getItem("nickName");
-			console.log(item);
-			if (item==null){
-				return;
-			}
-			this.isLogin = true;
-			this.data.userdata= {nickName:item};
+			axios.all([this.showGoodsInfo(),this.showGoodsType()]);
+
+			// var item = JSON.parse(sessionStorage.getItem("nickName")).nickName;
+			// if (item==null){
+			// 	return;
+			// }
+			// this.isLogin = true;
+			// this.userdata= {nickName:item};
 		},
 		created(){
+			var nickNameObj = sessionStorage.getItem("nickName");
+			if (nickNameObj) {
+				const nickName =  JSON.parse(nickNameObj).nickName;
+				console.log("nickName: ", nickName);
+				if(nickName!=null){
+					// 将 nickName 放入 userdata 中
 
+					this.userdata.nickName = nickName;
+					this.isLogin = true;
+				}
+				// 使用 nickName 进行后续操作
+			} else {
+				this.isLogin = false;
+			}
 		},
 	})
 </script>

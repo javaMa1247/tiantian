@@ -1,0 +1,43 @@
+server:
+  port: 10009
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+        username: nacos
+        password: nacos
+        namespace: ttsx-prod
+
+  application:
+    name: ttsx-backgroud
+  web:
+    resources:
+      static-locations: [classpath:/META-INF/resources,classpath:/resources,classpath:/static,classpath:/templates]
+  redis:
+    host: localhost
+    port: 6379
+    database: 3
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: a
+    url: jdbc:mysql://localhost:3306/fresh?serverTimezone=UTC
+    # 使用druid数据源
+    type: com.alibaba.druid.pool.DruidDataSource
+
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl  #打印mybatis-plus的sql语句
+    map-underscore-to-camel-case: false
+logging:
+  level:
+    root: info
+    com.ttsx: info
+    org.springframewok.web: info
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"    # 暴露端点，* 是暴露全部端点

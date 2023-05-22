@@ -19,12 +19,9 @@ import java.util.Map;
  */
 public class JWTUtils {
 
-    public static final int EXPIRED_TOKEN=409;
-    public static final int NO_TOKEN=410;
-    public static final int INVALIDATE_TOKEN=411;
-    public static final int NO_LOGIN=412;
     private final static String SING="YC";
-
+    private final static String User = "User";
+    private final static String Admin = "Admin";
     public static void main(String[] args) {
         Map<String,String> map = new HashMap<>();
         map.put("username","a");
@@ -50,7 +47,27 @@ public class JWTUtils {
         }
         //为了方便只放入了一种类型
         payload.forEach(builder::withClaim);
-        return builder.withExpiresAt(instance.getTime()).sign(Algorithm.HMAC256(SING));
+
+        return builder
+                .withExpiresAt(instance.getTime())
+                .withClaim("purview",User)
+                .sign(Algorithm.HMAC256(SING));
+    }
+    public static String creatToken(Map<String,String> payload,int expireTime,String purview){
+        JWTCreator.Builder builder= JWT.create();
+        Calendar instance=Calendar.getInstance();//获取日历对象
+        if(expireTime <=0) {
+            instance.add(Calendar.SECOND,3600);//默认一小时
+        } else {
+            instance.add(Calendar.SECOND,expireTime);
+        }
+        //为了方便只放入了一种类型
+        payload.forEach(builder::withClaim);
+
+        return builder
+                .withExpiresAt(instance.getTime())
+                .withClaim("purview",purview)
+                .sign(Algorithm.HMAC256(SING));
     }
 
     public static Map<String, Object> getTokenInfo(String token){

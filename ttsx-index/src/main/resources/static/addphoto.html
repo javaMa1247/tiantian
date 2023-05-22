@@ -5,6 +5,7 @@
     <title>增加/修改图片</title>
     <script src="js/axios.js"></script>
     <script src="js/vue.js"></script>
+    <script src="js/checkToken_admin.js"></script>
     <!-- 引入样式 -->
     <link rel="stylesheet" href="https://unpkg.com/element-ui@2.15.10/lib/theme-chalk/index.css">
     <!-- 引入组件库 -->
@@ -30,6 +31,7 @@
     </el-form>
 </div>
 <script>
+    var admin_addr = "http://localhost:20001/backgroud/"
     let vm = new Vue({
         el:"#app",
         data:{
@@ -44,7 +46,7 @@
                 let formData = new FormData();
                 formData.append("uploadFile",file,file.name);
                 const config = {headers: { "Content-Type": "multipart/form-data;boundary="+new Date().getTime() }};
-                axios.post('fileX.action?op=uploadFile',formData,config).then(data => {
+                axios.post(admin_addr+"uploadFile",formData,config).then(data => {
                     if (data.data.code == 1) {
                         this.$message({type: 'success', message:'图片上传成功!'})
                         this.picUrl = data.data.data;
@@ -52,7 +54,7 @@
                         params.append("op","addImg");
                         params.append("pics",this.picUrl);
                         params.append("gno",this.formInline.gno);
-                        axios.post("loginedAdmin.action",params).then(data => {
+                        axios.post(admin_addr+ "addImg",params).then(data => {
                             if(data.data.code == 1){
                                 this.$message({type: 'success', message:'图片更改/增加成功!'})
                             }else {
@@ -69,7 +71,7 @@
         created(){
             let params = new URLSearchParams();
             params.append("op","selectLogin");
-            axios.post("admin.action",params).then(data => {
+            axios.post(admin_addr+"selectLogin",params).then(data => {
                 if(data.data.code != 1) {
                     this.$message.error(data.data.msg);
                     window.location.href = "404.html";

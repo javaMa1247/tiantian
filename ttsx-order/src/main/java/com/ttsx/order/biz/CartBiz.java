@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.ttsx.bean.Cartinfo;
 import com.ttsx.bean.Goodsinfo;
 import com.ttsx.feignApi.FeignApp;
+import com.ttsx.feignApi.FeignAppUser;
 import com.ttsx.order.dao.CartDao;
 import com.ttsx.utils.R;
 import lombok.extern.slf4j.Slf4j;
@@ -31,10 +32,10 @@ public class CartBiz {
     private CartDao dao;
 
     @Autowired
-    private RedisTemplate redisTemplate;
+    private FeignAppUser user;
 
     public List<Cartinfo> showAllCart(){
-        int mno= Integer.parseInt(redisTemplate.opsForValue().get("mno")+"");
+        int mno= user.getUserId();
         QueryWrapper<Cartinfo> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda()
                 .eq(Cartinfo::getMno, mno);
@@ -52,7 +53,7 @@ public class CartBiz {
         return cartinfos;
     }
     public int addCart(String gno,String num) {
-        int mno= Integer.parseInt(redisTemplate.opsForValue().get("mno")+"");
+        int mno= user.getUserId();
 //        mno = BaseContext.getCurrentId().intValue();
         int result = 0;
         try {
@@ -95,7 +96,7 @@ public class CartBiz {
         return 1;
     }
     public int delgoods(String cno,String gno){
-        int mno= Integer.parseInt(redisTemplate.opsForValue().get("mno")+"");
+        int mno= user.getUserId();
         int result = 0;
         try{
             LambdaQueryWrapper<Cartinfo> lambdaQueryWrapper = new LambdaQueryWrapper<>();
@@ -111,7 +112,7 @@ public class CartBiz {
         return result;
     }
     public Integer cleanCart(List<Map<String, Object>> lists){
-        int mno= Integer.parseInt(redisTemplate.opsForValue().get("mno")+"");
+        int mno= user.getUserId();
         int i = 0;
 //        String ono = String.valueOf(db.selectAggreation("select MAX(ono) from orderinfo"));
         if(lists.size()>0){
@@ -128,12 +129,14 @@ public class CartBiz {
     }
 
     public List<Cartinfo> showOnecartInfo(String gno, String num) {
-        Cartinfo cart = null;
+        Cartinfo cart = new Cartinfo();
         List<Cartinfo> list = new ArrayList<>();
         Goodsinfo goodsinfo = feignApp.findById(Integer.parseInt(gno)).getData();
         try{
             cart.setNum(Integer.parseInt(num));
             cart.setSmallCount(goodsinfo.getPrice()*cart.getNum());
+            cart.setGoodsinfo(goodsinfo);
+            cart.setGno(gno);
             list.add(cart);
             return list;
 

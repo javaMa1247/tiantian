@@ -200,16 +200,7 @@
 						}
 					})
 				},
-				selectLogin(){
-					let params = new URLSearchParams();
-					params.append("op","selectUserLogin");
-					axios.post("admin.action",params).then(data => {
-						if(data.data.code != 1){
-							alert(data.data.msg);
-							window.location.href="login.html";
-						}
-					})
-				},
+
 			},
 			created(){
 				//接受参数 cartgoods
@@ -220,7 +211,7 @@
 				this.status = data.status;
 			},
 			mounted:function () {
-				axios.all([this.showAddr(),/*this.selectLogin()*/]).then();
+				axios.all([this.showAddr()]).then();
 			}
 		})
 	</script>

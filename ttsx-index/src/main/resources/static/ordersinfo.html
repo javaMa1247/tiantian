@@ -5,7 +5,7 @@
     <title>订单管理</title>
     <script src="js/vue.js"></script>
     <script src="js/axios.js"></script>
-    <script src="js/checkToken1.js"></script>
+    <script src="js/checkToken_admin.js"></script>
     <!-- 引入样式 -->
     <link rel="stylesheet" href="https://unpkg.com/element-ui@2.15.10/lib/theme-chalk/index.css">
     <!-- 引入组件库 -->
@@ -14,7 +14,7 @@
 <body>
 <div id="app">
     <template>
-<!--        {"ono":1,"odate":"2022-11-11 20:09:33.0","sdate":"","rdate":"","status":1,"price":123.0,"invoice":0,"addr":"1"}-->
+        <!--        {"ono":1,"odate":"2022-11-11 20:09:33.0","sdate":"","rdate":"","status":1,"price":123.0,"invoice":0,"addr":"1"}-->
         <el-table
                 ref="singleTable"
                 :data="tableData"
@@ -71,6 +71,8 @@
 </div>
 
 <script>
+    var admin_addr = "http://localhost:20001/backgroud/order/"
+    var admin_login = "http://localhost:20001/backgroud/"
     let vm = new Vue({
         el:"#app",
         data:{
@@ -84,7 +86,7 @@
                 let params = new URLSearchParams();
                 params.append("op","getOrderItem");
                 params.append("ono",val.ono);
-                axios.post("loginedAdmin.action",params).then(data => {
+                axios.post(admin_addr+ "getOrderItem",params).then(data => {
                     if(data.data.code == 1) {
                         this.$alert(data.data.data, '详情', {
                             dangerouslyUseHTMLString: true,
@@ -100,7 +102,7 @@
             getdatas(){
                 let params = new URLSearchParams();
                 params.append("op","getOrderInfo");
-                axios.post("loginedAdmin.action",params).then(data => {
+                axios.post(admin_addr+ "getOrderInfo",params).then(data => {
                     if(data.data.code == 1){
                         this.tableData = data.data.data;
                     }else {
@@ -113,7 +115,7 @@
                 let params = new URLSearchParams();
                 params.append("op","nextStatus");
                 params.append("ono",this.tableData[index].ono);
-                axios.post("loginedAdmin.action",params).then(data => {
+                axios.post(admin_addr+ "nextStatus",params).then(data => {
                     if(data.data.code == 1){
                         this.$message({type: 'success', message:'下一步成功!'})
                         this.getdatas();
@@ -126,7 +128,7 @@
         created(){
             let params = new URLSearchParams();
             params.append("op","selectLogin");
-            axios.post("admin.action",params).then(data => {
+            axios.post(admin_login+"selectLogin",params).then(data => {
                 if(data.data.code != 1) {
                     this.$message.error(data.data.msg);
                     window.location.href = "404.html";

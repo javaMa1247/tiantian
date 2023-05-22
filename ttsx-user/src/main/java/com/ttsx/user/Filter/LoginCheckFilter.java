@@ -47,8 +47,13 @@ public class LoginCheckFilter implements Filter {
                 "/employee/login",
                 "/common/**",
                 "/user/sendMsg", //移动端发送短信
-                "/user/login"  //移动端登录
-
+                "/user/login" , //移动端登录
+                "/user/logon",  //注册
+                "/user/findPass" ,   //忘记密码
+                "/user/logout",
+                "/user/showName",
+                "/user/checkUname",
+                "/user/admin/**",//管理员
         };
 
         //2.判断本次请求是否需要处理
@@ -58,7 +63,6 @@ public class LoginCheckFilter implements Filter {
         if(check){
             log.info("本次请求{}不需要处理",requestURI);
             filterChain.doFilter(request,response);
-
             return;
         }
 
@@ -66,8 +70,7 @@ public class LoginCheckFilter implements Filter {
         if(request.getHeader("Authorization") != null){
 
             String token = request.getHeader("Authorization");
-//            JWTUtils.getTokenInfo(token);
-//            log.info("待检测的token为:"+ token );
+            log.info("待检测的token为:"+ token );
             System.out.println(token);
             boolean flag=this.redisTemplate.hasKey(token);
             String mno ="";
@@ -85,12 +88,9 @@ public class LoginCheckFilter implements Filter {
             }
 
             log.info("用户已经登录,用户id为:{}",mno);
-
-            Long empId = Long.parseLong(mno) ;
+            Long empId = Long.parseLong(mno);
             BaseContext.setCurrentId(empId);
-
             filterChain.doFilter(request,response);
-
             return;
         }
 
@@ -100,7 +100,7 @@ public class LoginCheckFilter implements Filter {
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.getWriter().write("{\"message\": \"用户未登录\"}");
         response.getWriter().flush();
-
+        return;
     }
 
     @Override

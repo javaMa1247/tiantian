@@ -5,9 +5,10 @@ import com.ttsx.bean.Memberinfo;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
+ * @Author: mqb
+ * @Date: 2023/5/11
+ * @Time: 19:57
  * @Description:
- * @Author: 86150
- * @CreateDate: 2023-05-07 下午 8:56
  */
 @Mapper
 public interface UserMapper extends BaseMapper<Memberinfo> {

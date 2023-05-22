@@ -247,16 +247,6 @@
 					console.log(data.code);
 				})
 			},
-			selectLogin() {
-				let params = new URLSearchParams();
-				params.append("op", "selectUserInfo");
-				axios.post("admin.action", params).then(data => {
-					if (data.data.code == 1) {
-						this.userdata = data.data.data;
-						this.isLogin = true;
-					}
-				})
-			},
 			logout(){
 				let params = new URLSearchParams();
 				params.append("op", "logout");
@@ -275,9 +265,9 @@
 		},
 		mounted(){
 			if(this.Tno!=999){
-				axios.all([this.showGoodsTno(),this.newGoods(),this.selectLogin()]);
+				axios.all([this.showGoodsTno(),this.newGoods()]);
 			}else{
-				axios.all([this.newGoods(),this.findgoods(),this.selectLogin()]);
+				axios.all([this.newGoods(),this.findgoods()]);
 			}
 
 		},
