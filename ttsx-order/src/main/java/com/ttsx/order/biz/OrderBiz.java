@@ -3,13 +3,11 @@ package com.ttsx.order.biz;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.ttsx.bean.OrderIteminfo;
 import com.ttsx.bean.Orderinfo;
-import com.ttsx.feignApi.FeignAppUser;
 import com.ttsx.order.dao.OrderDao;
 import com.ttsx.order.dao.OrderItemDao;
 import com.ttsx.utils.PageBean;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;

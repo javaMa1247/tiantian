@@ -6,12 +6,10 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.ttsx.bean.Cartinfo;
 import com.ttsx.bean.Goodsinfo;
 import com.ttsx.feignApi.FeignApp;
-import com.ttsx.feignApi.FeignAppUser;
 import com.ttsx.order.dao.CartDao;
 import com.ttsx.utils.R;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

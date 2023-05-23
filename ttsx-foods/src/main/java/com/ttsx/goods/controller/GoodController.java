@@ -7,8 +7,6 @@ import com.ttsx.bean.Discuss;
 import com.ttsx.bean.Goodsinfo;
 import com.ttsx.bean.Goodstype;
 import com.ttsx.bean.Memberinfo;
-import com.ttsx.feignApi.FeignApp;
-import com.ttsx.feignApi.FeignAppUser;
 import com.ttsx.goods.Service.DiscussService;
 import com.ttsx.goods.Service.GoodsService;
 import com.ttsx.goods.Service.GoodsTypeService;
