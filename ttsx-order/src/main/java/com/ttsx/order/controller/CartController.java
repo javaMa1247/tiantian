@@ -28,10 +28,10 @@ public class CartController {
     @Autowired
     private CartBiz biz;
     @RequestMapping("showAllcartInfo")
-    public Map<String,Object> showAllcartInfo(@RequestHeader("uid") String token){
+    public Map<String,Object> showAllcartInfo(@RequestHeader String uid){
 
-        log.info(token);
-        List<Cartinfo> cartinfos = this.biz.showAllCart();
+        log.info(uid);
+        List<Cartinfo> cartinfos = this.biz.showAllCart(uid);
         Map<String,Object> map = new HashMap<>();
         map.put("code",1);
         Map map1 = new HashMap<>();
@@ -42,12 +42,12 @@ public class CartController {
     }
 
     @RequestMapping("addCart")
-    public Map<String,Object> addCart(HttpServletRequest request, HttpServletResponse response) {
+    public Map<String,Object> addCart(@RequestHeader String uid,HttpServletRequest request, HttpServletResponse response) {
         //取出gno和num
         String gno = request.getParameter("gno");
         String num = request.getParameter("num");
         Map<String,Object> map = new HashMap<>();
-        int i = this.biz.addCart(gno, num);
+        int i = this.biz.addCart(gno, num,uid);
         if(i!=0) {
             map.put("code", 1);
             map.put("data", "添加成功");
@@ -56,12 +56,12 @@ public class CartController {
 
     }
     @RequestMapping("delgoods")
-    public Map<String,Object> delgoods(HttpServletRequest request, HttpServletResponse response){
+    public Map<String,Object> delgoods(@RequestHeader String uid,HttpServletRequest request, HttpServletResponse response){
         String cno=request.getParameter("cno");
         String gno=request.getParameter("gno");
 
         Map<String,Object> map = new HashMap<>();
-        int i = this.biz.delgoods(cno,gno);
+        int i = this.biz.delgoods(cno,gno,uid);
         if(i!=0) {
             map.put("code", 1);
             map.put("data", "删除成功");
@@ -69,11 +69,11 @@ public class CartController {
         return map;
     }
     @RequestMapping("cleanCart")
-    public Map<String,Object> cleanCart(HttpServletRequest request, HttpServletResponse response){
+    public Map<String,Object> cleanCart(@RequestHeader String uid,HttpServletRequest request, HttpServletResponse response){
         String cartgoods = request.getParameter("cartgoods");
         List<Map<String, Object>> lists = (List<Map<String, Object>>) new Gson().fromJson(cartgoods, List.class);
         Map<String,Object> map = new HashMap<>();
-        int i = this.biz.cleanCart(lists);
+        int i = this.biz.cleanCart(lists,uid);
         if(i!=0) {
             map.put("code", 1);
             map.put("data", "删除成功");

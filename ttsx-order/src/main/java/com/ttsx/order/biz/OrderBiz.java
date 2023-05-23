@@ -32,12 +32,10 @@ public class OrderBiz {
 
     @Autowired
     private OrderBizTmpl orderBizTmpl;
-    @Autowired
-    private FeignAppUser user;
 
-    public Integer addOrder(List<Map<String, Object>> orders,String ano){
+    public Integer addOrder(List<Map<String, Object>> orders,String ano,String mno){
 
-        int mno= user.getUserId();
+//        int mno= user.getUserId();
         Integer res = 0;
 
         Orderinfo orderinfo = new Orderinfo();
@@ -77,8 +75,8 @@ public class OrderBiz {
         return res;
     }
 
-    public PageBean showOrderbyPage(PageBean pageBean){
-        int mno= user.getUserId();
+    public PageBean showOrderbyPage(PageBean pageBean,String mno){
+//        int mno= user.getUserId();
         PageBean page = this.orderBizTmpl.findByPage(pageBean, mno+"");
         if(page!=null){
             return page;

@@ -50,8 +50,6 @@ public class GoodController {
     private MemberinfoService memberinfoService;
 
     @Autowired
-    private FeignAppUser user;
-    @Autowired
     private RedisTemplate<String,String> redisTemplate;
     //根据fid查询商品信息
     @RequestMapping("findById/{fid}")
@@ -131,8 +129,8 @@ public class GoodController {
     //删除评论
     //delete from discuss where did = ? and mno = ?
     @DeleteMapping("del")
-    public R<String> del(String did){
-        int mno= user.getUserId();
+    public R<String> del(@RequestHeader String uid,String did){
+        int mno= Integer.parseInt(uid);
         LambdaQueryWrapper<Discuss> lambdaQueryWrapper = new LambdaQueryWrapper<Discuss>();
         lambdaQueryWrapper.eq(Discuss::getDid,did)
                           .eq(Discuss::getMno,mno);
@@ -165,9 +163,9 @@ public class GoodController {
     //评论
     //"insert into discuss(mno,gno,dis,publishtime) values(?,?,?,now()); "
     @PutMapping("addDiscuss")
-    public R<String> addDiscuss(int Gno,@RequestParam(value = "discuss") String dis){
+    public R<String> addDiscuss(@RequestHeader String uid,int Gno,@RequestParam(value = "discuss") String dis){
         Discuss discuss = new Discuss();
-        int mno= user.getUserId();
+        int mno= Integer.parseInt(uid);
         discuss.setMno(mno);
         discuss.setGno(Gno);
         discuss.setDis(dis);
@@ -180,9 +178,9 @@ public class GoodController {
     //历史记录
 
     @PostMapping("setHistory")
-    public R<String> setHistory (HttpServletRequest request){
+    public R<String> setHistory (@RequestHeader String uid,HttpServletRequest request){
 
-        String userId = user.getUserId()+"";
+        String userId = uid;
         // 构造 Redis 键名
         String productId = request.getParameter("gno");
         // 将浏览记录添加到 ZSET 中，得分为当前时间戳
@@ -203,8 +201,8 @@ public class GoodController {
         return R.success("添加成功");
     }
     @PostMapping("getHistory")
-    public R<List<Goodsinfo>> getHistory (){
-        String userId = user.getUserId()+"";
+    public R<List<Goodsinfo>> getHistory (@RequestHeader String uid){
+        String userId = uid;
         String key = "user:" + userId + ":views";
         Set<String> productIds = redisTemplate.opsForZSet().reverseRange(key, 0, 4);
         List<Goodsinfo> goodsinfos = new ArrayList<>();

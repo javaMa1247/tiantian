@@ -12,6 +12,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
@@ -37,8 +38,10 @@ public class AuthFilter implements GlobalFilter, Ordered {
             "/goods/del",
             "/goods/addDiscuss",
             "/goods/getHistory",
+            "/goods/setHistory",
             "/cart/**",
-            "/order/**"
+            "/order/**",
+            "/addr/**"
             ); // 需要排除的路径列表
     //路径匹配器，支持通配符
     public static final AntPathMatcher PATH_MATCHER = new AntPathMatcher();
@@ -48,16 +51,27 @@ public class AuthFilter implements GlobalFilter, Ordered {
         String path = exchange.getRequest().getPath().toString();
 
 //       token不存在，且请求不在排除列表中，则重定向到登录页面
-        if (StringUtils.isBlank(token)) {
-            for (String url : EXCLUDE_PATHS) {
-                boolean match = PATH_MATCHER.match(url, path);
-                if (match) {
+        for (String url : EXCLUDE_PATHS) {
+            boolean match = PATH_MATCHER.match(url, path);
+            if (match) {
+                if (StringUtils.isBlank(token)) {
                     log.info("token为空path:{}", path);
                     return redirectToLogin(exchange);
+                }else {
+                    String userid = JWTUtils.getTokenInfo(token).get("userid")+"";
+                    if(  userid!=null && !"".equals(userid)) {
+                        ServerHttpRequest request = exchange.getRequest();
+                        ServerHttpRequest.Builder builder = request.mutate();
+                        builder.header("uid", userid);
+                        ServerHttpRequest newRequest = builder.build();
+                        return chain.filter(exchange.mutate().request(newRequest).build());
+                    }else {
+                        log.info("token过期:{}", path);
+                        return redirectToLogin(exchange);
+                    }
                 }
+
             }
-        }else {
-            exchange.getResponse().getHeaders().set("uid",(String) JWTUtils.getTokenInfo(token).get("userid"));
         }
         // token验证通过或请求在排除列表中，则继续处理请求
 

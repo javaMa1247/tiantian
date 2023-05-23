@@ -26,11 +26,8 @@ public class AddrBiz {
     @Autowired
     private AddrDao dao;
 
-    @Autowired
-    private FeignAppUser user;
-
-    public List<Addrinfo> showAddr(){
-        int mno= user.getUserId();
+    public List<Addrinfo> showAddr(String mno){
+//        int mno= user.getUserId();
         List<Addrinfo> list = new ArrayList<>();
         try{
             QueryWrapper<Addrinfo> queryWrapper = new QueryWrapper<>();
@@ -48,15 +45,15 @@ public class AddrBiz {
         }
 
     }
-    public Integer addAddr(Addrinfo newaddrinfo){
-        int mno= user.getUserId();
+    public Integer addAddr(Addrinfo newaddrinfo,String mno){
+//        int mno= user.getUserId();
         try{
 
             String ano = Integer.valueOf(dao.getMaxAno())+1+"";
 
             log.info(ano);
             newaddrinfo.setAno(ano);
-            newaddrinfo.setMno(mno);
+            newaddrinfo.setMno(Integer.parseInt(mno));
             newaddrinfo.setFlag(1);
             newaddrinfo.setStatus(1);
             int result = dao.insert(newaddrinfo);
@@ -72,18 +69,18 @@ public class AddrBiz {
     }
 
 
-    public Integer updateAddr(Addrinfo addrinfo){
-        int mno= user.getUserId();
+    public Integer updateAddr(Addrinfo addrinfo,String mno){
+//        int mno= user.getUserId();
 
         log.info("addrinfo:{}",addrinfo);
-        addrinfo.setMno(mno);
+        addrinfo.setMno(Integer.parseInt(mno));
 
         int result = dao.updateById(addrinfo);
         return result;
     }
 
-    public Map<String ,Object> showAddrinfo(Addrinfo addrinfo){
-        int mno= user.getUserId();
+    public Map<String ,Object> showAddrinfo(Addrinfo addrinfo,String mno){
+//        int mno= user.getUserId();
         Map<String ,Object> map1 = new HashMap<>();
         String ano = addrinfo.getAno();
         LambdaQueryWrapper<Addrinfo> wrapper = new LambdaQueryWrapper<>();
