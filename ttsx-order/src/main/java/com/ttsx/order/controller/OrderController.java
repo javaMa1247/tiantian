@@ -44,6 +44,20 @@ public class OrderController {
         return map;
     }
 
+
+    @RequestMapping("delorders")
+    public Map<String,Object> delorders(@RequestHeader String uid,HttpServletRequest request, HttpServletResponse response) {
+
+        String ono = request.getParameter("ono");
+        Map<String,Object> map = new HashMap<>();
+        Integer integer = this.biz.delorders(ono,uid);
+        if(integer!=0){
+            map.put("code",1);
+        }else{
+            map.put("code",0);
+        }
+        return map;
+    }
     @RequestMapping("showOrderbyPage")
     public Map<String,Object> showOrderbyPage(@RequestHeader String uid,PageBean pageBean){
         Map<String,Object> map = new HashMap<>();

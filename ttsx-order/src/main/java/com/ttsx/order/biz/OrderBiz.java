@@ -83,4 +83,17 @@ public class OrderBiz {
         }
 
     }
+
+    public Integer delorders(String ono, String uid) {
+        QueryWrapper<OrderIteminfo> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("ono", ono);
+        int delete = itemDao.delete(queryWrapper);
+        QueryWrapper<Orderinfo> queryWrapper1 = new QueryWrapper<>();
+        queryWrapper1.eq("ono", ono);
+        int delete1 = dao.delete(queryWrapper1);
+        if(delete>0 && delete1>0){
+            return 1;
+        }
+        return 0;
+    }
 }

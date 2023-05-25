@@ -56,18 +56,23 @@ public class AuthFilter implements GlobalFilter, Ordered {
             if (match) {
                 if (StringUtils.isBlank(token)) {
                     log.info("token为空path:{}", path);
-                    return redirectToLogin(exchange);
+                    return redirectToLogin(exchange,HttpStatus.UNAUTHORIZED);
                 }else {
-                    String userid = JWTUtils.getTokenInfo(token).get("userid")+"";
-                    if(  userid!=null && !"".equals(userid)) {
-                        ServerHttpRequest request = exchange.getRequest();
-                        ServerHttpRequest.Builder builder = request.mutate();
-                        builder.header("uid", userid);
-                        ServerHttpRequest newRequest = builder.build();
-                        return chain.filter(exchange.mutate().request(newRequest).build());
-                    }else {
+                    try{
+                        String userid = JWTUtils.getTokenInfo(token).get("userid")+"";
+                        if(!"".equals(userid)) {
+                            ServerHttpRequest request = exchange.getRequest();
+                            ServerHttpRequest.Builder builder = request.mutate();
+                            builder.header("uid", userid);
+                            ServerHttpRequest newRequest = builder.build();
+                            return chain.filter(exchange.mutate().request(newRequest).build());
+                        }else {
+                            log.info("token无效:{}", path);
+                            return redirectToLogin(exchange,HttpStatus.UNAUTHORIZED);
+                        }
+                    }catch (Exception e){
                         log.info("token过期:{}", path);
-                        return redirectToLogin(exchange);
+                        return redirectToLogin(exchange,HttpStatus.FORBIDDEN);
                     }
                 }
 
@@ -78,9 +83,9 @@ public class AuthFilter implements GlobalFilter, Ordered {
         return chain.filter(exchange);
     }
     // 重定向到登录页面
-    private Mono<Void> redirectToLogin(ServerWebExchange exchange) {
+    private Mono<Void> redirectToLogin(ServerWebExchange exchange,HttpStatus status) {
         ServerHttpResponse response = exchange.getResponse();
-        response.setStatusCode(HttpStatus.UNAUTHORIZED);
+        response.setStatusCode(status);
         response.getHeaders().set(HttpHeaders.LOCATION, LOGIN_URL);
         return response.setComplete();
     }
