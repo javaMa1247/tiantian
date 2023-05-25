@@ -29,13 +29,18 @@ spring:
         - id: ttsx-inedx
           uri: lb://ttsx-index
           predicates: #路由断言
-            - Path=/ttsxindex/**     #http://localhost:10010/resindex/index.html
+            - Path=/ttsxindex/**     #http://localhost:10001/resindex/index.html
           filters:
             - RewritePath=/ttsxindex/(?<segment>.*), /$\{segment}  #将 resindex/index.html  -->  index.html
         - id: ttsx-order-addr
           uri: lb://ttsx-order
           predicates:
            - Path=/addr/**
+
+        - id: ttsx-backgroud
+          uri: lb://ttsx-backgroud
+          predicates:
+          - Path=/backgroud/**
 
         - id: ttsx-user
           uri: lb://ttsx-user
