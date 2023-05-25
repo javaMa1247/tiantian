@@ -11,6 +11,7 @@
         <module name="ttsx-order" />
         <module name="ttsx-foods" />
         <module name="ttsx-feign" />
+        <module name="seckill-service" />
         <module name="ttsx-gateway" />
         <module name="ttsx-index" />
         <module name="ttsx-background" />
@@ -22,6 +23,7 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="-" options="-parameters" />
+      <module name="seckill-service" options="-parameters" />
       <module name="ttsx-alipay" options="-parameters" />
       <module name="ttsx-background" options="-parameters" />
       <module name="ttsx-entity" options="-parameters" />
