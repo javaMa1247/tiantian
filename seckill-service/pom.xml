@@ -63,6 +63,19 @@
             <artifactId>fastjson</artifactId>
             <version>1.2.62</version>
         </dependency>
+        <!-- Redisson 相关依赖 -->
+        <dependency>
+            <groupId>org.redisson</groupId>
+            <artifactId>redisson</artifactId>
+            <version>3.16.1</version>
+        </dependency>
+        <!-- Redis 客户端相关依赖，这里选择 Lettuce -->
+        <dependency>
+            <groupId>io.lettuce</groupId>
+            <artifactId>lettuce-core</artifactId>
+            <version>6.1.9.RELEASE</version>
+        </dependency>
+
         <!--RabbitMQ-->
         <dependency>
             <groupId>org.springframework.boot</groupId>

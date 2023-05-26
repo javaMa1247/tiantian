@@ -1,5 +1,6 @@
 server:
   port: 30001
+
 spring:
   cloud:
     nacos:
@@ -41,6 +42,11 @@ spring:
     host: 127.0.0.1
     port: 6379
     password:
+redisson:
+  single-server-config:
+    address: "redis://${spring.redis.host}:${spring.redis.port}"
+    database: 6
+  threads: 16
 
   #  4369 -- erlang发现口
   #

@@ -1,6 +1,8 @@
 package com.ttsx.seckill.utils;
 
 import lombok.extern.slf4j.Slf4j;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
@@ -19,6 +21,8 @@ import java.util.concurrent.TimeUnit;
 public class RedisCache {
     @Autowired
     private RedisTemplate redisTemplate;
+    @Autowired
+    private RedissonClient redissonClient;
     /**
      * 对指定key的键值减一
      * @param key 键
@@ -33,10 +37,25 @@ public class RedisCache {
      * @param key
      * @return
      */
-    public Long incrBy(String key) {
-        if(LimitNum(key,1)){
-            return redisTemplate.opsForValue().increment(key);
-        };
+    public Long incrBy(String key,Integer gno) {
+//        RLock lock = redissonClient.getLock("lock:" + gno);
+//        try {
+//            lock.lock();
+//            Integer v = (Integer) redisTemplate.opsForValue().get(gno +"");
+//            if (Objects.nonNull(v) && v > 0) {
+//                if (LimitNum(key, 1)) {
+//                    return redisTemplate.opsForValue().increment(key);
+//                }
+//            }
+//        } finally {
+//            lock.unlock();
+//        }
+        Integer v = (Integer) redisTemplate.opsForValue().get(gno +"");
+        if (Objects.nonNull(v) && v > 0) {
+            if (LimitNum(key, 1)) {
+                return redisTemplate.opsForValue().increment(key);
+            }
+        }
         return 0L;
     }
     public void setCacheObject(String key, Object value, long timeout, TimeUnit timeUnit) {
