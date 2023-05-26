@@ -58,7 +58,7 @@ public class FlashKillingController {
         FlashKilling fk = new FlashKilling();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         Date date = formatter.parse(start_dataString);
-        fk.setStart_data(date);
+        fk.setStart_data(String.valueOf(date));
         fk.setGno(Integer.parseInt(gno));
         fk.setFk_price(Double.parseDouble(fk_price));
         fk.setCount(Integer.parseInt(count));
@@ -120,7 +120,7 @@ public class FlashKillingController {
             Date date = formatter.parse(start_dateString);
 
             fk.setFno(Integer.parseInt(fno));
-            fk.setStart_data(date);
+            fk.setStart_data(String.valueOf(date));
             fk.setGno(Integer.parseInt(gno));
             fk.setFk_price(Double.parseDouble(fk_price));
             fk.setCount(Integer.parseInt(count));

@@ -1,13 +1,14 @@
-package com.ttsx.FlashKilling.controller;
+package com.ttsx.seckill.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.ttsx.FlashKilling.Service.GoodsService;
-import com.ttsx.FlashKilling.mapper.AddrinfoDao;
-import com.ttsx.FlashKilling.util.JWTUtils;
+
 import com.ttsx.bean.FlashKilling;
 import com.ttsx.bean.FlashKillingVO;
 import com.ttsx.bean.Goodsinfo;
+import com.ttsx.feignApi.FeignApp;
 import com.ttsx.feignApi.FeignAppFlashKilling;
+import com.ttsx.seckill.mapper.FlashKillingMapper;
+import com.ttsx.user.util.JWTUtils;
 import com.ttsx.utils.R;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +16,8 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
 
 /**
  * @program: -
@@ -28,16 +29,13 @@ import java.util.*;
 @RequestMapping("/fk")
 public class FlashKillingController {
     @Autowired
-    private GoodsService goodsService;
+    private FeignApp feignApp;
     @Autowired
-    private com.ttsx.FlashKilling.mapper.flashKillingDao flashKillingDao;
+    private FlashKillingMapper flashKillingMapper;
     @Autowired
     private FeignAppFlashKilling feignAppFlashKilling;
     @Autowired
     private RedisTemplate redisTemplate;
-    @Autowired
-    private AddrinfoDao addrinfoDao;
-
     //展示秒杀商品信息
     @GetMapping("/showmsGoodsInfo")
     public R<List<FlashKillingVO>> selectmsGoodsInfo(@RequestParam(value = "time")  Object time ) {
@@ -57,10 +55,8 @@ public class FlashKillingController {
         //获取秒杀商品详情
         QueryWrapper<FlashKilling> qw1 = new QueryWrapper<>();
         qw1.eq("fno",Integer.parseInt(fno));
-        FlashKilling flashKilling = this.flashKillingDao.selectOne(qw1);
-        QueryWrapper<Goodsinfo> qw = new QueryWrapper<>();
-        qw.eq("gno",flashKilling.getGno());
-        Goodsinfo goodsinfo = this.goodsService.getOne(qw);
+        FlashKilling flashKilling = this.flashKillingMapper.selectOne(qw1);
+        Goodsinfo goodsinfo = this.feignApp.findById(   flashKilling.getGno() ).getData();
         FlashKillingVO vo = new FlashKillingVO();
         BeanUtils.copyProperties(goodsinfo,vo);
         BeanUtils.copyProperties(flashKilling,vo);
@@ -85,18 +81,7 @@ public class FlashKillingController {
 
         String token = request.getHeader("Authorization");
         Object userid = JWTUtils.getTokenInfo(token).get("userid");
-        //判断是否重复下单
-        //TODO: 找不到商品id以及用户id共同 的表
-//        QueryWrapper<Orderinfo> qw = new QueryWrapper<>();
-//        qw.eq("")
-//        this.addrinfoDao.selectList(qw)
-        //判断库存
 
-//        if(remainCount<0){
-//            return Result.error(SeckillCodeMsg.SECKILL_STOCK_OVER);
-//        }
-//        OrderMessage message = new OrderMessage(Integer.parseInt(time),seckillId,token,Long.parseLong(phone));
-//        rocketMQTemplate.syncSend(MQConstant.ORDER_PEDDING_TOPIC,message);
         return R.success("进入抢购队列,请等待结果");
     }
 

@@ -23,6 +23,7 @@ public class RedisCache {
     private RedisTemplate redisTemplate;
     @Autowired
     private RedissonClient redissonClient;
+
     /**
      * 对指定key的键值减一
      * @param key 键

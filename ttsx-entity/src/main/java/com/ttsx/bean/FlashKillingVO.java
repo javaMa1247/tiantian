@@ -31,7 +31,31 @@ public class FlashKillingVO implements Serializable {
     private String qperied;
     private String weight;
 
+    @Override
+    public String toString() {
+        return "FlashKillingVO{" +
+                "fno=" + fno +
+                ", gno=" + gno +
+                ", tno=" + tno +
+                ", price=" + price +
+                ", fk_price=" + fk_price +
+                ", count=" + count +
+                ", currentCount=" + currentCount +
+                ", start_data=" + start_data +
+                ", start_dateString='" + start_dateString + '\'' +
+                ", time=" + time +
+                ", gname='" + gname + '\'' +
+                ", intro='" + intro + '\'' +
+                ", pics='" + pics + '\'' +
+                ", unit='" + unit + '\'' +
+                ", qperied='" + qperied + '\'' +
+                ", weight='" + weight + '\'' +
+                '}';
+    }
 
+    public FlashKillingVO(){
+
+    }
     public Integer getCurrentCount() {
         if (this.currentCount==null){
             this.currentCount = this.getCount();
@@ -47,5 +71,11 @@ public class FlashKillingVO implements Serializable {
             start_dateString = sdf.format(date);
         }
         return start_dateString;
+    }
+    public Date getStart_data() {
+        if (this.start_data == null){
+            return new Date();
+        }
+        return start_data;
     }
 }

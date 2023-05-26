@@ -2,7 +2,7 @@ package com.ttsx.seckill.service.imp;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.ttsx.seckill.entity.FlashKilling;
+import com.ttsx.bean.FlashKilling;
 import com.ttsx.seckill.mapper.FlashKillingMapper;
 import com.ttsx.seckill.service.FlashKillingService;
 import lombok.extern.slf4j.Slf4j;

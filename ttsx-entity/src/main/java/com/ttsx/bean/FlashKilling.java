@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -18,11 +19,21 @@ import java.util.Date;
 @Data
 @TableName(value = "FlashKilling")
 public class FlashKilling implements Serializable {
-    @TableId(type = IdType.AUTO)    //主键且自增
+    @TableId(type = IdType.AUTO,value = "fno")    //主键且自增
     private Integer fno;
     private Integer gno;
     private Double fk_price;
     private Integer count;
-    private Date start_data;
+    private String start_data;
     private Integer time;
+
+    public String getStart_data() {
+        if (this.start_data == null){
+            Date date = new Date();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            start_data = sdf.format(date);
+        }
+        return start_data;
+    }
+
 }

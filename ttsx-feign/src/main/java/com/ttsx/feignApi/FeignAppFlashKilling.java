@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 import java.util.Map;
 
-@FeignClient(value = "ttsx-FlashKilling",path = "fkFegin",fallback = FeignAppFlashKillingFallback.class)
+@FeignClient(value = "ttsx-seckill",path = "fkFegin",fallback = FeignAppFlashKillingFallback.class)
 public interface FeignAppFlashKilling {
     //展示秒杀商品详情
     @GetMapping("/showmsGoodsDetail")

@@ -1,6 +1,6 @@
 package com.ttsx.seckill.service;
 
-import com.ttsx.seckill.entity.FlashKilling;
+import com.ttsx.bean.FlashKilling;
 
 import java.util.List;
 

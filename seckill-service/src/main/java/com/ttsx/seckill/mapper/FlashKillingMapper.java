@@ -1,7 +1,7 @@
 package com.ttsx.seckill.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.ttsx.seckill.entity.FlashKilling;
+import com.ttsx.bean.FlashKilling;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
