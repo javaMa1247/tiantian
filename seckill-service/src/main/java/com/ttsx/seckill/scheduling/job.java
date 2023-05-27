@@ -6,6 +6,7 @@ import com.ttsx.bean.FlashKillingVO;
 import com.ttsx.seckill.controller.FlashKillingControllerFegin;
 import com.ttsx.seckill.service.FlashKillingService;
 import com.ttsx.seckill.utils.RedisCache;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -28,10 +29,6 @@ import java.util.concurrent.TimeUnit;
  */
 @Component
 public class job {
-    @Autowired
-    private RedisCache redisCache;
-    @Autowired
-    private FlashKillingService flashKillingService;
     @Autowired
     private RedisTemplate redisTemplate;
     @Autowired

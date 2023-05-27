@@ -8,13 +8,17 @@ import com.ttsx.bean.FlashKillingVO;
 import com.ttsx.bean.Goodsinfo;
 import com.ttsx.feignApi.FeignApp;
 import com.ttsx.feignApi.FeignAppFlashKilling;
+import com.ttsx.seckill.config.RabbitMqConfig;
+import com.ttsx.seckill.scheduling.job;
 import com.ttsx.utils.R;
 import io.micrometer.core.instrument.binder.BaseUnits;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -32,11 +36,14 @@ import java.util.*;
 @RequestMapping("/backgroud/FlashKilling")
 public class FlashKillingController {
     @Autowired
+    private RabbitTemplate rabbitTemplate;
+    @Autowired
     private FeignApp feignApp;
     @Autowired
     private FeignAppFlashKilling feignAppFlashKilling;
     @Autowired
     private com.ttsx.background.mapper.flashKillingDao flashKillingDao;
+
     //查询
     @RequestMapping("/showmsGoodsInfo")
     public R<List<FlashKillingVO>> selectmsGoodsInfo(){
@@ -75,6 +82,15 @@ public class FlashKillingController {
         if (i==0){
             map.put("code",0);
             map.put("msg","无法插入数据");
+            return  map;
+        }
+        String message = "1";
+        try {
+            rabbitTemplate.convertAndSend(RabbitMqConfig.STORY_EXCHANGE,RabbitMqConfig.STORY_ROUTING_KEY,message.getBytes("utf-8"));
+        } catch (UnsupportedEncodingException e) {
+            map.put("code",0);
+            map.put("msg","无法插入数据");
+            return  map;
         }
         map.put("code",1);
         return  map;
@@ -102,6 +118,13 @@ public class FlashKillingController {
             e.printStackTrace();
             map.put("code", 0);
             map.put("msg", e.getMessage());
+        }String message = "1";
+        try {
+            rabbitTemplate.convertAndSend(RabbitMqConfig.STORY_EXCHANGE,RabbitMqConfig.STORY_ROUTING_KEY,message.getBytes("utf-8"));
+        } catch (UnsupportedEncodingException e) {
+            map.put("code",0);
+            map.put("msg","无法插入数据");
+            return  map;
         }
         return map;
     }
@@ -152,6 +175,13 @@ public class FlashKillingController {
             e.printStackTrace();
             map.put("code", 0);
             map.put("msg", e.getMessage());
+        }String message = "1";
+        try {
+            rabbitTemplate.convertAndSend(RabbitMqConfig.STORY_EXCHANGE,RabbitMqConfig.STORY_ROUTING_KEY,message.getBytes("utf-8"));
+        } catch (UnsupportedEncodingException e) {
+            map.put("code",0);
+            map.put("msg","无法插入数据");
+            return  map;
         }
         return map;
     }
