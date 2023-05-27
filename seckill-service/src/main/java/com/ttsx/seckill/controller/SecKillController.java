@@ -56,7 +56,7 @@ public class SecKillController {
                                        @RequestParam("seckillId")  String fno,
                                        @RequestHeader(required = false) String uid,
                                         HttpServletRequest request) {
-        if(Objects.nonNull(uid)&&Objects.nonNull(request.getHeader("token")) ){
+        if(Objects.isNull(uid)&&Objects.nonNull(request.getHeader("token")) ){
             String token = request.getHeader("token");
             uid = (String) JWTUtils.getTokenInfo(token).get("userid");
         }
