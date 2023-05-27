@@ -130,3 +130,7 @@
 2023-05-27 14:09:22.669  INFO 24728 --- [RMI TCP Connection(3)-192.168.100.1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
 2023-05-27 14:09:22.670  INFO 24728 --- [RMI TCP Connection(3)-192.168.100.1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
 2023-05-27 14:09:22.672  INFO 24728 --- [RMI TCP Connection(3)-192.168.100.1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2023-05-27 18:48:54.610  INFO 24728 --- [http-nio-8889-exec-1] c.ttsx.order.controller.CartController   : 2
+2023-05-27 18:49:03.147  INFO 24728 --- [http-nio-8889-exec-2] c.ttsx.order.controller.CartController   : 2
+2023-05-27 18:49:18.849  INFO 24728 --- [http-nio-8889-exec-3] c.ttsx.order.controller.CartController   : 2
+2023-05-27 19:37:00.995  INFO 24728 --- [http-nio-8889-exec-5] c.ttsx.order.controller.CartController   : 2
