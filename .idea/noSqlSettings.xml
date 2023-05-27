@@ -8,7 +8,7 @@
           <option name="databaseVendor" value="DatabaseVendor{name='RedisDB'}" />
           <option name="label" value="t" />
           <option name="serverUrl" value="localhost:6379" />
-          <option name="userDatabase" value="3" />
+          <option name="userDatabase" value="6" />
         </ServerConfiguration>
       </list>
     </option>

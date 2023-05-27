@@ -209,9 +209,9 @@ public class AdminController {
             Part uploadFile = request.getPart("uploadFile");
 
             String fileName = uploadFile.getSubmittedFileName();
-            String filePath = "E:\\homework\\ttsx\\-\\ttsx-index\\src\\main\\resources\\static\\images\\goods\\" +
+            String filePath = "E:\\homework\\t4\\-\\ttsx-index\\src\\main\\resources\\static\\images\\goods\\" +
                     UploadFileUtils.getNowDateStr();
-            String urlPath = "images" + UploadFileUtils.getNowDateStr() + fileName;
+            String urlPath = "images/goods" + UploadFileUtils.getNowDateStr() + fileName;
             //注:线下时需服务器重启才可查看图片
             urlPath = urlPath.replaceAll("\\\\", "/");
             File saveDirFile = new File(filePath);

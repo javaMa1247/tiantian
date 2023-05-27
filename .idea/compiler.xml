@@ -8,20 +8,27 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="ttsx-entity" />
-        <module name="ttsx-foods" />
-        <module name="ttsx-alipay" />
-        <module name="ttsx-feign" />
-        <module name="ttsx-index" />
-        <module name="ttsx-gateway" />
         <module name="ttsx-order" />
+        <module name="ttsx-foods" />
+        <module name="ttsx-FlashKilling" />
+        <module name="ttsx-feign" />
         <module name="ttsx-user" />
+        <module name="seckill-service" />
+        <module name="ttsx-gateway" />
         <module name="ttsx-background" />
+        <module name="ttsx-alipay" />
+        <module name="ttsx-index" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="ttsx-scheduling" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="-" options="-parameters" />
+      <module name="seckill-service" options="-parameters" />
+      <module name="ttsx-FlashKilling" options="-parameters" />
       <module name="ttsx-alipay" options="-parameters" />
       <module name="ttsx-background" options="-parameters" />
       <module name="ttsx-entity" options="-parameters" />
@@ -30,6 +37,7 @@
       <module name="ttsx-gateway" options="-parameters" />
       <module name="ttsx-index" options="-parameters" />
       <module name="ttsx-order" options="-parameters" />
+      <module name="ttsx-scheduling" options="-parameters" />
       <module name="ttsx-user" options="-parameters" />
     </option>
   </component>

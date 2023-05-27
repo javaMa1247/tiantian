@@ -196,6 +196,8 @@ public class UserController {
             memberinfo.setPwd(pwd2);
             memberinfo.setEmail(email);
             memberinfo.setRegDate(createTime);
+            memberinfo.setTel("1008610086");
+            memberinfo.setStatus(1);
             int i = this.userMapper.insert(memberinfo);
             if (i>0){
                 map.put("code",1);

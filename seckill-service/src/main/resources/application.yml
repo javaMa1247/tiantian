@@ -1,0 +1,66 @@
+server:
+  port: 30001
+
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+        username: nacos
+        password: nacos
+        namespace: ttsx-prod
+
+  application:
+    name: ttsx-seckill
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/fresh?autoReconnect=true&useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8&useSSL=false
+    username: root
+    password: a
+    # 使用Druid数据源
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    druid:
+      filters: stat
+      maxActive: 20
+      initialSize: 1
+      maxWait: 60000
+      minIdle: 1
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 300000
+      validationQuery: select 'x'
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      poolPreparedStatements: true
+      maxOpenPreparedStatements: 20
+  data:
+    redis:
+      repositories:
+        enabled: false
+  redis:
+    database: 6   # redis数据库索引（默认为0），我们使用索引为其他(0-15)的数据库，避免和其他数据库冲突
+    host: 127.0.0.1
+    port: 6379
+    password:
+redisson:
+  single-server-config:
+    address: "redis://${spring.redis.host}:${spring.redis.port}"
+    database: 6
+  threads: 16
+
+  #  4369 -- erlang发现口
+  #
+  #  5672 --client端通信口
+  #
+  #  15672 -- 管理界面ui端口 http://localhost:15672/
+  #
+  #  25672 -- server间内部通信口
+
+  rabbitmq:  #mq配置
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
+
+#logging:
+#  config: classpath:logback-spring.xml

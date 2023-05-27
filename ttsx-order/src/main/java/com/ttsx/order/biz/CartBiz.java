@@ -6,12 +6,10 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.ttsx.bean.Cartinfo;
 import com.ttsx.bean.Goodsinfo;
 import com.ttsx.feignApi.FeignApp;
-import com.ttsx.feignApi.FeignAppUser;
 import com.ttsx.order.dao.CartDao;
 import com.ttsx.utils.R;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -31,11 +29,9 @@ public class CartBiz {
     @Autowired
     private CartDao dao;
 
-    @Autowired
-    private FeignAppUser user;
 
-    public List<Cartinfo> showAllCart(){
-        int mno= user.getUserId();
+    public List<Cartinfo> showAllCart(String mno){
+//        int mno= user.getUserId();
         QueryWrapper<Cartinfo> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda()
                 .eq(Cartinfo::getMno, mno);
@@ -52,8 +48,8 @@ public class CartBiz {
         }
         return cartinfos;
     }
-    public int addCart(String gno,String num) {
-        int mno= user.getUserId();
+    public int addCart(String gno,String num,String mno) {
+//        int mno= user.getUserId();
 //        mno = BaseContext.getCurrentId().intValue();
         int result = 0;
         try {
@@ -95,8 +91,8 @@ public class CartBiz {
         }
         return 1;
     }
-    public int delgoods(String cno,String gno){
-        int mno= user.getUserId();
+    public int delgoods(String cno,String gno,String mno){
+//        int mno= user.getUserId();
         int result = 0;
         try{
             LambdaQueryWrapper<Cartinfo> lambdaQueryWrapper = new LambdaQueryWrapper<>();
@@ -111,8 +107,8 @@ public class CartBiz {
 
         return result;
     }
-    public Integer cleanCart(List<Map<String, Object>> lists){
-        int mno= user.getUserId();
+    public Integer cleanCart(List<Map<String, Object>> lists,String mno){
+//        int mno= user.getUserId();
         int i = 0;
 //        String ono = String.valueOf(db.selectAggreation("select MAX(ono) from orderinfo"));
         if(lists.size()>0){

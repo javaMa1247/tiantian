@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>秒杀商品管理</title>
+    <script src="js/vue.js"></script>
+    <script src="js/axios.js"></script>
+    <script src="js/checkToken_admin.js"></script>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui@2.15.10/lib/theme-chalk/index.css">
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui@2.15.10/lib/index.js"></script>
+</head>
+<body>
+<div id="app">
+    <div>
+        <el-button type="text" @click="flashKillingVO = {},dialogFormVisible2 = true">新增数据</el-button>
+        <el-dialog title="新增数据" :visible.sync="dialogFormVisible2" :modal-append-to-body="abcd">
+            <el-form :model="flashKillingVO" size="mini">
+                <el-form-item label="商品id:" label-width="100px">
+                    <el-input v-model="flashKillingVO.gno" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="秒杀价格:" label-width="100px">
+                    <el-input v-model="flashKillingVO.fk_price" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="秒杀库存:" label-width="100px">
+                    <el-input v-model="flashKillingVO.count" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="开始时间:" label-width="100px">
+                    <el-input v-model="flashKillingVO.start_data" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="场次:" label-width="100px">
+                    <el-input v-model="flashKillingVO.time" autocomplete="off"></el-input>
+                </el-form-item>
+
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="dialogFormVisible2 = false">取 消</el-button>
+                <el-button type="primary" @click="adddata(),dialogFormVisible2 = false">确 定</el-button>
+            </div>
+        </el-dialog>
+
+        <template>
+            <el-table
+                    :data="goodsinfo"
+                    style="width: 100%"
+                    max-height="415">
+                <el-table-column
+                        fixed
+                        prop="fno"
+                        label="秒杀编号"
+                        width="120">
+                </el-table-column>
+                <el-table-column
+                        prop="gno"
+                        label="商品编号"
+                        width="120">
+                </el-table-column>
+                <el-table-column
+                        prop="gname"
+                        label="商品名称"
+                        width="160">
+                </el-table-column>
+                <el-table-column
+                        prop="price"
+                        label="价格(元)"
+                        width="120">
+                </el-table-column>
+                <el-table-column
+                        prop="fk_price"
+                        label="秒杀价格(元)"
+                        width="120">
+                </el-table-column>
+                <el-table-column
+                        prop="unit"
+                        label="单位"
+                        width="80">
+                </el-table-column>
+                <el-table-column
+                        prop="count"
+                        label="秒杀库存"
+                        width="80">
+                </el-table-column>
+                <el-table-column
+                        prop="currentCount"
+                        label="目前库存"
+                        width="80">
+                </el-table-column>
+                <el-table-column
+                        prop="start_dateString"
+                        label="开始时间"
+                        width="120">
+                </el-table-column>
+                <el-table-column
+                        prop="time"
+                        label="场次"
+                        width="80">
+                </el-table-column>
+                <el-table-column
+                        prop="tno"
+                        label="分类"
+                        width="150">
+                </el-table-column>
+                <el-table-column
+                        fixed="right"
+                        label="操作"
+                        width="200">
+                    <template slot-scope="scope">
+                        <!--                flashKillingVO = goodsinfo[scope.$index],-->
+                        <el-button type="text" @click="flashKillingVO = goodsinfo[scope.$index],dialogFormVisible = true">
+                            修改数据
+                        </el-button>
+                        <el-dialog title="修改数据" :visible.sync="dialogFormVisible" :modal-append-to-body="abcd">
+                            <el-form :model="flashKillingVO" size="mini">
+                                <el-form-item label="商品编号:" label-width="100px">
+                                    <el-input v-model="flashKillingVO.gno" autocomplete="off"></el-input>
+                                </el-form-item>
+                                <el-form-item label="商品名称:" label-width="100px">
+                                    <el-input v-model="flashKillingVO.gname" autocomplete="off"></el-input>
+                                </el-form-item>
+                                <el-form-item label="秒杀价格:" label-width="100px">
+                                    <el-input v-model="flashKillingVO.fk_price" autocomplete="off"></el-input>
+                                </el-form-item>
+                                <el-form-item label="秒杀库存:" label-width="100px">
+                                    <el-input v-model="flashKillingVO.count" autocomplete="off"></el-input>
+                                </el-form-item>
+                                <el-form-item label="目前库存:" label-width="100px">
+                                    <el-input v-model="flashKillingVO.currentCount" autocomplete="off"></el-input>
+                                </el-form-item>
+                                <el-form-item label="开始时间:" label-width="100px">
+                                    <el-input v-model="flashKillingVO.start_dateString" autocomplete="off"></el-input>
+                                </el-form-item>
+                                <el-form-item label="场次:" label-width="100px">
+                                    <el-input v-model="flashKillingVO.time" autocomplete="off"></el-input>
+                                </el-form-item>
+                            </el-form>
+                            <div slot="footer" class="dialog-footer">
+                                <el-button @click="dialogFormVisible = false">取 消</el-button>
+                                <el-button type="primary" @click="modifydata(flashKillingVO.fno),dialogFormVisible = false">确 定
+                                </el-button>
+                            </div>
+                        </el-dialog>
+
+                        <el-button type="text" @click="flashKillingVO = goodsinfo[scope.$index],deletex = true">下架</el-button>
+                        <el-dialog
+                                title="警告"
+                                :visible.sync="deletex"
+                                :modal-append-to-body="abcd"
+                                width="30%">
+                            <span>是否确定下架{{flashKillingVO.gname}}?</span>
+                            <span slot="footer" class="dialog-footer">
+                                <el-button @click="deletex = false">取 消</el-button>
+                                <el-button type="primary"
+                                           @click="todeletex(flashKillingVO.fno),deletex = false">确 定</el-button>
+                            </span>
+                        </el-dialog>
+
+                    </template>
+                </el-table-column>
+            </el-table>
+        </template>
+    </div>
+</div>
+<script>
+    var admin_msaddr = "http://localhost:20001/backgroud/FlashKilling/"
+    var admin_addr = "http://localhost:20001/backgroud/goods/"
+    var admin_login = "http://localhost:20001/backgroud/"
+    let vm = new Vue({
+        el: "#app",
+        data: {
+            flags: false,
+            addp: false,
+            abcd: false,
+            goodsinfo: [],
+            flashKillingVO: {},
+            dialogFormVisible: false,
+            dialogFormVisible2: false,
+            selectDatas: [],
+            deletex: false
+        },
+        methods: {
+
+            todeletex(fno) {
+                let params = new URLSearchParams();
+                params.append("op", "toDeletX");
+                params.append("fno", fno);
+                axios.post(admin_msaddr+"toDeletX", params).then(data => {
+                    if (data.data.code == 1) {
+                        this.$message({type: 'success', message: '下架成功!'});
+                        this.getdatas();
+                    } else {
+                        this.$message.error(data.data.msg);
+                        this.getdatas();
+                    }
+                });
+            },
+            adddata() {
+                let params = new URLSearchParams(this.flashKillingVO);
+                params.append("op", "addGoodInfo");
+                axios.post(admin_msaddr+ "addGoodInfo", params).then(data => {
+                    if (data.data.code == 1) {
+                        this.$message({type: 'success', message: '添加成功!'});
+                        this.getdatas();
+                    } else {
+                        this.$message.error(data.data.msg);
+                        this.getdatas();
+                    }
+                })
+            },
+            modifydata(fno) {
+                let params = new URLSearchParams(this.flashKillingVO);
+                axios.post(admin_msaddr+ "modifyGoodInfo", params).then(data => {
+                    if (data.data.code == 1) {
+                        this.$message({type: 'success', message: '修改成功!'});
+                        this.getdatas();
+                    } else {
+                        this.$message.error(data.data.msg);
+                        this.getdatas();
+                    }
+                })
+            },
+            getdatas() {
+                let params = new URLSearchParams();
+                params.append("op", "showmsGoodsInfo");
+                axios.post(admin_msaddr+ "showmsGoodsInfo", params).then(data => {
+                    if (data.data.code == 1) {
+                        this.goodsinfo = data.data.data;
+                    } else {
+                        this.$message.error(data.data.msg);
+                    }
+                })
+            },
+            getselectdata() {
+                let params = new URLSearchParams();
+                params.append("op", "getSelectData");
+                axios.post(admin_addr+ "getSelectData", params).then(data => {
+                    if (data.data.code == 1) {
+                        this.selectDatas = data.data.data;
+                    } else {
+                        this.$message.error(data.data.msg);
+                    }
+                });
+            },
+            modify(index) {
+                // this.goodsinfo[index].gno
+            }
+        },
+        mounted() {
+            axios.all(this.getselectdata(), this.getdatas()).then();
+        },
+        created() {
+            let params = new URLSearchParams();
+            params.append("op", "selectLogin");
+            axios.post(admin_login+"selectLogin", params).then(data => {
+                if (data.data.code != 1) {
+                    this.$message.error(data.data.msg);
+                    window.location.href = "404.html";
+                }
+            });
+        }
+    })
+</script>
+</body>
+</html>

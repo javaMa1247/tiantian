@@ -1,0 +1,188 @@
+<! doctype html>
+<html>
+<head lang="zh-CN">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 引入外部图标【只是页面更好看，和后面执行逻辑无关】 -->
+    <link rel="stylesheet" href="http://at.alicdn.com/t/font_3225174_brp3w7dbhdt.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        .seckill {
+            height: 230px;
+            width: 190px;
+            margin: 100px auto;
+            background-color: #e83632;
+            padding-top: 31px;
+        }
+        .seckill .seckill_title {
+            display: block;
+            width: 100%;
+            font-size: 30px;
+            font-weight: 700;
+            text-align: center;
+            color: white;
+        }
+        .seckill .seckill_content {
+            height: 116px;
+            width: 100%;
+        }
+        .seckill .seckill_content p {
+            display: inline-block;
+            height: 26px;
+            width: 100%;
+            font-size: 14px;
+            line-height: 26px;
+            color: white;
+            text-align: center;
+        }
+        .seckill .seckill_content h2 {
+            height: 90px;
+            width: 100%;
+            text-align: center;
+            line-height: 90px;
+
+        }
+        .seckill .seckill_timer {
+            margin: 20px auto 0;
+            height: 30px;
+            width: 130px;
+            list-style: none;
+        }
+        .seckill .seckill_timer .seckill_timer_box {
+            float: left;
+            height: 100%;
+            width: 30px;
+            background-color: black;
+            color: white;
+            font-size: 16px;
+            font-weight: 800;
+            text-align: center;
+            line-height: 30px;
+        }
+        .seckill .seckill_timer .seckill_timer_icon {
+            float: left;
+            height: 100%;
+            width: 20px;
+            color: white;
+            font-size: 16px;
+            font-weight: 1000;
+            text-align: center;
+            line-height: 30px;
+        }
+        .iconfont {
+            font-size: 60px;
+            color: white;
+        }
+    </style>
+    <!--视窗，宽度默认设备宽度,开始缩放1倍-->
+    <link rel="stylesheet" href="https://cdn.bootcss.com/normalize/8.0.1/normalize.css">
+    <!---标准格式-->
+    <link rel="stylesheet" href="./css/text.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <title>小米商城</title>
+    <script>
+        var lis = document.querySelectorAll('.seckill_timer_box');
+        countTime();
+        //设置计时器，回调函数设置为封装好的计时函数
+        window.setInterval(countTime,1000);
+        //封装计时函数
+        function countTime(){
+            var endTime = +new Date('2023-5-21 22:55');   //设置秒杀截至时间【手动赋值】
+            var startTime = +new Date();
+            var times = (endTime - startTime)/1000;
+            var hour = parseInt(times/60/60%24);
+            hour = hour<10? '0'+hour : hour;
+            var min = parseInt(times/60%60);
+            min = min<10? '0'+min : min;
+            var sec = parseInt(times%60);
+            sec = sec<10? '0'+sec : sec;
+
+            lis[0].innerHTML = hour;
+            lis[1].innerHTML = min;
+            lis[2].innerHTML = sec;
+        }
+    </script>
+</head>
+<body class="clear-float">
+<div class="top-nav">
+    <div class="border">
+        <div class="nav container">
+            <div class="right">购物车</div>
+            <div class="right">登录 | 注册 | 消息通知 |</div>
+        </div>
+    </div>
+</div>
+<div class="header">
+    <div class="container">
+        <div class="left picture">
+            <img class="logo" src="http://pic192.nipic.com/file/20181119/20144696_101353530633_2.jpg">
+        </div>
+        <div class="left classify">
+            <span>全部商品分类</span>
+            <span>小米手机</span>
+            <span>Redmi 红米</span>
+            <span>电视</span>
+            <span>笔记本</span>
+            <span>家电</span>
+            <span>路由器</span>
+            <span>智能硬件</span>
+            <span>服务</span>
+            <span>社区</span>
+        </div>
+        <div class="right">
+            <input type="text" placeholder="小米9 Pro 5G">
+            <button>搜索</button>
+        </div>
+    </div>
+</div>
+<div class="main-promote">
+    <div class="container">
+        <div class="time">
+            <span>08:00 即将开始</span>
+            <span>10:00 即将开始</span>
+            <span>14:00 即将开始</span>
+            <span>20:00 即将开始</span>
+            <span>22:00 即将开始</span>
+        </div>
+        <table>
+            <tr>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+            <tr>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+            <tr>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+            <tr>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+            <tr>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="container">*小米秒杀活动规则：
+    <br>1.秒杀商品是否参加活动、最终秒杀成功的商品，以订单结算页显示为准，活动包括但不限于优惠券、赠品、满减、满赠等；<br>
+    2.秒杀商品数量有限，活动以下单支付成功为准，请加入购物车后尽快下单支付;<br>
+    3.秒杀价不含运费，最终以订单结算页价格为准；<br>
+    4.订单中商品的数量、颜色、型号等，以订单结算页为准。<br>
+    温馨提示：因可能存在系统缓存、页面更新导致价格变动异常等不确定性情况出现，如您发现活动商品标价或促销信息有异常，请您立即联系小米客服，以便我们及时补正。
+</div>
+</body>
+</html>

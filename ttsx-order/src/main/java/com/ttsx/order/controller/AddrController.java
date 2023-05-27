@@ -3,6 +3,7 @@ package com.ttsx.order.controller;
 import com.ttsx.bean.Addrinfo;
 import com.ttsx.order.biz.AddrBiz;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,9 +22,9 @@ public class AddrController {
     @Autowired
     private AddrBiz biz;
     @RequestMapping("showAddr")
-    public Map<String,Object> showAddr (){
+    public Map<String,Object> showAddr (@RequestHeader String uid){
         Map<String,Object> map = new HashMap<>();
-        List<Addrinfo> list= this.biz.showAddr();
+        List<Addrinfo> list= this.biz.showAddr(uid);
         if(list.size()>0){
             map.put("code",1);
             map.put("data",list);
@@ -35,9 +36,9 @@ public class AddrController {
     }
 
     @RequestMapping("addAddr")
-    public Map<String,Object> addAddr(Addrinfo addrinfo){
+    public Map<String,Object> addAddr(@RequestHeader String uid,Addrinfo addrinfo){
         Map<String,Object> map = new HashMap<>();
-        Integer result = this.biz.addAddr(addrinfo);
+        Integer result = this.biz.addAddr(addrinfo,uid);
         if(result!=0){
             map.put("code",1);
         }else {
@@ -47,9 +48,9 @@ public class AddrController {
     }
 
     @RequestMapping("updateAddr")
-    public Map<String,Object> updateAddr(Addrinfo addrinfo){
+    public Map<String,Object> updateAddr(@RequestHeader String uid,Addrinfo addrinfo){
         Map<String,Object> map = new HashMap<>();
-        Integer result = this.biz.updateAddr(addrinfo);
+        Integer result = this.biz.updateAddr(addrinfo,uid);
         if(result!=0){
             map.put("code",1);
         }else {
@@ -59,9 +60,9 @@ public class AddrController {
     }
 
     @RequestMapping("showAddrinfo")
-    public Map<String,Object> showAddrinfo(Addrinfo addrinfo){
+    public Map<String,Object> showAddrinfo(@RequestHeader String uid,Addrinfo addrinfo){
         Map<String,Object> map = new HashMap<>();
-        map = this.biz.showAddrinfo(addrinfo);
+        map = this.biz.showAddrinfo(addrinfo,uid);
         return map;
     }
 
