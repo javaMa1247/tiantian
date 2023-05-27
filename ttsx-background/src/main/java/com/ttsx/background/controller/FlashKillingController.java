@@ -16,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
@@ -43,6 +44,8 @@ public class FlashKillingController {
     private FeignAppFlashKilling feignAppFlashKilling;
     @Autowired
     private com.ttsx.background.mapper.flashKillingDao flashKillingDao;
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     //查询
     @RequestMapping("/showmsGoodsInfo")
@@ -114,18 +117,21 @@ public class FlashKillingController {
             }
             map.put("code", 1);
             map.put("data", i);
+            String message = "1";
+            try {
+                rabbitTemplate.convertAndSend(RabbitMqConfig.STORY_EXCHANGE,RabbitMqConfig.STORY_ROUTING_KEY,message.getBytes("utf-8"));
+            } catch (UnsupportedEncodingException e) {
+                map.put("code",0);
+                map.put("msg","无法插入数据");
+                return  map;
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
             map.put("code", 0);
             map.put("msg", e.getMessage());
-        }String message = "1";
-        try {
-            rabbitTemplate.convertAndSend(RabbitMqConfig.STORY_EXCHANGE,RabbitMqConfig.STORY_ROUTING_KEY,message.getBytes("utf-8"));
-        } catch (UnsupportedEncodingException e) {
-            map.put("code",0);
-            map.put("msg","无法插入数据");
-            return  map;
         }
+
         return map;
     }
     //修改

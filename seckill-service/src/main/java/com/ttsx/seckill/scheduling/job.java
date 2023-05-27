@@ -15,10 +15,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -60,12 +57,13 @@ public class job {
         LocalDate today = LocalDate.now();
         LocalDate tomorrowTime = today.plusDays(1);
 
+        Set<String> keys = redisTemplate.keys("*");
+        redisTemplate.delete(keys);
 
-        redisTemplate.delete(yesterdayTime+"\t"+"10");
+       /* redisTemplate.delete(yesterdayTime+"\t"+"10");
         redisTemplate.delete(yesterdayTime+"\t"+"16");
         redisTemplate.delete(yesterdayTime+"\t"+"22");
-
-
+*/
         List<FlashKillingVO> data = feignAppFlashKilling.selectmsGoodsInfo(10).getData();
         for (FlashKillingVO flashKillingVO : data) {
             redisTemplate.opsForHash().put(nowTime+"\t"+"10",String.valueOf(flashKillingVO.getFno()),flashKillingVO);
