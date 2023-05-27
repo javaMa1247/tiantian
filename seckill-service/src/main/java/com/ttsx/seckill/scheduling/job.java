@@ -12,7 +12,11 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -37,26 +41,48 @@ public class job {
 //    @Scheduled(fixedRate = 1000)
     public void selectjob()  {
         System.out.println("执行定时上架....");
-        List<FlashKilling> flashKillingList = flashKillingService.selectList();
-        for (FlashKilling flashKillingTtem : flashKillingList) {
-            redisCache.setCacheObject(String.valueOf(flashKillingTtem.getGno()),flashKillingTtem.getCount(),3600*24, TimeUnit.SECONDS);
-        }
+//        List<FlashKilling> flashKillingList = flashKillingService.selectList();
+//        for (FlashKilling flashKillingTtem : flashKillingList) {
+//            redisCache.setCacheObject(String.valueOf(flashKillingTtem.getGno()),flashKillingTtem.getCount(),3600*24, TimeUnit.SECONDS);
+//        }
 //
-        redisTemplate.delete("10");
-        redisTemplate.delete("16");
-        redisTemplate.delete("22");
-        List<FlashKillingVO> data = feignAppFlashKilling.selectmsGoodsInfo("10").getData();
-        if (!data.isEmpty()) {
-            redisTemplate.opsForList().leftPushAll("10", data.toArray());
+        Date now = new Date();
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(now);
+        cal.add(Calendar.DATE, -1);
+        Date yesterday = cal.getTime();
+
+        // 格式化日期
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        // 昨天时间
+        String yesterdayTime = sdf.format(yesterday);
+        // 现在时间
+        String nowTime = sdf.format(now);
+        // 明天时间
+        LocalDate today = LocalDate.now();
+        LocalDate tomorrowTime = today.plusDays(1);
+
+
+        redisTemplate.delete(yesterdayTime+"\t"+"10");
+        redisTemplate.delete(yesterdayTime+"\t"+"16");
+        redisTemplate.delete(yesterdayTime+"\t"+"22");
+
+
+        List<FlashKillingVO> data = feignAppFlashKilling.selectmsGoodsInfo(10).getData();
+        for (FlashKillingVO flashKillingVO : data) {
+            redisTemplate.opsForHash().put(nowTime+"\t"+"10",String.valueOf(flashKillingVO.getFno()),flashKillingVO);
         }
-        List<FlashKillingVO> data2 = feignAppFlashKilling.selectmsGoodsInfo("16").getData();
-        if (!data2.isEmpty()) {
-            redisTemplate.opsForList().leftPushAll("16", data2.toArray());
+        List<FlashKillingVO> data2 = feignAppFlashKilling.selectmsGoodsInfo(16).getData();
+        for (FlashKillingVO flashKillingVO : data2) {
+            redisTemplate.opsForHash().put(nowTime+"\t"+"16",String.valueOf(flashKillingVO.getFno()),flashKillingVO);
         }
-        List<FlashKillingVO> data3 = feignAppFlashKilling.selectmsGoodsInfo("22").getData();
-        if (!data3.isEmpty()) {
-            redisTemplate.opsForList().leftPushAll("22", data3.toArray());
+        List<FlashKillingVO> data3 = feignAppFlashKilling.selectmsGoodsInfo(22).getData();
+        for (FlashKillingVO flashKillingVO : data3) {
+            redisTemplate.opsForHash().put(nowTime+"\t"+"22",String.valueOf(flashKillingVO.getFno()),flashKillingVO);
         }
+
+
         System.out.println("完成....");
     }
     @PostConstruct

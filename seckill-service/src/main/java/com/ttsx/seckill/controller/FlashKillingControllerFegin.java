@@ -38,7 +38,7 @@ public class FlashKillingControllerFegin {
         //获取当天秒杀商品集合
 
         QueryWrapper<FlashKilling> qw = new QueryWrapper<>();
-        qw.eq("time", Integer.parseInt((String)time));
+        qw.eq("time", Integer.parseInt(time+""));
         qw.eq("start_data", new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
         List<FlashKilling> list = flashKillingMapper.selectList(qw);
         List<FlashKillingVO> flashKillingVOS = new ArrayList<>();
