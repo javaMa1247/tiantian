@@ -22,8 +22,10 @@ public class FlashKilling implements Serializable {
     @TableId(type = IdType.AUTO,value = "fno")    //主键且自增
     private Integer fno;
     private Integer gno;
-    private Double fk_price;
+    @TableField("fk_price")
+    private Double fkPrice;
     private Integer count;
+    @TableField("start_data")
     private String start_data;
     private Integer time;
 

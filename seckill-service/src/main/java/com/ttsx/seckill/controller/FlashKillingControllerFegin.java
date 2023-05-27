@@ -45,9 +45,13 @@ public class FlashKillingControllerFegin {
         for (FlashKilling f : list) {
             FlashKillingVO vo = new FlashKillingVO();
             Goodsinfo goodsinfo = this.feignApp.findById(f.getGno()).getData();
+            System.out.println(goodsinfo);
             //将数据copy到vo对象中
             BeanUtils.copyProperties(goodsinfo,vo);
             BeanUtils.copyProperties(f,vo);
+            vo.setFk_price(f.getFkPrice());
+            vo.setCurrentCount(goodsinfo.getBalance());
+            vo.setStart_dateString(f.getStart_data());
             flashKillingVOS.add(vo);
         }
 
@@ -66,6 +70,9 @@ public class FlashKillingControllerFegin {
             //将数据copy到vo对象中
             BeanUtils.copyProperties(goodsinfo,vo);
             BeanUtils.copyProperties(f,vo);
+            vo.setFk_price(f.getFkPrice());
+            vo.setCurrentCount(goodsinfo.getBalance());
+            vo.setStart_dateString(f.getStart_data());
             flashKillingVOS.add(vo);
         }
 
