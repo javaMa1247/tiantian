@@ -18,6 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * @Description:
@@ -53,11 +54,12 @@ public class SecKillController {
 //    @AccessLimit(seconds = 1,maxCount = 800)
     public Map<String ,Object> secKill(@RequestParam("time")  String time,
                                        @RequestParam("seckillId")  String fno,
+                                       @RequestHeader(required = false) String uid,
                                         HttpServletRequest request) {
-//        @RequestHeader String uid,
-        String token = request.getHeader("token");
-        String  uid = (String)JWTUtils.getTokenInfo(token).get("userid");
-
+        if(Objects.nonNull(uid)&&Objects.nonNull(request.getHeader("token")) ){
+            String token = request.getHeader("token");
+            uid = (String) JWTUtils.getTokenInfo(token).get("userid");
+        }
 //        String
 //        FlashKillingVO flashKillingVO = this.feignAppFlashKilling.showmsGoodsDetail(time, fno).getData();
 
