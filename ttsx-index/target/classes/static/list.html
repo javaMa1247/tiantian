@@ -1,0 +1,288 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+	<title>天天生鲜-商品列表</title>
+	<link rel="stylesheet" type="text/css" href="css/reset.css">
+	<link rel="stylesheet" type="text/css" href="css/main.css">
+</head>
+<body>
+<div id="app">
+	<div class="header_con">
+		<div class="header">
+			<div class="welcome fl">欢迎来到天天生鲜!</div>
+			<div class="fr">
+				<div class="login_btn fl" v-if="isLogin" v-cloak>
+					欢迎您：{{userdata.nickName}}
+				</div>
+				<div class="login_btn fl" v-else>
+					<a href="login.html">登录</a>
+					<span>|</span>
+					<a href="register.html">注册</a>
+				</div>
+				<div class="user_link fl" v-if="isLogin">
+					<span>|</span>
+					<a href="user_center_info.html">用户中心</a>
+					<span>|</span>
+					<a href="cart.html">我的购物车</a>
+					<span>|</span>
+					<a href="user_center_order.html">我的订单</a>
+					<span>|</span>
+					<a href="" @click.prevent="history()">历史记录</a>
+					<span>|</span>
+					<a href="" @click.prevent="logout()">退出登录</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="search_bar clearfix">
+		<a href="index.html" class="logo fl"><img src="images/logo.png"></a>
+		<div class="search_con fl">
+			<input type="text" class="input_text fl" name="" placeholder="搜索商品" v-model="findGoods">
+			<input type="button" class="input_btn fr" name="" value="搜索" @click="findgoods()">
+		</div>
+		<div class="guest_cart fr">
+			<a href="#" class="cart_name fl">我的购物车</a>
+			<div class="goods_count fl">1</div>
+		</div>
+	</div>
+
+	<div class="navbar_con">
+		<div class="navbar clearfix">
+			<div class="subnav_con fl">
+				<h1>全部商品分类</h1>	
+				<span></span>			
+				<ul class="subnav">
+					<li><a href="list.html" class="fruit" @click="toList(1,'新鲜水果')">新鲜水果</a></li>
+					<li><a href="list.html" class="seafood" @click="toList(2,'海鲜水产')">海鲜水产</a></li>
+					<li><a href="list.html" class="meet" @click="toList(3,'猪牛羊肉')">猪牛羊肉</a></li>
+					<li><a href="list.html" class="egg" @click="toList(4,'禽类蛋品')">禽类蛋品</a></li>
+					<li><a href="list.html" class="vegetables" @click="toList(5,'新鲜蔬菜')">新鲜蔬菜</a></li>
+					<li><a href="list.html" class="ice" @click="toList(6,'速冻食品')">速冻食品</a></li>
+				</ul>
+			</div>
+			<ul class="navlist fl">
+				<li><a href="index.html">首页</a></li>
+			</ul>
+		</div>
+	</div>
+
+	<div class="breadcrumb">
+		<a href="index.html">全部分类</a>
+		<span>></span>
+		<a href="list.html" @click="flush">{{Tname}}</a>
+	</div>
+
+	<div class="main_wrap clearfix">
+		<div class="l_wrap fl clearfix">
+			<div class="new_goods">
+				<h3>新品推荐</h3>
+				<ul>
+					<li v-for="item in newgoods">
+						<a href="detail.html" @click="toDetail(item.gno)"><img :src="item.pics"></a>
+						<h4><a href="detail.html"  @click="toDetail(item.gno)">{{item.gname}}</a></h4>
+						<div class="prize">￥{{item.price}}</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+
+		<div class="r_wrap fr clearfix">
+			<div class="sort_bar">
+				<a href="#" class="active">默认</a>
+				<a href="#">价格</a>
+				<a href="#">人气</a>
+			</div>
+
+			<ul class="goods_type_list clearfix">
+				<li  v-for="(item,index) in goods">
+					<a href="detail.html" @click="toDetail(item.gno)"><img :src="item.pics"></a>
+					<h4><a href="detail.html" @click="toDetail(item.gno)">{{item.gname}}</a></h4>
+					<div class="operate">
+						<span class="prize">￥{{item.price}}</span>
+						<span class="unit">{{item.price}}/500g</span>
+						<a href="#" class="add_goods" title="加入购物车"></a>
+					</div>
+				</li>
+			</ul>
+
+			<div class="pagenation">
+				<a href="list.html" @click="jianPage">上一页</a>
+				<a href="list.html" class="active" @click="pagenos(1)">1</a>
+				<a href="list.html" @click="pagenos(2)">2</a>
+				<a href="list.html" @click="pagenos(3)">3</a>
+				<a href="list.html" @click="pagenos(4)">4</a>
+				<a href="list.html" @click="pagenos(5)">5</a>
+				<a href="list.html" @click="jiaPage">下一页></a>
+			</div>
+			<h2 align="center">总共:{{total}}个商品 当前第{{Pageno}}页</h2>
+		</div>
+	</div>
+
+	<div class="footer">
+		<div class="foot_link">
+			<a href="#">关于我们</a>
+			<span>|</span>
+			<a href="#">联系我们</a>
+			<span>|</span>
+			<a href="#">招聘人才</a>
+			<span>|</span>
+			<a href="#">友情链接</a>		
+		</div>
+		<p>CopyRight © 2016 北京天天生鲜信息技术有限公司 All Rights Reserved</p>
+		<p>电话：010-****888    京ICP备*******8号</p>
+	</div>
+</div>
+<script src="js/vue.js"></script>
+<script src="js/axios.js"></script>
+<script type="text/javascript">
+	var addr_good ="http://localhost:20001/goods/";
+	const vm=new Vue({
+		el:'#app',
+		data:{
+			Tno:-1, //商品类型
+			goods:[],//接收商品对象
+			newgoods:[],//接收两个gno最大最近的商品
+			Tname:'',//类型名字
+			total:-1,//商品总数
+			Pageno:1,//页码数
+			findGoods:'',//搜索框输入的关键字
+			isLogin:false,
+			userdata:{},
+		},
+		methods:{
+			//搜索商品结果
+			findgoods:function (){
+				if(this.findGoods==''){
+					return;
+				}
+				let params=new URLSearchParams();
+				params.append("pageno",this.Pageno);
+				params.append("goodsname",this.findGoods);
+				params.append("pagesize","5");
+				axios.post(addr_good+"findGoods",params).then(res=>{
+					if(res.data.code==1){
+						let y={Tno:999};
+						let z={Tname:'搜索结果'};
+						sessionStorage.setItem("goodsTno",JSON.stringify(y));
+						sessionStorage.setItem("goodsTname",JSON.stringify(z));
+						this.Tname='搜索结果';
+						let a={Findgoods:this.findGoods};
+						sessionStorage.setItem("findgoods",JSON.stringify(a));
+						this.goods=res.data.data.records;
+						this.total=res.data.data.total;
+					}
+
+				})
+			},
+			//上传页码数
+			pagenos:function (pageno){
+				let x={Pageno:pageno}
+				sessionStorage.setItem("pageno",JSON.stringify(x));
+			},
+			//将页码数初始化为1
+			flush:function (){
+				let x={Pageno:1}
+				sessionStorage.setItem("pageno",JSON.stringify(x));
+			},
+			//页码数加一
+			jiaPage:function (){
+				if(this.Pageno==5){
+					this.Pageno=5;
+					return;
+				};
+				this.Pageno++;
+				let x={Pageno:this.Pageno}
+				sessionStorage.setItem("pageno",JSON.stringify(x));
+			},
+			//页码数减一
+			jianPage:function (){
+				if(this.Pageno==1){
+					this.Pageno=1;
+					return;
+				};
+				this.Pageno--;
+				let x={Pageno:this.Pageno}
+				sessionStorage.setItem("pageno",JSON.stringify(x));
+			},
+			//到达list.html页面
+			toList:function (tno,tname) {
+				let x={Pageno:1}
+				sessionStorage.setItem("pageno",JSON.stringify(x));
+				let y = {Tno: tno};
+				sessionStorage.setItem("goodsTno", JSON.stringify(y));
+				let z={Tname:tname};
+				sessionStorage.setItem("goodsTname",JSON.stringify(z));
+			},
+			//查询最新的两个商品
+			newGoods:function (){
+				axios.get(addr_good+"showNewGoods").then(result=>{
+					let data=result.data;
+					if(data.code==1){
+						this.newgoods=data.data;
+						return;
+					}
+					console.log(data.code);
+				})
+			},
+			//到达detail.html
+			toDetail:function (gno){
+				let x={Gno:gno};
+				sessionStorage.setItem("goodsGno",JSON.stringify(x));
+			},
+			//显示当前页面所有商品
+			showGoodsTno:function (){
+				let params=new URLSearchParams();
+				params.append("pageno",this.Pageno);
+				params.append("tno",this.Tno);
+				params.append("pagesize","5");
+				axios.post(addr_good+"showGoodsTno",params).then(result=>{
+					let data=result.data;
+					if(data.code==1){
+						this.goods=data.data.records;
+						this.total=data.data.total;
+						return;
+					}
+					console.log(data.code);
+				})
+			},
+			logout(){
+				let params = new URLSearchParams();
+				params.append("op", "logout");
+				axios.post("admin.action", params).then(data => {
+					if (data.data.code == 1) {
+						alert("退出登录成功!")
+						this.isLogin = false;
+					}else {
+						alert(data.data.msg);
+					}
+				})
+			},
+			history() {
+				window.location.href = 'user_center_info.html'
+			},
+		},
+		mounted(){
+			if(this.Tno!=999){
+				axios.all([this.showGoodsTno(),this.newGoods()]);
+			}else{
+				axios.all([this.newGoods(),this.findgoods()]);
+			}
+
+		},
+		created(){
+			this.Tname=JSON.parse(sessionStorage.getItem("goodsTname")).Tname;
+			this.Tno=JSON.parse(sessionStorage.getItem("goodsTno")).Tno;
+			this.Pageno=JSON.parse(sessionStorage.getItem("pageno")).Pageno;
+			if(this.Tno==999){
+				this.findGoods=JSON.parse(sessionStorage.getItem("findgoods")).Findgoods;
+			}
+		},
+		computed:{
+
+		}
+	})
+</script>
+</body>
+</html>

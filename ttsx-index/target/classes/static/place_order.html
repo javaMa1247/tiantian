@@ -1,0 +1,219 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+	<title>天天生鲜-提交订单</title>
+	<link rel="stylesheet" type="text/css" href="css/reset.css">
+	<link rel="stylesheet" type="text/css" href="css/main.css">
+</head>
+<body>
+<div id="app">
+	<div class="header_con">
+		<div class="header">
+			<div class="welcome fl">欢迎来到天天生鲜!</div>
+			<div class="fr">
+				<div class="login_info fl">
+					欢迎您：<em>张 山</em>
+				</div>
+				<div class="login_btn fl">
+					<a href="login.html">登录</a>
+					<span>|</span>
+					<a href="register.html">注册</a>
+				</div>
+				<div class="user_link fl">
+					<span>|</span>
+					<a href="user_center_info.html">用户中心</a>
+					<span>|</span>
+					<a href="cart.html">我的购物车</a>
+					<span>|</span>
+					<a href="user_center_order.html">我的订单</a>
+				</div>
+			</div>
+		</div>		
+	</div>
+
+	<div class="search_bar clearfix">
+		<a href="index.html" class="logo fl"><img src="images/logo.png"></a>
+		<div class="sub_page_name fl">|&nbsp;&nbsp;&nbsp;&nbsp;提交订单</div>
+	</div>
+	
+	<h3 class="common_title">确认收货地址</h3>
+
+	<div class="common_list_con clearfix">
+		<dl>
+			<dt>寄送到：</dt>
+			<dd style="width: 20%">   </dd>
+			<dd>
+				<select v-model="ano" >
+					<option value="" disabled selected>--------------请选择收获地址------------</option>
+					<option :value="value.ano" v-for="(value,index) in addr">{{value.province+"   "+value.city+"   "+value.area+value.addr+"   ("+value.name+" 收)"+"   "+
+						value.tel.substr(0,3)+"****"+value.tel.substr(value.tel.length-4,value.tel.length)}}</option>
+				</select>
+			</dd>
+		</dl>
+		<a class="edit_site" @click="addnewadd()">添加收货地址</a>
+<!--		newadd.html-->
+
+	</div>
+	
+	<h3 class="common_title">支付方式</h3>	
+	<div class="common_list_con clearfix">
+		<div class="pay_style_con clearfix">
+			<input type="radio" name="pay_style" checked>
+			<label class="cash">货到付款</label>
+			<input type="radio" name="pay_style">
+			<label class="weixin">微信支付</label>
+			<input type="radio" name="pay_style">
+			<label class="zhifubao"></label>
+			<input type="radio" name="pay_style">
+			<label class="bank">银行卡支付</label>
+		</div>
+	</div>
+
+	<h3 class="common_title">商品列表</h3>
+	
+	<div class="common_list_con clearfix">
+		<ul class="goods_list_th clearfix">
+			<li class="col01">商品名称</li>
+			<li class="col02">商品单位</li>
+			<li class="col03">商品价格</li>
+			<li class="col04">数量</li>
+			<li class="col05">小计</li>		
+		</ul>
+		<ul class="goods_list_td clearfix" v-for="(value,key,index) in cartgoods">
+			<li class="col01">{{key+1}}</li>
+			<li class="col02"><img :src=`${value.goodsinfo.pics}`></li>
+			<li class="col03">{{value.goodsinfo.gname}}</li>
+			<li class="col04">{{value.goodsinfo.weight}}</li>
+			<li class="col05">{{value.goodsinfo.price}}</li>
+			<li class="col06">{{value.num}}</li>
+			<li class="col07">{{value.smallCount}}元</li>
+		</ul>
+	</div>
+
+	<h3 class="common_title">总金额结算</h3>
+
+	<div class="common_list_con clearfix">
+		<div class="settle_con">
+			<div class="total_goods_count">共<em>{{totalcount}}</em>件商品，总金额<b>{{totalprice}}元</b></div>
+			<div class="transit">运费：<b>10元</b></div>
+			<div class="total_pay">实付款：<b>{{totalprice+10}}元</b></div>
+		</div>
+	</div>
+
+	<div class="order_submit clearfix">
+		<a  id="order_btn" @click="addOrder()">提交订单</a>
+	</div>	
+
+	<div class="footer">
+		<div class="foot_link">
+			<a href="#">关于我们</a>
+			<span>|</span>
+			<a href="#">联系我们</a>
+			<span>|</span>
+			<a href="#">招聘人才</a>
+			<span>|</span>
+			<a href="#">友情链接</a>		
+		</div>
+		<p>CopyRight © 2016 北京天天生鲜信息技术有限公司 All Rights Reserved</p>
+		<p>电话：010-****888    京ICP备*******8号</p>
+	</div>
+
+	<div class="popup_con">
+		<div class="popup">
+			<p>订单提交成功！</p>
+		</div>
+		
+		<div class="mask"></div>
+	</div>
+</div>
+	<script type="text/javascript" src="js/vue.js"></script>
+	<script type="text/javascript" src="js/axios.js"></script>
+	<script src="js/checkToken1.js"></script>
+	<script type="text/javascript">
+		var addr_order="http://localhost:20001/order/";
+		var addr_addr="http://localhost:20001/addr/";
+		var addr_cart = "http://localhost:20001/cart/"
+		var vm = new Vue({
+			el:"#app",
+			data:{
+				cartgoods:[],
+				totalprice:0.0,
+				totalcount:0,
+				addr:[],
+				ano:'',
+				status:0,
+			},
+			methods:{
+				showAddr:function () {
+					axios.post(addr_addr+"showAddr").then(data=>{
+						let jsonmodel = data.data;
+						if(jsonmodel.code==1){
+							this.addr = jsonmodel.data;
+						}
+					});
+				},
+				centerSite:function () {
+					if(this.ano==''){
+						alert("请选择收货地址");
+						return;
+					}
+					const data = {ano:this.ano};
+					sessionStorage.setItem("addrinfo",JSON.stringify(data));//转成Json对象传
+					window.location.href="user_center_site.html";
+				},
+				addnewadd(){
+					window.location.href="newadd.html";
+				},
+				addOrder:function () {
+					if(this.cartgoods.length==0){
+						return;
+					}
+					if(this.ano==''){
+						alert("请选择收货地址");
+						return;
+					}
+					let params = new URLSearchParams();
+					params.append("ano",this.ano);
+					params.append("cartgoods",JSON.stringify(this.cartgoods))
+					axios.post(addr_order+"addOrder",params).then(data=>{
+						let jsonmodel2 = data.data;
+						if(jsonmodel2.code==1){
+							alert("订单提交成功");
+							let params2 = new URLSearchParams();
+							params2.append("cartgoods",JSON.stringify(this.cartgoods))
+							if(this.status==1){
+								axios.post(addr_cart+"cleanCart",params2).then(data=>{
+									let jsonmodel2 = data.data;
+									if(jsonmodel2.code==1){
+										alert("购物车已清空");
+										window.location.href="user_center_order.html";
+									}else {
+										alert(data.data.msg);
+									}
+								})
+							}else {
+								window.location.href="user_center_order.html";
+							}
+						}else {
+							alert(data.data.msg);
+						}
+					})
+				},
+
+			},
+			created(){
+				//接受参数 cartgoods
+				let data = JSON.parse(sessionStorage.getItem("cartinfo"));
+				this.cartgoods=data.cartgoods;
+				this.totalprice = data.totalprice;
+				this.totalcount = data.totalcount;
+				this.status = data.status;
+			},
+			mounted:function () {
+				axios.all([this.showAddr()]).then();
+			}
+		})
+	</script>
+</body>
+</html>

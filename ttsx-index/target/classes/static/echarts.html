@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<body>
+<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+<div id="main" style="height:400px"></div>
+<script src="js/echarts.js"></script>
+<script src="js/vue.js"></script>
+<script src="js/axios.js"></script>
+<script type="text/javascript">
+    var admin_addr = "http://localhost:20001/backgroud/"
+    const app=new Vue({
+        el:'#main',
+        data:{
+            opdata:[],
+        },
+        mounted(){
+            this.query();
+        },
+        methods: {
+            query: function () {
+                axios.post(admin_addr+"test1").then(res => {
+                    if (res.data.code == 1) {
+                        this.opdata = res.data.data;
+                        const chartDom = document.getElementById('main');
+                        const myChart = echarts.init(chartDom);
+                        let option;
+                        option = {
+                            title: {
+                                text: '销量占比表',
+                                subtext: '看看情况如何',
+                                left: 'center'
+                            },
+                            tooltip: {
+                                trigger: 'item'
+                            },
+                            legend: {
+                                orient: 'vertical',
+                                left: 'left'
+                            },
+                            series: [
+                                {
+                                    name: '销量占比',
+                                    type: 'pie',
+                                    radius: '50%',
+                                    data: this.opdata
+                                    //{value: this.opdata[0].value, name: '新鲜水果'},
+                                    //{value: this.opdata[1].value, name: '海鲜水产'},
+                                    //{value: this.opdata[2].value, name: '猪牛羊肉'},
+                                    // {value: this.opdata[3].value, name: '禽类蛋品'},
+                                    // {value: this.opdata[4].value, name: '新鲜蔬菜'},
+                                    // {value: this.opdata[5].value, name: '速冻食品'}
+                                    ,
+                                    emphasis: {
+                                        itemStyle: {
+                                            shadowBlur: 10,
+                                            shadowOffsetX: 0,
+                                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                        }
+                                    }
+                                }
+                            ]
+                        };
+                        console.log(this);
+                        console.log(this.data);
+
+                        option && myChart.setOption(option);
+                    }
+                })
+            },
+        }
+    })
+
+
+
+
+</script>
+</body>
+</html>

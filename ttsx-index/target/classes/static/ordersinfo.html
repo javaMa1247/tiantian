@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>订单管理</title>
+    <script src="js/vue.js"></script>
+    <script src="js/axios.js"></script>
+    <script src="js/checkToken_admin.js"></script>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui@2.15.10/lib/theme-chalk/index.css">
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui@2.15.10/lib/index.js"></script>
+</head>
+<body>
+<div id="app">
+    <template>
+        <!--        {"ono":1,"odate":"2022-11-11 20:09:33.0","sdate":"","rdate":"","status":1,"price":123.0,"invoice":0,"addr":"1"}-->
+        <el-table
+                ref="singleTable"
+                :data="tableData"
+                style="width: 100%"
+                highlight-current-row
+                @current-change="xyz"
+                max-height="450">
+            <el-table-column
+                    fixed
+                    prop="ono"
+                    label="订单号"
+                    width="120">
+            </el-table-column>
+            <el-table-column
+                    prop="odate"
+                    label="下单时间"
+                    width="220">
+            </el-table-column>
+            <el-table-column
+                    prop="price"
+                    label="价格(元)"
+                    width="120">
+            </el-table-column>
+            <el-table-column
+                    prop="addr"
+                    label="地址"
+                    width="300">
+            </el-table-column>
+            <el-table-column
+                    prop="sinvoice"
+                    label="发票"
+                    width="200">
+            </el-table-column>
+            <el-table-column
+                    prop="sstatus"
+                    label="状态"
+                    width="120">
+            </el-table-column>
+            <el-table-column
+                    fixed="right"
+                    label="操作"
+                    width="120">
+                <template slot-scope="scope">
+                    <el-button
+                            @click.native.prevent.stop="next(scope.$index)"
+                            type="text"
+                            size="small">
+                        下一步
+                    </el-button>
+                </template>
+            </el-table-column>
+        </el-table>
+    </template>
+</div>
+
+<script>
+    var admin_addr = "http://localhost:20001/backgroud/order/"
+    var admin_login = "http://localhost:20001/backgroud/"
+    let vm = new Vue({
+        el:"#app",
+        data:{
+            tableData:[],
+        },
+        methods:{
+            setCurrent(row) {
+                this.$refs.singleTable.setCurrentRow(row);
+            },
+            xyz(val){
+                let params = new URLSearchParams();
+                params.append("op","getOrderItem");
+                params.append("ono",val.ono);
+                axios.post(admin_addr+ "getOrderItem",params).then(data => {
+                    if(data.data.code == 1) {
+                        this.$alert(data.data.data, '详情', {
+                            dangerouslyUseHTMLString: true,
+                            confirmButtonText: '确定',
+                        });
+                    }else {
+                        this.$message.error(data.data.msg);
+                    }
+                })
+
+                this.setCurrent();
+            },
+            getdatas(){
+                let params = new URLSearchParams();
+                params.append("op","getOrderInfo");
+                axios.post(admin_addr+ "getOrderInfo",params).then(data => {
+                    if(data.data.code == 1){
+                        this.tableData = data.data.data;
+                    }else {
+                        this.$message.error(data.data.msg);
+                    }
+                })
+            },
+            next(index){
+                // this.tableData[index].ono;
+                let params = new URLSearchParams();
+                params.append("op","nextStatus");
+                params.append("ono",this.tableData[index].ono);
+                axios.post(admin_addr+ "nextStatus",params).then(data => {
+                    if(data.data.code == 1){
+                        this.$message({type: 'success', message:'下一步成功!'})
+                        this.getdatas();
+                    }else {
+                        this.$message.error(data.data.msg);
+                    }
+                })
+            }
+        },
+        created(){
+            let params = new URLSearchParams();
+            params.append("op","selectLogin");
+            axios.post(admin_login+"selectLogin",params).then(data => {
+                if(data.data.code != 1) {
+                    this.$message.error(data.data.msg);
+                    window.location.href = "404.html";
+                }
+            });
+        },
+        mounted(){
+            this.getdatas();
+        }
+    });
+</script>
+</body>
+</html>
