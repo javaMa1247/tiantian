@@ -6,6 +6,7 @@ import com.ttsx.background.util.SelectVariables;
 import com.ttsx.bean.FlashKilling;
 import com.ttsx.bean.FlashKillingVO;
 import com.ttsx.bean.Goodsinfo;
+import com.ttsx.feignApi.FeignApp;
 import com.ttsx.feignApi.FeignAppFlashKilling;
 import com.ttsx.utils.R;
 import io.micrometer.core.instrument.binder.BaseUnits;
@@ -18,10 +19,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @program: -
@@ -33,6 +31,8 @@ import java.util.Map;
 @Slf4j
 @RequestMapping("/backgroud/FlashKilling")
 public class FlashKillingController {
+    @Autowired
+    private FeignApp feignApp;
     @Autowired
     private FeignAppFlashKilling feignAppFlashKilling;
     @Autowired
@@ -60,6 +60,14 @@ public class FlashKillingController {
 //        Date date = formatter.parse(start_dataString);
         fk.setStart_data(start_dataString);
         fk.setGno(Integer.parseInt(gno));
+        Goodsinfo goodsinfo = this.feignApp.findById(fk.getGno()).getData();
+        if(Objects.nonNull(goodsinfo)){
+            if(goodsinfo.getBalance() <Integer.parseInt(count)||goodsinfo.getPrice() <Integer.parseInt(fk_price)){
+                map.put("code", 0);
+                map.put("msg", "库存或价格错误");
+                return map;
+            }
+        }
         fk.setFkPrice(Double.parseDouble(fk_price));
         fk.setCount(Integer.parseInt(count));
         fk.setTime(Integer.parseInt(time));
@@ -122,6 +130,14 @@ public class FlashKillingController {
             fk.setFno(Integer.parseInt(fno));
             fk.setStart_data(start_dateString);
             fk.setGno(Integer.parseInt(gno));
+            Goodsinfo goodsinfo = this.feignApp.findById(fk.getGno()).getData();
+            if(Objects.nonNull(goodsinfo)){
+                if(goodsinfo.getBalance() <Integer.parseInt(count)||goodsinfo.getPrice() <Integer.parseInt(fk_price)){
+                    map.put("code", 0);
+                    map.put("msg", "库存或价格错误");
+                    return map;
+                }
+            }
             fk.setFkPrice(Double.parseDouble(fk_price));
             fk.setCount(Integer.parseInt(count));
             fk.setTime(Integer.parseInt(time));
