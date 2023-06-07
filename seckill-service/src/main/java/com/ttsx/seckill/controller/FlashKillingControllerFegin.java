@@ -38,16 +38,20 @@ public class FlashKillingControllerFegin {
         //获取当天秒杀商品集合
 
         QueryWrapper<FlashKilling> qw = new QueryWrapper<>();
-        qw.eq("time", Integer.parseInt((String)time));
+        qw.eq("time", Integer.parseInt(time+""));
         qw.eq("start_data", new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
         List<FlashKilling> list = flashKillingMapper.selectList(qw);
         List<FlashKillingVO> flashKillingVOS = new ArrayList<>();
         for (FlashKilling f : list) {
             FlashKillingVO vo = new FlashKillingVO();
             Goodsinfo goodsinfo = this.feignApp.findById(f.getGno()).getData();
+            System.out.println(goodsinfo);
             //将数据copy到vo对象中
             BeanUtils.copyProperties(goodsinfo,vo);
             BeanUtils.copyProperties(f,vo);
+            vo.setFk_price(f.getFkPrice());
+            vo.setCurrentCount(goodsinfo.getBalance());
+            vo.setStart_dateString(f.getStart_data());
             flashKillingVOS.add(vo);
         }
 
@@ -66,6 +70,9 @@ public class FlashKillingControllerFegin {
             //将数据copy到vo对象中
             BeanUtils.copyProperties(goodsinfo,vo);
             BeanUtils.copyProperties(f,vo);
+            vo.setFk_price(f.getFkPrice());
+            vo.setCurrentCount(goodsinfo.getBalance());
+            vo.setStart_dateString(f.getStart_data());
             flashKillingVOS.add(vo);
         }
 

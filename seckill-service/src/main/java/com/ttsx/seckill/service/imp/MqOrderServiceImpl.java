@@ -2,12 +2,14 @@ package com.ttsx.seckill.service.imp;
 
 import com.ttsx.seckill.config.RabbitMqConfig;
 import com.ttsx.seckill.entity.Order;
+import com.ttsx.seckill.scheduling.job;
 import com.ttsx.seckill.service.FlashKillingService;
 import com.ttsx.seckill.service.OrderService;
 import com.rabbitmq.client.Channel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +25,8 @@ import java.util.Date;
 @Slf4j
 public class MqOrderServiceImpl {
 
+    @Autowired
+    private job job;
     private final OrderService orderService;
     private final FlashKillingService flashKillingService;
 
@@ -57,6 +61,14 @@ public class MqOrderServiceImpl {
             channel.basicNack(message.getMessageProperties().getDeliveryTag(), false,true);
             log.info("消费订单失败，订单用户为：{}，商品id为：{}", order.getOrderUser(), order.getGno());
         }
+    }
+    @RabbitListener(queues = RabbitMqConfig.STORY_QUEUE)
+    @Transactional(rollbackFor = Exception.class)
+    public void saveStory(Message message, Channel channel)throws IOException{
+        String msg = new String (message.getBody());
+        log.info("接受到的消息为:{}",msg);
+        job.selectjob();
+        System.out.println("秒杀数据更新完成...");
     }
 
 }

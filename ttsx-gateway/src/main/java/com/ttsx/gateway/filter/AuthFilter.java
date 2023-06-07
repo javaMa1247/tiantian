@@ -42,6 +42,7 @@ public class AuthFilter implements GlobalFilter, Ordered {
             "/cart/**",
             "/order/**",
             "/addr/**"
+//            "/seck/**"
             ); // 需要排除的路径列表
     //路径匹配器，支持通配符
     public static final AntPathMatcher PATH_MATCHER = new AntPathMatcher();

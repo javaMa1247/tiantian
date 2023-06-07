@@ -58,6 +58,16 @@ spring:
           predicates:
             - Path=/order/**
 
+        - id: ttsx-seckill
+          uri: lb://ttsx-seckill
+          predicates:
+            - Path=/fk/**
+
+        - id: ttsx-seckill-seck
+          uri: lb://ttsx-seckill
+          predicates:
+            - Path=/seck/**
+
         - id: ttsx-order-cart
           uri: lb://ttsx-order
           predicates:

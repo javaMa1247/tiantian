@@ -6,22 +6,25 @@ import com.ttsx.background.util.SelectVariables;
 import com.ttsx.bean.FlashKilling;
 import com.ttsx.bean.FlashKillingVO;
 import com.ttsx.bean.Goodsinfo;
+import com.ttsx.feignApi.FeignApp;
 import com.ttsx.feignApi.FeignAppFlashKilling;
+import com.ttsx.seckill.config.RabbitMqConfig;
+import com.ttsx.seckill.scheduling.job;
 import com.ttsx.utils.R;
 import io.micrometer.core.instrument.binder.BaseUnits;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @program: -
@@ -34,9 +37,16 @@ import java.util.Map;
 @RequestMapping("/backgroud/FlashKilling")
 public class FlashKillingController {
     @Autowired
+    private RabbitTemplate rabbitTemplate;
+    @Autowired
+    private FeignApp feignApp;
+    @Autowired
     private FeignAppFlashKilling feignAppFlashKilling;
     @Autowired
     private com.ttsx.background.mapper.flashKillingDao flashKillingDao;
+    @Autowired
+    private RedisTemplate redisTemplate;
+
     //查询
     @RequestMapping("/showmsGoodsInfo")
     public R<List<FlashKillingVO>> selectmsGoodsInfo(){
@@ -56,17 +66,34 @@ public class FlashKillingController {
         Map map = new HashMap();
 
         FlashKilling fk = new FlashKilling();
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        Date date = formatter.parse(start_dataString);
-        fk.setStart_data(String.valueOf(date));
+//        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+//        Date date = formatter.parse(start_dataString);
+        fk.setStart_data(start_dataString);
         fk.setGno(Integer.parseInt(gno));
-        fk.setFk_price(Double.parseDouble(fk_price));
+        Goodsinfo goodsinfo = this.feignApp.findById(fk.getGno()).getData();
+        if(Objects.nonNull(goodsinfo)){
+            if(goodsinfo.getBalance() <Integer.parseInt(count)||goodsinfo.getPrice() <Integer.parseInt(fk_price)){
+                map.put("code", 0);
+                map.put("msg", "库存或价格错误");
+                return map;
+            }
+        }
+        fk.setFkPrice(Double.parseDouble(fk_price));
         fk.setCount(Integer.parseInt(count));
         fk.setTime(Integer.parseInt(time));
         int i = this.flashKillingDao.insert(fk);
         if (i==0){
             map.put("code",0);
             map.put("msg","无法插入数据");
+            return  map;
+        }
+        String message = "1";
+        try {
+            rabbitTemplate.convertAndSend(RabbitMqConfig.STORY_EXCHANGE,RabbitMqConfig.STORY_ROUTING_KEY,message.getBytes("utf-8"));
+        } catch (UnsupportedEncodingException e) {
+            map.put("code",0);
+            map.put("msg","无法插入数据");
+            return  map;
         }
         map.put("code",1);
         return  map;
@@ -90,11 +117,21 @@ public class FlashKillingController {
             }
             map.put("code", 1);
             map.put("data", i);
+            String message = "1";
+            try {
+                rabbitTemplate.convertAndSend(RabbitMqConfig.STORY_EXCHANGE,RabbitMqConfig.STORY_ROUTING_KEY,message.getBytes("utf-8"));
+            } catch (UnsupportedEncodingException e) {
+                map.put("code",0);
+                map.put("msg","无法插入数据");
+                return  map;
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
             map.put("code", 0);
             map.put("msg", e.getMessage());
         }
+
         return map;
     }
     //修改
@@ -116,13 +153,21 @@ public class FlashKillingController {
             }
             FlashKilling fk = new FlashKilling();
 
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-            Date date = formatter.parse(start_dateString);
+//            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+//            Date date = formatter.parse(start_dateString);
 
             fk.setFno(Integer.parseInt(fno));
-            fk.setStart_data(String.valueOf(date));
+            fk.setStart_data(start_dateString);
             fk.setGno(Integer.parseInt(gno));
-            fk.setFk_price(Double.parseDouble(fk_price));
+            Goodsinfo goodsinfo = this.feignApp.findById(fk.getGno()).getData();
+            if(Objects.nonNull(goodsinfo)){
+                if(goodsinfo.getBalance() <Integer.parseInt(count)||goodsinfo.getPrice() <Integer.parseInt(fk_price)){
+                    map.put("code", 0);
+                    map.put("msg", "库存或价格错误");
+                    return map;
+                }
+            }
+            fk.setFkPrice(Double.parseDouble(fk_price));
             fk.setCount(Integer.parseInt(count));
             fk.setTime(Integer.parseInt(time));
 
@@ -136,6 +181,13 @@ public class FlashKillingController {
             e.printStackTrace();
             map.put("code", 0);
             map.put("msg", e.getMessage());
+        }String message = "1";
+        try {
+            rabbitTemplate.convertAndSend(RabbitMqConfig.STORY_EXCHANGE,RabbitMqConfig.STORY_ROUTING_KEY,message.getBytes("utf-8"));
+        } catch (UnsupportedEncodingException e) {
+            map.put("code",0);
+            map.put("msg","无法插入数据");
+            return  map;
         }
         return map;
     }

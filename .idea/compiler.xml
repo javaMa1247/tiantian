@@ -10,7 +10,6 @@
         <module name="ttsx-entity" />
         <module name="ttsx-order" />
         <module name="ttsx-foods" />
-        <module name="ttsx-FlashKilling" />
         <module name="ttsx-feign" />
         <module name="ttsx-user" />
         <module name="seckill-service" />
@@ -21,6 +20,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="ttsx-FlashKilling" target="1.8" />
       <module name="ttsx-scheduling" target="1.8" />
     </bytecodeTargetLevel>
   </component>

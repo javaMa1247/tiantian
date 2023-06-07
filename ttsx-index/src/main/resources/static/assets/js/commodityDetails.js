@@ -35,7 +35,7 @@ function snapped (seckillId, time) {
     var token = localStorage.getItem('token');
     if (token) {
         ajaxHttp({
-            url: '/fk/doSeckill',
+            url: '/seck/doSeckill',
             type: 'POST',
             contentType:'application/x-www-form-urlencoded;charset=UTF-8',
             data: {seckillId:seckillId,time:time},

@@ -8,6 +8,8 @@ import com.ttsx.bean.Goodsinfo;
 import com.ttsx.feignApi.FeignApp;
 import com.ttsx.feignApi.FeignAppFlashKilling;
 import com.ttsx.seckill.mapper.FlashKillingMapper;
+import com.ttsx.seckill.service.imp.MqStockServiceImpl;
+import com.ttsx.seckill.utils.getNowTime;
 import com.ttsx.user.util.JWTUtils;
 import com.ttsx.utils.R;
 import org.springframework.beans.BeanUtils;
@@ -17,7 +19,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @program: -
@@ -32,15 +36,33 @@ public class FlashKillingController {
     private FeignApp feignApp;
     @Autowired
     private FlashKillingMapper flashKillingMapper;
-    @Autowired
-    private FeignAppFlashKilling feignAppFlashKilling;
+
     @Autowired
     private RedisTemplate redisTemplate;
+
+
+
+
+    @RequestMapping("getFnoByGno")
+    public Integer getFnoByGno( Integer gno ) {
+        // 创建查询条件
+        QueryWrapper<FlashKilling> qw = new QueryWrapper<>();
+        qw.eq("gno", gno);
+
+// 使用 selectOne 方法查询符合条件的单条记录
+        FlashKilling flashKilling = flashKillingMapper.selectOne(qw);
+
+// 使用 selectList 方法查询符合条件的多条记录
+        List<FlashKilling> flashKillingList = flashKillingMapper.selectList(qw);
+        return flashKillingList.get(0).getFno();
+
+    }
     //展示秒杀商品信息
     @GetMapping("/showmsGoodsInfo")
     public R<List<FlashKillingVO>> selectmsGoodsInfo(@RequestParam(value = "time")  Object time ) {
         //获取当天秒杀商品集合
-        List<FlashKillingVO> list = redisTemplate.opsForList().range((String) time, 0, -1);
+        String nowTime = getNowTime.getTime();
+        List list = this.redisTemplate.opsForHash().values(nowTime + "\t" + time);
         if (list==null){
             R.error("无法获取商品数据");
         }
@@ -51,38 +73,13 @@ public class FlashKillingController {
     @GetMapping("/showmsGoodsDetail")
     public R<FlashKillingVO> showmsGoodsDetail(@RequestParam(value = "time",required = false)  String time,
                                                @RequestParam("seckillId")  String fno){
-
-        //获取秒杀商品详情
-        QueryWrapper<FlashKilling> qw1 = new QueryWrapper<>();
-        qw1.eq("fno",Integer.parseInt(fno));
-        FlashKilling flashKilling = this.flashKillingMapper.selectOne(qw1);
-        Goodsinfo goodsinfo = this.feignApp.findById(   flashKilling.getGno() ).getData();
-        FlashKillingVO vo = new FlashKillingVO();
-        BeanUtils.copyProperties(goodsinfo,vo);
-        BeanUtils.copyProperties(flashKilling,vo);
+        String nowTime = getNowTime.getTime();
+        FlashKillingVO vo = (FlashKillingVO) this.redisTemplate.opsForHash().get(nowTime + "\t" + time, String.valueOf(fno));
+        if (vo==null){
+            R.error("无法获取商品数据");
+        }
         return R.success(vo);
     }
-    //下单操作
-    @PostMapping("/doSeckill")
-    public R doSeckill(@RequestParam("time")  String time,
-                                       @RequestParam("seckillId")  String fno,
-                                       HttpServletRequest request){
-        //TODO : 用户名id，商品名id
 
-        Date now = new Date();
-        FlashKillingVO flashKillingVO = this.feignAppFlashKilling.showmsGoodsDetail(time, fno).getData();
-        if (flashKillingVO == null){
-            return R.error("访问不到服务器");
-        }
-        //判断时间
-        if(now.getTime() < flashKillingVO.getStart_data().getTime()){
-            return R.error("非法操作");
-        }
-
-        String token = request.getHeader("Authorization");
-        Object userid = JWTUtils.getTokenInfo(token).get("userid");
-
-        return R.success("进入抢购队列,请等待结果");
-    }
 
 }
