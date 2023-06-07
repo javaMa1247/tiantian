@@ -33,7 +33,14 @@
       alert("请完成登陆")
       window.location.href = "login.html";
       return error ;
-    } else {
+    } else if (error.response.status === 403) {
+      // 未登录，跳转到登录页面
+      //TODO:利用框架来做登陆的跳转
+      // router.push('/login');
+      alert("身份过期，请重新登录")
+      window.location.href = "login.html";
+      return error ;
+    }else {
       // 其他错误，打印错误信息
       console.error(error);
     }

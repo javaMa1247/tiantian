@@ -9,5 +9,4 @@ import com.ttsx.bean.Discuss;
  * @Time: 19:28
  * @Description:
  */
-public interface DiscussService extends IService<Discuss> {
-}
+public interface DiscussService extends IService<Discuss> {}

@@ -23,7 +23,7 @@ public class Cartinfo implements Serializable {
     private String mno;
     private int num;
 
-    @TableField(exist = false)    //注解，表示该属性不对应数据库表中的任何列，而是与其他实体类进行关联。
+    @TableField(exist = false) // 注解，表示该属性不对应数据库表中的任何列，而是与其他实体类进行关联。
     private Goodsinfo goodsinfo;
 
     @TableField(exist = false)

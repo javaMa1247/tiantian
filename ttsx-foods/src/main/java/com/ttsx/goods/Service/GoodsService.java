@@ -9,5 +9,4 @@ import com.ttsx.bean.Goodsinfo;
  * @Time: 19:46
  * @Description:
  */
-public interface GoodsService extends IService<Goodsinfo> {
-}
+public interface GoodsService extends IService<Goodsinfo> {}

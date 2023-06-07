@@ -29,44 +29,46 @@ public class OrderController {
     private OrderBiz biz;
 
     @RequestMapping("addOrder")
-    public Map<String,Object> addOrder(@RequestHeader String uid,HttpServletRequest request, HttpServletResponse response){
-        Map<String,Object> map = new HashMap<>();
+    public Map<String, Object> addOrder(@RequestHeader String uid, HttpServletRequest request,
+        HttpServletResponse response) {
+        Map<String, Object> map = new HashMap<>();
         String cartgoods = request.getParameter("cartgoods");
         String ano = request.getParameter("ano");
-        List<Map<String, Object>> lists = (List<Map<String, Object>>) new Gson().fromJson(cartgoods, List.class);
+        List<Map<String, Object>> lists = (List<Map<String, Object>>)new Gson().fromJson(cartgoods, List.class);
 
-        Integer integer = this.biz.addOrder(lists, ano,uid);
-        if(integer!=0){
-            map.put("code",1);
-        }else{
-            map.put("code",0);
+        Integer integer = this.biz.addOrder(lists, ano, uid);
+        if (integer != 0) {
+            map.put("code", 1);
+        } else {
+            map.put("code", 0);
         }
         return map;
     }
-
 
     @RequestMapping("delorders")
-    public Map<String,Object> delorders(@RequestHeader String uid,HttpServletRequest request, HttpServletResponse response) {
+    public Map<String, Object> delorders(@RequestHeader String uid, HttpServletRequest request,
+        HttpServletResponse response) {
 
         String ono = request.getParameter("ono");
-        Map<String,Object> map = new HashMap<>();
-        Integer integer = this.biz.delorders(ono,uid);
-        if(integer!=0){
-            map.put("code",1);
-        }else{
-            map.put("code",0);
+        Map<String, Object> map = new HashMap<>();
+        Integer integer = this.biz.delorders(ono, uid);
+        if (integer != 0) {
+            map.put("code", 1);
+        } else {
+            map.put("code", 0);
         }
         return map;
     }
+
     @RequestMapping("showOrderbyPage")
-    public Map<String,Object> showOrderbyPage(@RequestHeader String uid,PageBean pageBean){
-        Map<String,Object> map = new HashMap<>();
-        PageBean bean = this.biz.showOrderbyPage(pageBean,uid);
-        if(bean!=null){
-            map.put("code",1);
-            map.put("data",pageBean);
-        }else {
-            map.put("code",0);
+    public Map<String, Object> showOrderbyPage(@RequestHeader String uid, PageBean pageBean) {
+        Map<String, Object> map = new HashMap<>();
+        PageBean bean = this.biz.showOrderbyPage(pageBean, uid);
+        if (bean != null) {
+            map.put("code", 1);
+            map.put("data", pageBean);
+        } else {
+            map.put("code", 0);
         }
         return map;
     }

@@ -1,9 +1,9 @@
 //  通用的ajax方法
-function ajaxHttp (obj, callback, err) {
-    $.ajax("http://localhost:20001"+obj.url, {
+function ajaxHttp(obj, callback, err) {
+    $.ajax("http://localhost:20001" + obj.url, {
         type: obj.type || 'get',
         contentType: obj.contentType || 'application/json;charset=UTF-8',
-        headers:{'token': localStorage.getItem('token')},
+        headers: {'token': localStorage.getItem('token')},
         data: obj.data || {},
         success: function (res) {
             if (res.code === 1) {
@@ -14,14 +14,14 @@ function ajaxHttp (obj, callback, err) {
                     $('.commodity-header').find('.seckill-shopping').css('display', 'block')
                     setTimeout(function () {
                         layer.confirm('请先进行登录！！', {
-                            btn: ['马上登录','取消'] //按钮
-                        }, function(){
+                            btn: ['马上登录', '取消'] //按钮
+                        }, function () {
                             window.location.href = '/login.html'
-                        }, function(index){
+                        }, function (index) {
                             layer.close(index)
                         });
                     }, 200)
-                }else{
+                } else {
                     layer.msg(res.msg)
                 }
             }
@@ -29,6 +29,7 @@ function ajaxHttp (obj, callback, err) {
         error: err || defaultError
     })
 }
-function defaultError(){
+
+function defaultError() {
     layer.msg('网站繁忙，稍后再试！')
 }

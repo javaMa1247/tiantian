@@ -8,7 +8,8 @@ public class OrderShowInfoBeanX {
     private Integer nums;
     private Double price;
 
-    public String toString(){
-        return "<b>商品名:"+gname+", 数量:"+nums+", 价格"+price+"</b> <br/>";
+    @Override
+    public String toString() {
+        return "<b>商品名:" + gname + ", 数量:" + nums + ", 价格" + price + "</b> <br/>";
     }
 }

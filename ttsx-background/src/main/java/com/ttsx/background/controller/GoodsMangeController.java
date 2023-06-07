@@ -20,7 +20,7 @@ import java.util.Map;
 
 /**
  * @program: tiantian
- * @description:  商品管理
+ * @description: 商品管理
  * @author: dx
  * @create: 2023/5/19 19:51
  */
@@ -76,17 +76,17 @@ public class GoodsMangeController {
         Map map = new HashMap();
         try {
             if (SelectVariables.selectStringNull(goodsInfoBeanX.getGname(), goodsInfoBeanX.getIntro(),
-                    goodsInfoBeanX.getUnit(), goodsInfoBeanX.getQperied(), goodsInfoBeanX.getWeight()) ||
-                    SelectVariables.selectObjectNull(goodsInfoBeanX.getGno(), goodsInfoBeanX.getTno(), goodsInfoBeanX.getPrice()
-                            , goodsInfoBeanX.getBalance())) {
+                goodsInfoBeanX.getUnit(), goodsInfoBeanX.getQperied(), goodsInfoBeanX.getWeight())
+                || SelectVariables.selectObjectNull(goodsInfoBeanX.getGno(), goodsInfoBeanX.getTno(),
+                    goodsInfoBeanX.getPrice(), goodsInfoBeanX.getBalance())) {
                 throw new RuntimeException("请完整输入所有数据!");
             }
             Goodsinfo goodsinfo = this.goodsMapper.selectById(goodsInfoBeanX.getGno());
             if (goodsinfo == null) {
                 throw new RuntimeException("查无此编号,请联系管理员.");
             }
-            String moSql = "update goodsinfo set gname = ?,tno = ?,price = ?,intro = ?,balance = ?,unit = ?, " +
-                    " qperied = ?,weight = ? where gno = ? ";
+            String moSql = "update goodsinfo set gname = ?,tno = ?,price = ?,intro = ?,balance = ?,unit = ?, "
+                + " qperied = ?,weight = ? where gno = ? ";
             goodsinfo.setGname(goodsInfoBeanX.getGname());
             goodsinfo.setTno(goodsInfoBeanX.getTno());
             goodsinfo.setPrice(goodsInfoBeanX.getPrice());
@@ -112,17 +112,18 @@ public class GoodsMangeController {
 
     @RequestMapping("/addGoodInfo")
     public Map addGoodInfo(Goodsinfo goodsInfoBeanX) {
-        //GoodsInfoBeanX(gno=1, tno=1, gname=红富士, price=68.0, intro=很甜，很好吃, balance=100,
+        // GoodsInfoBeanX(gno=1, tno=1, gname=红富士, price=68.0, intro=很甜，很好吃, balance=100,
         // pics=images/goods02.jpg, unit=箱, qperied=1个月, tname=新鲜水果, weight=5KG)
         Map map = new HashMap();
         try {
             if (SelectVariables.selectStringNull(goodsInfoBeanX.getGname(), goodsInfoBeanX.getIntro(),
-                    goodsInfoBeanX.getUnit(), goodsInfoBeanX.getQperied(), goodsInfoBeanX.getWeight()) ||
-                    SelectVariables.selectObjectNull(goodsInfoBeanX.getTno(), goodsInfoBeanX.getPrice()
-                            , goodsInfoBeanX.getBalance())) {
+                goodsInfoBeanX.getUnit(), goodsInfoBeanX.getQperied(), goodsInfoBeanX.getWeight())
+                || SelectVariables.selectObjectNull(goodsInfoBeanX.getTno(), goodsInfoBeanX.getPrice(),
+                    goodsInfoBeanX.getBalance())) {
                 throw new RuntimeException("请完整输入所有数据!");
             }
-            String adSql = "insert into goodsinfo(gname,tno,price,intro,balance,unit,qperied,weight) values(?,?,?,?,?,?,?,?) ";
+            String adSql =
+                "insert into goodsinfo(gname,tno,price,intro,balance,unit,qperied,weight) values(?,?,?,?,?,?,?,?) ";
             Goodsinfo goodsinfo = new Goodsinfo();
             goodsinfo.setGname(goodsInfoBeanX.getGname());
             goodsinfo.setTno(goodsInfoBeanX.getTno());

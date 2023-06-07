@@ -74,68 +74,68 @@
     var admin_addr = "http://localhost:20001/backgroud/order/"
     var admin_login = "http://localhost:20001/backgroud/"
     let vm = new Vue({
-        el:"#app",
-        data:{
-            tableData:[],
+        el: "#app",
+        data: {
+            tableData: [],
         },
-        methods:{
+        methods: {
             setCurrent(row) {
                 this.$refs.singleTable.setCurrentRow(row);
             },
-            xyz(val){
+            xyz(val) {
                 let params = new URLSearchParams();
-                params.append("op","getOrderItem");
-                params.append("ono",val.ono);
-                axios.post(admin_addr+ "getOrderItem",params).then(data => {
-                    if(data.data.code == 1) {
+                params.append("op", "getOrderItem");
+                params.append("ono", val.ono);
+                axios.post(admin_addr + "getOrderItem", params).then(data => {
+                    if (data.data.code == 1) {
                         this.$alert(data.data.data, '详情', {
                             dangerouslyUseHTMLString: true,
                             confirmButtonText: '确定',
                         });
-                    }else {
+                    } else {
                         this.$message.error(data.data.msg);
                     }
                 })
 
                 this.setCurrent();
             },
-            getdatas(){
+            getdatas() {
                 let params = new URLSearchParams();
-                params.append("op","getOrderInfo");
-                axios.post(admin_addr+ "getOrderInfo",params).then(data => {
-                    if(data.data.code == 1){
+                params.append("op", "getOrderInfo");
+                axios.post(admin_addr + "getOrderInfo", params).then(data => {
+                    if (data.data.code == 1) {
                         this.tableData = data.data.data;
-                    }else {
+                    } else {
                         this.$message.error(data.data.msg);
                     }
                 })
             },
-            next(index){
+            next(index) {
                 // this.tableData[index].ono;
                 let params = new URLSearchParams();
-                params.append("op","nextStatus");
-                params.append("ono",this.tableData[index].ono);
-                axios.post(admin_addr+ "nextStatus",params).then(data => {
-                    if(data.data.code == 1){
-                        this.$message({type: 'success', message:'下一步成功!'})
+                params.append("op", "nextStatus");
+                params.append("ono", this.tableData[index].ono);
+                axios.post(admin_addr + "nextStatus", params).then(data => {
+                    if (data.data.code == 1) {
+                        this.$message({type: 'success', message: '下一步成功!'})
                         this.getdatas();
-                    }else {
+                    } else {
                         this.$message.error(data.data.msg);
                     }
                 })
             }
         },
-        created(){
+        created() {
             let params = new URLSearchParams();
-            params.append("op","selectLogin");
-            axios.post(admin_login+"selectLogin",params).then(data => {
-                if(data.data.code != 1) {
+            params.append("op", "selectLogin");
+            axios.post(admin_login + "selectLogin", params).then(data => {
+                if (data.data.code != 1) {
                     this.$message.error(data.data.msg);
                     window.location.href = "404.html";
                 }
             });
         },
-        mounted(){
+        mounted() {
             this.getdatas();
         }
     });

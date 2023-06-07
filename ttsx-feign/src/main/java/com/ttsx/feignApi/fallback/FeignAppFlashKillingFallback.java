@@ -17,7 +17,7 @@ import java.util.List;
 public class FeignAppFlashKillingFallback implements FeignAppFlashKilling {
     @Override
     public R<FlashKillingVO> showmsGoodsDetail(String time, String fno) {
-        //返回兜底数据
+        // 返回兜底数据
         return null;
     }
 

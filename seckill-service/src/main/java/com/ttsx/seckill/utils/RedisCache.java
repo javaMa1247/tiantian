@@ -28,24 +28,26 @@ public class RedisCache {
 
     /**
      * 对指定key的键值减一
+     * 
      * @param key 键
      * @return Long
      */
-    public Integer decrBy(Integer key,String time) {
+    public Integer decrBy(Integer key, String time) {
         Integer fno = controller.getFnoByGno(key);
         // 从 Redis 中获取指定 gno 和 time 的 flashKillingVO 对象
         String nowTime = getNowTime.getTime();
-        FlashKillingVO flashKillingVO = (FlashKillingVO)redisTemplate.opsForHash().get(nowTime + "\t" + time, String.valueOf(fno));
+        FlashKillingVO flashKillingVO =
+            (FlashKillingVO)redisTemplate.opsForHash().get(nowTime + "\t" + time, String.valueOf(fno));
 
-// 如果 flashKillingVO 对象不为 null，则对其 count 属性进行减一操作
+        // 如果 flashKillingVO 对象不为 null，则对其 count 属性进行减一操作
         if (flashKillingVO != null) {
-            if(flashKillingVO.getCount()>0) {
+            if (flashKillingVO.getCount() > 0) {
                 flashKillingVO.setCount(flashKillingVO.getCount() - 1);
                 // 将更新后的 flashKillingVO 对象保存回 Redis
                 redisTemplate.opsForHash().put(nowTime + "\t" + time, String.valueOf(fno), flashKillingVO);
                 return flashKillingVO.getCount();
             }
-        }else {
+        } else {
             return -1;
         }
         return -1;
@@ -53,30 +55,32 @@ public class RedisCache {
 
     /**
      * 对指定key的键值加一
+     * 
      * @param key
      * @return
      */
-    public Long incrBy(String key,Integer gno,String time) {
-//        RLock lock = redissonClient.getLock("lock:" + gno);
-//        try {
-//            lock.lock();
-//            Integer v = (Integer) redisTemplate.opsForValue().get(gno +"");
-//            if (Objects.nonNull(v) && v > 0) {
-//                if (LimitNum(key, 1)) {
-//                    return redisTemplate.opsForValue().increment(key);
-//                }
-//            }
-//        } finally {
-//            lock.unlock();
-//        }
+    public Long incrBy(String key, Integer gno, String time) {
+        // RLock lock = redissonClient.getLock("lock:" + gno);
+        // try {
+        // lock.lock();
+        // Integer v = (Integer) redisTemplate.opsForValue().get(gno +"");
+        // if (Objects.nonNull(v) && v > 0) {
+        // if (LimitNum(key, 1)) {
+        // return redisTemplate.opsForValue().increment(key);
+        // }
+        // }
+        // } finally {
+        // lock.unlock();
+        // }
         String nowTime = getNowTime.getTime();
         Integer fno = controller.getFnoByGno(gno);
         // 从 Redis 中获取指定 gno 和 time 的 flashKillingVO 对象
-        FlashKillingVO flashKillingVO = (FlashKillingVO) redisTemplate.opsForHash().get(nowTime + "\t" + time, String.valueOf(fno));
+        FlashKillingVO flashKillingVO =
+            (FlashKillingVO)redisTemplate.opsForHash().get(nowTime + "\t" + time, String.valueOf(fno));
 
         if (flashKillingVO != null) {
             if (Objects.nonNull(flashKillingVO) && flashKillingVO.getCount() > 0) {
-                if (LimitNum(key, 1)) {
+                if (limitNum(key, 1)) {
                     return redisTemplate.opsForValue().increment(key);
                 }
             }
@@ -84,7 +88,8 @@ public class RedisCache {
         }
         return 0L;
     }
-    boolean LimitNum(String key,Integer num){
+
+    boolean limitNum(String key, Integer num) {
         Object o = redisTemplate.opsForValue().get(key);
         if (Objects.nonNull(o)) {
             int i = Integer.parseInt(o + "");

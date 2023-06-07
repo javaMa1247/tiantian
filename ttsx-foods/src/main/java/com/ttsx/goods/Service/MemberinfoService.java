@@ -9,5 +9,4 @@ import com.ttsx.bean.Memberinfo;
  * @Time: 19:57
  * @Description:
  */
-public interface MemberinfoService extends IService<Memberinfo> {
-}
+public interface MemberinfoService extends IService<Memberinfo> {}

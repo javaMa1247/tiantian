@@ -47,6 +47,7 @@
 						<li class="col01">{{value.odate}}</li>
 						<li class="col02">订单号：{{value.ono}}</li>
 						<li class="col02 stress" v-if="value.status==1" >未支付</li>
+						<li class="col02 stress" v-if="value.status==1" ><a @click="delorders(value.ono)">取消订单</a></li>
 					</ul>
 					<tbody>
 						<tr>
@@ -137,6 +138,18 @@
 					vm.$data.pagebean=jsonmodel2.data;
 
 				}
+			},
+			delorders:function(ono){
+				var params = new URLSearchParams();
+				params.append("ono",ono);
+				//返回一个promise
+				axios.post(addr_order+"delorders",params).then(data => {
+					var jsonmodel1 = data.data;
+					if(jsonmodel1.code==1){
+						alert("取消订单成功");
+						this.showPage(1);
+					}
+				})
 			},
 			gotopay(price,ono){
 				let params = new URLSearchParams();

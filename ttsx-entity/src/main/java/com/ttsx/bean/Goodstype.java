@@ -14,7 +14,7 @@ import java.io.Serializable;
  */
 @Data
 public class Goodstype implements Serializable {
-    @TableId(type = IdType.AUTO)    //主键且自增
+    @TableId(type = IdType.AUTO) // 主键且自增
     private Integer tno;
     private String tname;
     private String pic;

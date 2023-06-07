@@ -13,5 +13,4 @@ import org.springframework.stereotype.Service;
  * @Description:
  */
 @Service
-public class DiscussServiceImpl extends ServiceImpl<discussMapper, Discuss>  implements DiscussService {
-}
+public class DiscussServiceImpl extends ServiceImpl<discussMapper, Discuss> implements DiscussService {}

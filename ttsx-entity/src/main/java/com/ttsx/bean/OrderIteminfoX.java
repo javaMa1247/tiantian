@@ -17,7 +17,7 @@ public class OrderIteminfoX implements Serializable {
 
     public void setValue(String value) {
         int val = Integer.parseInt(value);
-        this.value = (Integer) val;
+        this.value = (Integer)val;
     }
 
 }

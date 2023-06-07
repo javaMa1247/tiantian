@@ -1,6 +1,5 @@
 package com.ttsx.seckill.scheduling;
 
-
 import com.ttsx.bean.FlashKilling;
 import com.ttsx.bean.FlashKillingVO;
 import com.ttsx.seckill.controller.FlashKillingControllerFegin;
@@ -30,16 +29,18 @@ public class job {
     private RedisTemplate redisTemplate;
     @Autowired
     private FlashKillingControllerFegin feignAppFlashKilling;
-    //每天执行一次
-    @Scheduled(cron =" 0 0 0 * * ?")
-//    @Scheduled(fixedRate = 1000)
-    public void selectjob()  {
+
+    // 每天执行一次
+    @Scheduled(cron = " 0 0 0 * * ?")
+    // @Scheduled(fixedRate = 1000)
+    public void selectjob() {
         System.out.println("执行定时上架....");
-//        List<FlashKilling> flashKillingList = flashKillingService.selectList();
-//        for (FlashKilling flashKillingTtem : flashKillingList) {
-//            redisCache.setCacheObject(String.valueOf(flashKillingTtem.getGno()),flashKillingTtem.getCount(),3600*24, TimeUnit.SECONDS);
-//        }
-//
+        // List<FlashKilling> flashKillingList = flashKillingService.selectList();
+        // for (FlashKilling flashKillingTtem : flashKillingList) {
+        // redisCache.setCacheObject(String.valueOf(flashKillingTtem.getGno()),flashKillingTtem.getCount(),3600*24,
+        // TimeUnit.SECONDS);
+        // }
+        //
         Date now = new Date();
 
         Calendar cal = Calendar.getInstance();
@@ -60,26 +61,29 @@ public class job {
         Set<String> keys = redisTemplate.keys("*");
         redisTemplate.delete(keys);
 
-       /* redisTemplate.delete(yesterdayTime+"\t"+"10");
+        /* redisTemplate.delete(yesterdayTime+"\t"+"10");
         redisTemplate.delete(yesterdayTime+"\t"+"16");
         redisTemplate.delete(yesterdayTime+"\t"+"22");
-*/
+        */
         List<FlashKillingVO> data = feignAppFlashKilling.selectmsGoodsInfo(10).getData();
         for (FlashKillingVO flashKillingVO : data) {
-            redisTemplate.opsForHash().put(nowTime+"\t"+"10",String.valueOf(flashKillingVO.getFno()),flashKillingVO);
+            redisTemplate.opsForHash().put(nowTime + "\t" + "10", String.valueOf(flashKillingVO.getFno()),
+                flashKillingVO);
         }
         List<FlashKillingVO> data2 = feignAppFlashKilling.selectmsGoodsInfo(16).getData();
         for (FlashKillingVO flashKillingVO : data2) {
-            redisTemplate.opsForHash().put(nowTime+"\t"+"16",String.valueOf(flashKillingVO.getFno()),flashKillingVO);
+            redisTemplate.opsForHash().put(nowTime + "\t" + "16", String.valueOf(flashKillingVO.getFno()),
+                flashKillingVO);
         }
         List<FlashKillingVO> data3 = feignAppFlashKilling.selectmsGoodsInfo(22).getData();
         for (FlashKillingVO flashKillingVO : data3) {
-            redisTemplate.opsForHash().put(nowTime+"\t"+"22",String.valueOf(flashKillingVO.getFno()),flashKillingVO);
+            redisTemplate.opsForHash().put(nowTime + "\t" + "22", String.valueOf(flashKillingVO.getFno()),
+                flashKillingVO);
         }
-
 
         System.out.println("完成....");
     }
+
     @PostConstruct
     public void init() {
         selectjob();

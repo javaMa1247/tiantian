@@ -19,7 +19,7 @@ import java.util.Date;
 @Data
 @TableName(value = "FlashKilling")
 public class FlashKilling implements Serializable {
-    @TableId(type = IdType.AUTO,value = "fno")    //主键且自增
+    @TableId(type = IdType.AUTO, value = "fno") // 主键且自增
     private Integer fno;
     private Integer gno;
     @TableField("fk_price")
@@ -30,7 +30,7 @@ public class FlashKilling implements Serializable {
     private Integer time;
 
     public String getStart_data() {
-        if (this.start_data == null){
+        if (this.start_data == null) {
             Date date = new Date();
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             start_data = sdf.format(date);

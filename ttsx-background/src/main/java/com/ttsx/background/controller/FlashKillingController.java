@@ -47,32 +47,31 @@ public class FlashKillingController {
     @Autowired
     private RedisTemplate redisTemplate;
 
-    //查询
+    // 查询
     @RequestMapping("/showmsGoodsInfo")
-    public R<List<FlashKillingVO>> selectmsGoodsInfo(){
+    public R<List<FlashKillingVO>> selectmsGoodsInfo() {
         List<FlashKillingVO> data = this.feignAppFlashKilling.selectmsGoodsInfoAll().getData();
-        if (data == null){
+        if (data == null) {
             R.error("无法获取数据");
         }
         return R.success(data);
     }
-    //添加秒杀商品
+
+    // 添加秒杀商品
     @RequestMapping("/addGoodInfo")
-    public Map addGoodInfo(@RequestParam("gno") String gno,
-                           @RequestParam("fk_price") String fk_price,
-                           @RequestParam("count") String count,
-                           @RequestParam("start_data") String start_dataString,
-                           @RequestParam("time") String time) throws ParseException {
+    public Map addGoodInfo(@RequestParam("gno") String gno, @RequestParam("fk_price") String fk_price,
+        @RequestParam("count") String count, @RequestParam("start_data") String start_dataString,
+        @RequestParam("time") String time) throws ParseException {
         Map map = new HashMap();
 
         FlashKilling fk = new FlashKilling();
-//        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-//        Date date = formatter.parse(start_dataString);
+        // SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        // Date date = formatter.parse(start_dataString);
         fk.setStart_data(start_dataString);
         fk.setGno(Integer.parseInt(gno));
         Goodsinfo goodsinfo = this.feignApp.findById(fk.getGno()).getData();
-        if(Objects.nonNull(goodsinfo)){
-            if(goodsinfo.getBalance() <Integer.parseInt(count)||goodsinfo.getPrice() <Integer.parseInt(fk_price)){
+        if (Objects.nonNull(goodsinfo)) {
+            if (goodsinfo.getBalance() < Integer.parseInt(count) || goodsinfo.getPrice() < Integer.parseInt(fk_price)) {
                 map.put("code", 0);
                 map.put("msg", "库存或价格错误");
                 return map;
@@ -82,23 +81,25 @@ public class FlashKillingController {
         fk.setCount(Integer.parseInt(count));
         fk.setTime(Integer.parseInt(time));
         int i = this.flashKillingDao.insert(fk);
-        if (i==0){
-            map.put("code",0);
-            map.put("msg","无法插入数据");
-            return  map;
+        if (i == 0) {
+            map.put("code", 0);
+            map.put("msg", "无法插入数据");
+            return map;
         }
         String message = "1";
         try {
-            rabbitTemplate.convertAndSend(RabbitMqConfig.STORY_EXCHANGE,RabbitMqConfig.STORY_ROUTING_KEY,message.getBytes("utf-8"));
+            rabbitTemplate.convertAndSend(RabbitMqConfig.STORY_EXCHANGE, RabbitMqConfig.STORY_ROUTING_KEY,
+                message.getBytes("utf-8"));
         } catch (UnsupportedEncodingException e) {
-            map.put("code",0);
-            map.put("msg","无法插入数据");
-            return  map;
+            map.put("code", 0);
+            map.put("msg", "无法插入数据");
+            return map;
         }
-        map.put("code",1);
-        return  map;
+        map.put("code", 1);
+        return map;
     }
-    //删除
+
+    // 删除
     @RequestMapping("/toDeletX")
     public Map toDeletX(@RequestParam("fno") String fno) {
         Map map = new HashMap();
@@ -119,11 +120,12 @@ public class FlashKillingController {
             map.put("data", i);
             String message = "1";
             try {
-                rabbitTemplate.convertAndSend(RabbitMqConfig.STORY_EXCHANGE,RabbitMqConfig.STORY_ROUTING_KEY,message.getBytes("utf-8"));
+                rabbitTemplate.convertAndSend(RabbitMqConfig.STORY_EXCHANGE, RabbitMqConfig.STORY_ROUTING_KEY,
+                    message.getBytes("utf-8"));
             } catch (UnsupportedEncodingException e) {
-                map.put("code",0);
-                map.put("msg","无法插入数据");
-                return  map;
+                map.put("code", 0);
+                map.put("msg", "无法插入数据");
+                return map;
             }
 
         } catch (Exception e) {
@@ -134,15 +136,13 @@ public class FlashKillingController {
 
         return map;
     }
-    //修改
+
+    // 修改
     @RequestMapping("/modifyGoodInfo")
-    public Map modifyGoodInfo(@RequestParam("fno") String fno,
-                              @RequestParam("gno") String gno,
-                              @RequestParam("fk_price") String fk_price,
-                              @RequestParam("count") String count,
-                              @RequestParam("currentCount") String currentCount,
-                              @RequestParam("start_dateString") String start_dateString,
-                              @RequestParam("time") String time) {
+    public Map modifyGoodInfo(@RequestParam("fno") String fno, @RequestParam("gno") String gno,
+        @RequestParam("fk_price") String fk_price, @RequestParam("count") String count,
+        @RequestParam("currentCount") String currentCount, @RequestParam("start_dateString") String start_dateString,
+        @RequestParam("time") String time) {
         Map map = new HashMap();
         try {
             QueryWrapper<FlashKilling> qw = new QueryWrapper<>();
@@ -153,15 +153,16 @@ public class FlashKillingController {
             }
             FlashKilling fk = new FlashKilling();
 
-//            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-//            Date date = formatter.parse(start_dateString);
+            // SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            // Date date = formatter.parse(start_dateString);
 
             fk.setFno(Integer.parseInt(fno));
             fk.setStart_data(start_dateString);
             fk.setGno(Integer.parseInt(gno));
             Goodsinfo goodsinfo = this.feignApp.findById(fk.getGno()).getData();
-            if(Objects.nonNull(goodsinfo)){
-                if(goodsinfo.getBalance() <Integer.parseInt(count)||goodsinfo.getPrice() <Integer.parseInt(fk_price)){
+            if (Objects.nonNull(goodsinfo)) {
+                if (goodsinfo.getBalance() < Integer.parseInt(count)
+                    || goodsinfo.getPrice() < Integer.parseInt(fk_price)) {
                     map.put("code", 0);
                     map.put("msg", "库存或价格错误");
                     return map;
@@ -181,13 +182,15 @@ public class FlashKillingController {
             e.printStackTrace();
             map.put("code", 0);
             map.put("msg", e.getMessage());
-        }String message = "1";
+        }
+        String message = "1";
         try {
-            rabbitTemplate.convertAndSend(RabbitMqConfig.STORY_EXCHANGE,RabbitMqConfig.STORY_ROUTING_KEY,message.getBytes("utf-8"));
+            rabbitTemplate.convertAndSend(RabbitMqConfig.STORY_EXCHANGE, RabbitMqConfig.STORY_ROUTING_KEY,
+                message.getBytes("utf-8"));
         } catch (UnsupportedEncodingException e) {
-            map.put("code",0);
-            map.put("msg","无法插入数据");
-            return  map;
+            map.put("code", 0);
+            map.put("msg", "无法插入数据");
+            return map;
         }
         return map;
     }

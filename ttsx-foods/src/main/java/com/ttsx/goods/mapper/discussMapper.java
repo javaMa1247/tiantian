@@ -11,5 +11,4 @@ import org.apache.ibatis.annotations.Mapper;
  * @Description:
  */
 @Mapper
-public interface discussMapper extends BaseMapper<Discuss> {
-}
+public interface discussMapper extends BaseMapper<Discuss> {}

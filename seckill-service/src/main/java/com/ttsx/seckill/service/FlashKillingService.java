@@ -13,13 +13,14 @@ import java.util.List;
 public interface FlashKillingService {
     /**
      * 秒杀商品后-减少库存
+     * 
      * @param gno 商品编号
      */
     int decrByStock(Integer gno);
 
-
     /**
      * 秒杀商品列表
+     * 
      * @return List<FlashKilling>
      */
     List<FlashKilling> selectList();

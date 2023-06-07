@@ -17,7 +17,7 @@ import java.io.Serializable;
 @Data
 @TableName("orderiteminfo")
 public class OrderIteminfo implements Serializable {
-    @TableId(value = "ino",type = IdType.AUTO)
+    @TableId(value = "ino", type = IdType.AUTO)
     private String ino;
     private String ono;
     private String gno;

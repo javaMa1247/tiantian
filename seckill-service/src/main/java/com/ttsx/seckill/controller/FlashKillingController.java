@@ -40,46 +40,44 @@ public class FlashKillingController {
     @Autowired
     private RedisTemplate redisTemplate;
 
-
-
-
     @RequestMapping("getFnoByGno")
-    public Integer getFnoByGno( Integer gno ) {
+    public Integer getFnoByGno(Integer gno) {
         // 创建查询条件
         QueryWrapper<FlashKilling> qw = new QueryWrapper<>();
         qw.eq("gno", gno);
 
-// 使用 selectOne 方法查询符合条件的单条记录
+        // 使用 selectOne 方法查询符合条件的单条记录
         FlashKilling flashKilling = flashKillingMapper.selectOne(qw);
 
-// 使用 selectList 方法查询符合条件的多条记录
+        // 使用 selectList 方法查询符合条件的多条记录
         List<FlashKilling> flashKillingList = flashKillingMapper.selectList(qw);
         return flashKillingList.get(0).getFno();
 
     }
-    //展示秒杀商品信息
+
+    // 展示秒杀商品信息
     @GetMapping("/showmsGoodsInfo")
-    public R<List<FlashKillingVO>> selectmsGoodsInfo(@RequestParam(value = "time")  Object time ) {
-        //获取当天秒杀商品集合
+    public R<List<FlashKillingVO>> selectmsGoodsInfo(@RequestParam(value = "time") Object time) {
+        // 获取当天秒杀商品集合
         String nowTime = getNowTime.getTime();
         List list = this.redisTemplate.opsForHash().values(nowTime + "\t" + time);
-        if (list==null){
+        if (list == null) {
             R.error("无法获取商品数据");
         }
         return R.success(list);
     }
 
-    //展示秒杀商品详情
+    // 展示秒杀商品详情
     @GetMapping("/showmsGoodsDetail")
-    public R<FlashKillingVO> showmsGoodsDetail(@RequestParam(value = "time",required = false)  String time,
-                                               @RequestParam("seckillId")  String fno){
+    public R<FlashKillingVO> showmsGoodsDetail(@RequestParam(value = "time", required = false) String time,
+        @RequestParam("seckillId") String fno) {
         String nowTime = getNowTime.getTime();
-        FlashKillingVO vo = (FlashKillingVO) this.redisTemplate.opsForHash().get(nowTime + "\t" + time, String.valueOf(fno));
-        if (vo==null){
+        FlashKillingVO vo =
+            (FlashKillingVO)this.redisTemplate.opsForHash().get(nowTime + "\t" + time, String.valueOf(fno));
+        if (vo == null) {
             R.error("无法获取商品数据");
         }
         return R.success(vo);
     }
-
 
 }

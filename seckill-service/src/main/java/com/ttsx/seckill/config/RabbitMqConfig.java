@@ -1,6 +1,5 @@
 package com.ttsx.seckill.config;
 
-
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
@@ -8,7 +7,6 @@ import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
 
 /**
  * @Description:
@@ -57,11 +55,11 @@ public class RabbitMqConfig {
     @Bean(name = "rabbitListenerContainerFactory")
     public SimpleRabbitListenerContainerFactory rabbitListenerContainerFactory(ConnectionFactory connectionFactory) {
         SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
-        //手动确认消息
+        // 手动确认消息
         factory.setAcknowledgeMode(AcknowledgeMode.MANUAL);
         factory.setConnectionFactory(connectionFactory);
         factory.setMessageConverter(new Jackson2JsonMessageConverter());
-        //消费数量
+        // 消费数量
         factory.setPrefetchCount(50);
         return factory;
     }
@@ -73,6 +71,7 @@ public class RabbitMqConfig {
 
     /**
      * 创建库存交换机
+     * 
      * @return
      */
     @Bean
@@ -82,15 +81,17 @@ public class RabbitMqConfig {
 
     /**
      * 创建库存队列
+     * 
      * @return
      */
     @Bean
     public Queue getStoryQueue() {
-        return new Queue(STORY_QUEUE,true);
+        return new Queue(STORY_QUEUE, true);
     }
 
     /**
      * 库存交换机和库存队列绑定
+     * 
      * @return
      */
     @Bean
@@ -100,6 +101,7 @@ public class RabbitMqConfig {
 
     /**
      * 创建订单队列
+     * 
      * @return
      */
     @Bean
@@ -109,6 +111,7 @@ public class RabbitMqConfig {
 
     /**
      * 创建订单交换机
+     * 
      * @return
      */
     @Bean
@@ -118,6 +121,7 @@ public class RabbitMqConfig {
 
     /**
      * 订单队列与订单交换机进行绑定
+     * 
      * @return
      */
     @Bean

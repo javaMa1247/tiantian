@@ -18,14 +18,14 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 @EnableCaching
 public class RedisCacheConfig extends CachingConfigurerSupport {
     @Bean
-    public RedisTemplate redisTemplate(RedisConnectionFactory factory){
-        RedisTemplate<String,Object> redisTemplate = new RedisTemplate<>();
+    public RedisTemplate redisTemplate(RedisConnectionFactory factory) {
+        RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
 
-        //设置序列化器
+        // 设置序列化器
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         redisTemplate.setHashKeySerializer(new StringRedisSerializer());
 
-        //这里调用GenericJackson2JsonRedisSerializer 将对象转为了json字符串
+        // 这里调用GenericJackson2JsonRedisSerializer 将对象转为了json字符串
         redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());
         redisTemplate.setHashValueSerializer(new GenericJackson2JsonRedisSerializer());
 

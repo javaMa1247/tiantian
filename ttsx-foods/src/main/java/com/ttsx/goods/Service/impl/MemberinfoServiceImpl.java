@@ -13,5 +13,4 @@ import org.springframework.stereotype.Service;
  * @Description:
  */
 @Service
-public class MemberinfoServiceImpl extends ServiceImpl<MemberinfoMapper, Memberinfo> implements MemberinfoService {
-}
+public class MemberinfoServiceImpl extends ServiceImpl<MemberinfoMapper, Memberinfo> implements MemberinfoService {}

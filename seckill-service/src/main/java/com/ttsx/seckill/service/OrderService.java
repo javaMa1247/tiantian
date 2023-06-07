@@ -1,4 +1,5 @@
 package com.ttsx.seckill.service;
+
 import com.ttsx.seckill.entity.Order;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 public interface OrderService {
     /**
      * 订单保存
+     * 
      * @param order 实体
      */
     int saveOrder(Order order);

@@ -19,7 +19,7 @@ import java.util.List;
  */
 @Data
 public class Orderinfo implements Serializable {
-    @TableId(value = "ono",type = IdType.AUTO)
+    @TableId(value = "ono", type = IdType.AUTO)
     private String ono;
     private String odate;
     private String ano;
@@ -29,13 +29,13 @@ public class Orderinfo implements Serializable {
     private Double price;
     private int invoice;
 
-    @TableField(exist = false,select = false)
+    @TableField(exist = false, select = false)
     private String mno;
-    @TableField(exist = false,select = false)
+    @TableField(exist = false, select = false)
     private List<OrderIteminfo> orderItem;
 
     public String getOdate() {
-        if(odate==null|| "".equals(odate)){
+        if (odate == null || "".equals(odate)) {
             Date date = new Date();
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd: HH:mm:ss");
             this.odate = simpleDateFormat.format(date);

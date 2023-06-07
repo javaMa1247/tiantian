@@ -20,7 +20,7 @@ import java.util.*;
 
 /**
  * @program: -
- * @description:  秒杀的fegin类
+ * @description: 秒杀的fegin类
  * @author: dx
  * @create: 2023/5/23 20:54
  */
@@ -32,13 +32,13 @@ public class FlashKillingControllerFegin {
     @Autowired
     private FlashKillingMapper flashKillingMapper;
 
-    //展示秒杀商品信息
+    // 展示秒杀商品信息
     @GetMapping("/showmsGoodsInfo")
-    public R<List<FlashKillingVO>> selectmsGoodsInfo(@RequestParam(value = "time")  Object time ) {
-        //获取当天秒杀商品集合
+    public R<List<FlashKillingVO>> selectmsGoodsInfo(@RequestParam(value = "time") Object time) {
+        // 获取当天秒杀商品集合
 
         QueryWrapper<FlashKilling> qw = new QueryWrapper<>();
-        qw.eq("time", Integer.parseInt(time+""));
+        qw.eq("time", Integer.parseInt(time + ""));
         qw.eq("start_data", new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
         List<FlashKilling> list = flashKillingMapper.selectList(qw);
         List<FlashKillingVO> flashKillingVOS = new ArrayList<>();
@@ -46,9 +46,9 @@ public class FlashKillingControllerFegin {
             FlashKillingVO vo = new FlashKillingVO();
             Goodsinfo goodsinfo = this.feignApp.findById(f.getGno()).getData();
             System.out.println(goodsinfo);
-            //将数据copy到vo对象中
-            BeanUtils.copyProperties(goodsinfo,vo);
-            BeanUtils.copyProperties(f,vo);
+            // 将数据copy到vo对象中
+            BeanUtils.copyProperties(goodsinfo, vo);
+            BeanUtils.copyProperties(f, vo);
             vo.setFk_price(f.getFkPrice());
             vo.setCurrentCount(goodsinfo.getBalance());
             vo.setStart_dateString(f.getStart_data());
@@ -57,19 +57,20 @@ public class FlashKillingControllerFegin {
 
         return R.success(flashKillingVOS);
     }
-    //查询所有秒杀商品
+
+    // 查询所有秒杀商品
     @GetMapping("/showmsGoodsInfoAll")
     public R<List<FlashKillingVO>> selectmsGoodsInfoAll() {
-        //获取当天秒杀商品集合
+        // 获取当天秒杀商品集合
         QueryWrapper<FlashKilling> qw = new QueryWrapper<>();
         List<FlashKilling> list = flashKillingMapper.selectList(qw);
         List<FlashKillingVO> flashKillingVOS = new ArrayList<>();
         for (FlashKilling f : list) {
             FlashKillingVO vo = new FlashKillingVO();
             Goodsinfo goodsinfo = this.feignApp.findById(f.getGno()).getData();
-            //将数据copy到vo对象中
-            BeanUtils.copyProperties(goodsinfo,vo);
-            BeanUtils.copyProperties(f,vo);
+            // 将数据copy到vo对象中
+            BeanUtils.copyProperties(goodsinfo, vo);
+            BeanUtils.copyProperties(f, vo);
             vo.setFk_price(f.getFkPrice());
             vo.setCurrentCount(goodsinfo.getBalance());
             vo.setStart_dateString(f.getStart_data());
@@ -78,23 +79,21 @@ public class FlashKillingControllerFegin {
 
         return R.success(flashKillingVOS);
     }
-    
-    //展示秒杀商品详情
-    @GetMapping("/showmsGoodsDetail")
-    public R<FlashKillingVO> showmsGoodsDetail(@RequestParam(value = "time",required = false)  String time,
-                                               @RequestParam("seckillId")  String fno){
 
-        //获取秒杀商品详情
+    // 展示秒杀商品详情
+    @GetMapping("/showmsGoodsDetail")
+    public R<FlashKillingVO> showmsGoodsDetail(@RequestParam(value = "time", required = false) String time,
+        @RequestParam("seckillId") String fno) {
+
+        // 获取秒杀商品详情
         QueryWrapper<FlashKilling> qw1 = new QueryWrapper<>();
-        qw1.eq("fno",Integer.parseInt(fno));
+        qw1.eq("fno", Integer.parseInt(fno));
         FlashKilling flashKilling = this.flashKillingMapper.selectOne(qw1);
         Goodsinfo goodsinfo = this.feignApp.findById(flashKilling.getGno()).getData();
         FlashKillingVO vo = new FlashKillingVO();
-        BeanUtils.copyProperties(goodsinfo,vo);
-        BeanUtils.copyProperties(flashKilling,vo);
+        BeanUtils.copyProperties(goodsinfo, vo);
+        BeanUtils.copyProperties(flashKilling, vo);
         return R.success(vo);
     }
-
-
 
 }

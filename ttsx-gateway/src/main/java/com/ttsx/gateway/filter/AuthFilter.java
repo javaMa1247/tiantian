@@ -33,47 +33,41 @@ import java.util.Map;
 public class AuthFilter implements GlobalFilter, Ordered {
 
     private static final String LOGIN_URL = "http://localhost:20001/login.html";
-    private static final List<String> EXCLUDE_PATHS = Arrays.asList(
-            "/user/getUserId" ,
-            "/goods/del",
-            "/goods/addDiscuss",
-            "/goods/getHistory",
-            "/goods/setHistory",
-            "/cart/**",
-            "/order/**",
-            "/addr/**"
-//            "/seck/**"
-            ); // 需要排除的路径列表
-    //路径匹配器，支持通配符
+    private static final List<String> EXCLUDE_PATHS = Arrays.asList("/user/getUserId", "/goods/del",
+        "/goods/addDiscuss", "/goods/getHistory", "/goods/setHistory", "/cart/**", "/order/**", "/addr/**"
+    // "/seck/**"
+    ); // 需要排除的路径列表
+    // 路径匹配器，支持通配符
     public static final AntPathMatcher PATH_MATCHER = new AntPathMatcher();
+
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         String token = exchange.getRequest().getHeaders().getFirst("Authorization");
         String path = exchange.getRequest().getPath().toString();
 
-//       token不存在，且请求不在排除列表中，则重定向到登录页面
+        // token不存在，且请求不在排除列表中，则重定向到登录页面
         for (String url : EXCLUDE_PATHS) {
             boolean match = PATH_MATCHER.match(url, path);
             if (match) {
                 if (StringUtils.isBlank(token)) {
                     log.info("token为空path:{}", path);
-                    return redirectToLogin(exchange,HttpStatus.UNAUTHORIZED);
-                }else {
-                    try{
-                        String userid = JWTUtils.getTokenInfo(token).get("userid")+"";
-                        if(!"".equals(userid)) {
+                    return redirectToLogin(exchange, HttpStatus.UNAUTHORIZED);
+                } else {
+                    try {
+                        String userid = JWTUtils.getTokenInfo(token).get("userid") + "";
+                        if (!"".equals(userid)) {
                             ServerHttpRequest request = exchange.getRequest();
                             ServerHttpRequest.Builder builder = request.mutate();
                             builder.header("uid", userid);
                             ServerHttpRequest newRequest = builder.build();
                             return chain.filter(exchange.mutate().request(newRequest).build());
-                        }else {
+                        } else {
                             log.info("token无效:{}", path);
-                            return redirectToLogin(exchange,HttpStatus.UNAUTHORIZED);
+                            return redirectToLogin(exchange, HttpStatus.UNAUTHORIZED);
                         }
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         log.info("token过期:{}", path);
-                        return redirectToLogin(exchange,HttpStatus.FORBIDDEN);
+                        return redirectToLogin(exchange, HttpStatus.FORBIDDEN);
                     }
                 }
 
@@ -83,8 +77,9 @@ public class AuthFilter implements GlobalFilter, Ordered {
 
         return chain.filter(exchange);
     }
+
     // 重定向到登录页面
-    private Mono<Void> redirectToLogin(ServerWebExchange exchange,HttpStatus status) {
+    private Mono<Void> redirectToLogin(ServerWebExchange exchange, HttpStatus status) {
         ServerHttpResponse response = exchange.getResponse();
         response.setStatusCode(status);
         response.getHeaders().set(HttpHeaders.LOCATION, LOGIN_URL);

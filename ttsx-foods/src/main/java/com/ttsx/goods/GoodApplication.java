@@ -21,6 +21,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableFeignClients(basePackages = {"com.ttsx.feignApi"})
 public class GoodApplication {
     public static void main(String[] args) {
-        SpringApplication.run(GoodApplication.class,args);
+        SpringApplication.run(GoodApplication.class, args);
     }
 }

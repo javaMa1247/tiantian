@@ -15,24 +15,21 @@ import java.util.Map;
  * @Author: 86150
  * @CreateDate: 2023-05-08 下午 3:02
  */
-@FeignClient(value = "ttsx-foods",path = "goods")
+@FeignClient(value = "ttsx-foods", path = "goods")
 public interface FeignApp {
 
-    //open feign 支持SpringMVC 注解
+    // open feign 支持SpringMVC 注解
     @RequestMapping("findById/{fid}")
     public R<Goodsinfo> findById(@PathVariable Integer fid);
-//
-//    @RequestMapping("findAll")
-//    public Map<String,Object> findAll();
-//
-//    @RequestMapping("findByPage")
-//    public Map<String,Object> findByPage(@RequestParam int pageno, @RequestParam int pagesize, @RequestParam String sortby,
-//                                         @RequestParam String sort);
+    //
+    // @RequestMapping("findAll")
+    // public Map<String,Object> findAll();
+    //
+    // @RequestMapping("findByPage")
+    // public Map<String,Object> findByPage(@RequestParam int pageno, @RequestParam int pagesize, @RequestParam String
+    // sortby,
+    // @RequestParam String sort);
     /**
-     * 将以上接口通过openFeign 的动态代理机制生成一个实现类
-     *   String url = http://value+path+RequestMapping
+     * 将以上接口通过openFeign 的动态代理机制生成一个实现类 String url = http://value+path+RequestMapping
      */
 }
-
-
-

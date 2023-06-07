@@ -13,17 +13,17 @@
 <script src="js/axios.js"></script>
 <script type="text/javascript">
     var admin_addr = "http://localhost:20001/backgroud/"
-    const app=new Vue({
-        el:'#main',
-        data:{
-            opdata:[],
+    const app = new Vue({
+        el: '#main',
+        data: {
+            opdata: [],
         },
-        mounted(){
+        mounted() {
             this.query();
         },
         methods: {
             query: function () {
-                axios.post(admin_addr+"test1").then(res => {
+                axios.post(admin_addr + "test1").then(res => {
                     if (res.data.code == 1) {
                         this.opdata = res.data.data;
                         const chartDom = document.getElementById('main');
@@ -74,8 +74,6 @@
             },
         }
     })
-
-
 
 
 </script>

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="referrer" content="no-referrer" />
+    <meta name="referrer" content="no-referrer"/>
     <link rel="stylesheet" href="assets/layui/css/layui.css">
     <link rel="stylesheet" href="assets/css/header.css">
     <link rel="stylesheet" href="assets/css/index.css">
@@ -13,47 +13,49 @@
 <body>
 <div class="seckill-body">
     <div class="my-order-header">
-        <div class="seckill-top"><div class="seckill-welcome">
-            <div class="welcome-content">
-                <div class="seckill-text">欢迎来到天天生鲜</div>
-                <ul class="seckill-ul">
-                    <li class="seckill-li userInfo">
-                        <a href="#"  class="user-name">
-                            <label>用户名:  </label>
-                            <span id="nickName"></span>
-                        </a>
-                    </li>
-                    <li class="seckill-li userInfo">
-                        <a href="#" target="_blank" class="user-name">
-                            <label>我的订单</label>
-                        </a>
-                    </li>
-                    <li class="seckill-li loginBtn">
-                        <a href="login.html" class="shopping-content user-change-login">登录</a>
-                    </li>
-                </ul>
-            </div>
-            <div class="seckill-nav">
-                <div class="nav-content">
-                    <div class="nav-logo"> </div>
-                    <div class="nav-select">
-                        <ul class="nav-list">
-                            <li class="nav-text"><a href="index.html" >首页</a></li>
-                            <li class="nav-text"><a href="#">全部商品</a></li>
-                            <li class="nav-text"><a href="#">个人中心</a></li>
-                            <li class="nav-text"><a href="#">我的订单</a></li>
-                            <li class="nav-text"><a href="#">专属福利</a></li>
-                        </ul>
-                    </div>
-                    <div class="nav-search">
-                        <div class="input-content">
-                            <input type="text" placeholder="输入关键字" class="search-input">
+        <div class="seckill-top">
+            <div class="seckill-welcome">
+                <div class="welcome-content">
+                    <div class="seckill-text">欢迎来到天天生鲜</div>
+                    <ul class="seckill-ul">
+                        <li class="seckill-li userInfo">
+                            <a href="#" class="user-name">
+                                <label>用户名: </label>
+                                <span id="nickName"></span>
+                            </a>
+                        </li>
+                        <li class="seckill-li userInfo">
+                            <a href="#" target="_blank" class="user-name">
+                                <label>我的订单</label>
+                            </a>
+                        </li>
+                        <li class="seckill-li loginBtn">
+                            <a href="login.html" class="shopping-content user-change-login">登录</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="seckill-nav">
+                    <div class="nav-content">
+                        <div class="nav-logo"></div>
+                        <div class="nav-select">
+                            <ul class="nav-list">
+                                <li class="nav-text"><a href="index.html">首页</a></li>
+                                <li class="nav-text"><a href="#">全部商品</a></li>
+                                <li class="nav-text"><a href="#">个人中心</a></li>
+                                <li class="nav-text"><a href="#">我的订单</a></li>
+                                <li class="nav-text"><a href="#">专属福利</a></li>
+                            </ul>
                         </div>
-                        <div class="search-img"></div>
+                        <div class="nav-search">
+                            <div class="input-content">
+                                <input type="text" placeholder="输入关键字" class="search-input">
+                            </div>
+                            <div class="search-img"></div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div></div>
+        </div>
     </div>
     <div class="seckill-content">
         <div class="seckill-classify">
@@ -70,7 +72,7 @@
             <div class="seckill-bg"></div>
             <div class="seckill-tab" id="seckillTab"></div>
             <div class="seckill-commodity">
-                <ul class="flow-default current-list" id="currentCommodity"> </ul>
+                <ul class="flow-default current-list" id="currentCommodity"></ul>
             </div>
         </div>
     </div>
@@ -84,7 +86,8 @@
 <!-- 商品秒杀时间分类模板 -->
 <script type="text/html" id="commodityTab">
     <% for (var p = 0; p < data.length; p++) {%>
-    <div class="seckill-tab-list <%:=data[p].status === 1 ? 'seckill-tab-list-active' : ''%>" comStatus='<%:=data[p].status%>' onclick="selectTabData(this, '<%:=data[p].status%>', '<%:=data[p].val%>')">
+    <div class="seckill-tab-list <%:=data[p].status === 1 ? 'seckill-tab-list-active' : ''%>"
+         comStatus='<%:=data[p].status%>' onclick="selectTabData(this, '<%:=data[p].status%>', '<%:=data[p].val%>')">
         <div class="seckill-tab-list-data  <%:=data[p].status === 1 || p === 0 ?  'seckill-tab-active' : ''%>">
             <div class="seckill-time"><%:=data[p].time%></div>
             <div class="seckill-change" id="seckillChange">
@@ -155,7 +158,8 @@
                             <span class="old-number">￥<del><%:=data[i].price%></del></span>
                         </div>
                         <div class="seckill-shop-number">
-                            <div class="seckill-start-status"><!-- TODO :待修改  <%:=(data[i].stockCount-data[i].currentCount)*100/data[i].stockCount%>%-->
+                            <div class="seckill-start-status">
+                                <!-- TODO :待修改  <%:=(data[i].stockCount-data[i].currentCount)*100/data[i].stockCount%>%-->
                                 <span class="comeback-num">已售0%</span>
                                 <div class="shop-number-status"><i class="current-progress" style="width:0%"></i></div>
                             </div>
@@ -168,7 +172,8 @@
                         <button class="operation-button operation-await-button">即将开始</button>
                         <%}%>
                     </div>-->
-                    <a href='commodityDetails.html?id=<%:=data[i].time%>&seckillId=<%:=data[i].fno%>' target="_blank" class="operation-button">立即抢购</a>
+                    <a href='commodityDetails.html?id=<%:=data[i].time%>&seckillId=<%:=data[i].fno%>' target="_blank"
+                       class="operation-button">立即抢购</a>
                     <!--<a href='javascript:void(0)' onclick='doSeckill(<%:=data[i].id%>,<%:=data[i].time%>)' target="_blank" class="operation-button">立即抢购</a>-->
                 </div>
             </div>

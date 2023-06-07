@@ -1,4 +1,5 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
@@ -13,17 +14,17 @@
         //使用axios
         Vue.prototype.axios = axios;
         //在每次请求时，前端携带token到请求头中
-        axios.interceptors.request.use(config=>{
+        axios.interceptors.request.use(config => {
             //从localStorage或vuex中获取token
             const token = localStorage.getItem('token');//||this.$stire.stste.token;
             //如果token，就添加到请求头中
-            if (token){
+            if (token) {
                 config.headers.Authorization = token;
             }
             console.log(token);
             console.log(config);
             return config;
-        },error=>{
+        }, error => {
             return Promise.reject(error);
         });
 
@@ -35,7 +36,7 @@
     <div class="register_con">
         <div class="l_con fl">
             <a class="reg_logo"><img src="images/logo02.png"></a>
-            <div class="reg_slogan">足不出户  ·  新鲜每一天</div>
+            <div class="reg_slogan">足不出户 · 新鲜每一天</div>
             <div class="reg_banner"></div>
         </div>
 
@@ -92,63 +93,63 @@
             <a href="#">友情链接</a>
         </div>
         <p>CopyRight © 2016 北京天天生鲜信息技术有限公司 All Rights Reserved</p>
-        <p>电话：010-****888    京ICP备*******8号</p>
+        <p>电话：010-****888 京ICP备*******8号</p>
     </div>
 </div>
 <script src="js/axios.js"></script>
 <script src="js/vue.js"></script>
 <script>
-    var deli_addr ="";
-    let vm=new Vue({
+    var deli_addr = "";
+    let vm = new Vue({
         el: "#app",
         data: {
-            pwd:'',
-            pwd1:'',
-            email:'',
-            port:'',
-            nickName:'',
+            pwd: '',
+            pwd1: '',
+            email: '',
+            port: '',
+            nickName: '',
         },
         methods: {
-            deliverPort:function () {
-                let params =new URLSearchParams();
-                params.append("op","deliverPort");
-                params.append("email",this.email);
-                params.append("nickName",this.nickName);
-                axios.post("resuser.action",params).then(result=>{
-                    var jsonModel = result.data;
-                    if (jsonModel.code==1){
-                        alert("验证码发送成功");
-                        return;
-                    }
-                    alert("验证码发送失败："+jsonModel.msg);
+            deliverPort: function () {
+                let params = new URLSearchParams();
+                params.append("op", "deliverPort");
+                params.append("email", this.email);
+                params.append("nickName", this.nickName);
+                axios.post("resuser.action", params).then(result => {
+                        var jsonModel = result.data;
+                        if (jsonModel.code == 1) {
+                            alert("验证码发送成功");
+                            return;
+                        }
+                        alert("验证码发送失败：" + jsonModel.msg);
                     },
                 )
             },
-            updatePass:function () {
-                let params=new URLSearchParams();
-                params.append("port",this.port);
-                params.append("email",this.email);
-                params.append("pwd",this.pwd);
-                params.append("pwd1",this.pwd1);
-                params.append("nickName",this.nickName);
-                axios.post("resuser.action?op=updatePass",params).then(result=>{
-                      var jsonModel = result.data;
-                      if (jsonModel.code==0){
-                          alert("请获取验证码");
-                      }
-                      if (jsonModel.code==-3){
-                          alert("不能为空");
-                      }
-                      if (jsonModel.code==-1){
-                          alert("验证码不匹配");
-                      }
-                      if (jsonModel.code==-2){
-                          alert("密码不一致");
-                      }
-                      if (jsonModel.code==1){
-                          alert("更新密码成功！！");
-                          window.location.href="login.html";
-                      }
+            updatePass: function () {
+                let params = new URLSearchParams();
+                params.append("port", this.port);
+                params.append("email", this.email);
+                params.append("pwd", this.pwd);
+                params.append("pwd1", this.pwd1);
+                params.append("nickName", this.nickName);
+                axios.post("resuser.action?op=updatePass", params).then(result => {
+                        var jsonModel = result.data;
+                        if (jsonModel.code == 0) {
+                            alert("请获取验证码");
+                        }
+                        if (jsonModel.code == -3) {
+                            alert("不能为空");
+                        }
+                        if (jsonModel.code == -1) {
+                            alert("验证码不匹配");
+                        }
+                        if (jsonModel.code == -2) {
+                            alert("密码不一致");
+                        }
+                        if (jsonModel.code == 1) {
+                            alert("更新密码成功！！");
+                            window.location.href = "login.html";
+                        }
                     }
                 )
             }

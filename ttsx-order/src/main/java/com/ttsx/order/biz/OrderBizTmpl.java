@@ -27,30 +27,31 @@ public class OrderBizTmpl {
     private OrderDao dao;
     @Autowired
     private FeignApp feignApp;
-    public PageBean findByPage (PageBean pageBean, String mno) {
 
-        List<Orderinfo> dataset = this.fingByPage(pageBean.getPageno(),pageBean.getPagesize(),mno);
+    public PageBean findByPage(PageBean pageBean, String mno) {
+
+        List<Orderinfo> dataset = this.fingByPage(pageBean.getPageno(), pageBean.getPagesize(), mno);
         Long total = this.countAll(mno);
 
         pageBean.setDataset(dataset);
         pageBean.setTotal(total);
 
-
-        long totalPages = total%pageBean.getPagesize()==0?total/pageBean.getPagesize():total/pageBean.getPagesize()+1;
+        long totalPages =
+            total % pageBean.getPagesize() == 0 ? total / pageBean.getPagesize() : total / pageBean.getPagesize() + 1;
         pageBean.setTotalpages((int)totalPages);
 
-        if(pageBean.getPageno()<=1){
+        if (pageBean.getPageno() <= 1) {
             pageBean.setPre(1);
-        }else{
-            pageBean.setPre(pageBean.getPageno()-1);
+        } else {
+            pageBean.setPre(pageBean.getPageno() - 1);
         }
 
-        if(pageBean.getPageno()==totalPages){
+        if (pageBean.getPageno() == totalPages) {
             pageBean.setNext((int)totalPages);
-        }else{
-            pageBean.setNext(pageBean.getPageno()+1);
+        } else {
+            pageBean.setNext(pageBean.getPageno() + 1);
         }
-        if(totalPages==0){
+        if (totalPages == 0) {
             pageBean.setPre(1);
             pageBean.setNext(1);
             pageBean.setTotalpages(1);
@@ -65,21 +66,20 @@ public class OrderBizTmpl {
         return longValue;
     }
 
+    // private IPage<Orderinfo> getAllOrderByPage(String mno, int pageNum, int pageSize) {
+    // Page<Orderinfo> page = new Page<>(pageNum, pageSize);
+    // return this.dao.selectAllOrderByPage(page, mno);
+    // }
 
-//    private IPage<Orderinfo> getAllOrderByPage(String mno, int pageNum, int pageSize) {
-//        Page<Orderinfo> page = new Page<>(pageNum, pageSize);
-//        return this.dao.selectAllOrderByPage(page, mno);
-//    }
+    private List<Orderinfo> fingByPage(int pageno, int pagesize, String mno) {
+        int start = (pageno - 1) * pagesize;
 
-    private List<Orderinfo> fingByPage( int pageno, int pagesize,String mno) {
-        int start = (pageno-1)*pagesize;
+        List<Orderinfo> list = this.dao.selectAllOrderByPage(mno, start, pagesize);
 
-        List<Orderinfo> list = this.dao.selectAllOrderByPage(mno,start,pagesize);
-
-        if(list.size()<=0){
+        if (list.size() <= 0) {
             return null;
         }
-        for(Orderinfo order:list){
+        for (Orderinfo order : list) {
             String ono = order.getOno();
             List<OrderIteminfo> orderItemList = dao.selectOrderItemByOno(ono);
             for (OrderIteminfo iteminfo : orderItemList) {

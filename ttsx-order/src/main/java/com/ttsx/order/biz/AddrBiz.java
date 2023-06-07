@@ -24,30 +24,31 @@ public class AddrBiz {
     @Autowired
     private AddrDao dao;
 
-    public List<Addrinfo> showAddr(String mno){
-//        int mno= user.getUserId();
+    public List<Addrinfo> showAddr(String mno) {
+        // int mno= user.getUserId();
         List<Addrinfo> list = new ArrayList<>();
-        try{
+        try {
             QueryWrapper<Addrinfo> queryWrapper = new QueryWrapper<>();
             queryWrapper.eq("mno", mno);
             list = dao.selectList(queryWrapper);
 
-            if(list!=null&&list.size()>0){
+            if (list != null && list.size() > 0) {
                 return list;
-            }else{
+            } else {
                 return null;
             }
 
-        }catch (Exception e){
+        } catch (Exception e) {
             return null;
         }
 
     }
-    public Integer addAddr(Addrinfo newaddrinfo,String mno){
-//        int mno= user.getUserId();
-        try{
 
-            String ano = Integer.valueOf(dao.getMaxAno())+1+"";
+    public Integer addAddr(Addrinfo newaddrinfo, String mno) {
+        // int mno= user.getUserId();
+        try {
+
+            String ano = Integer.valueOf(dao.getMaxAno()) + 1 + "";
 
             log.info(ano);
             newaddrinfo.setAno(ano);
@@ -55,55 +56,55 @@ public class AddrBiz {
             newaddrinfo.setFlag(1);
             newaddrinfo.setStatus(1);
             int result = dao.insert(newaddrinfo);
-            if(result!=0){
+            if (result != 0) {
                 return 1;
-            }else{
+            } else {
                 return 0;
             }
 
-        }catch (Exception e){
+        } catch (Exception e) {
             return 0;
         }
     }
 
+    public Integer updateAddr(Addrinfo addrinfo, String mno) {
+        // int mno= user.getUserId();
 
-    public Integer updateAddr(Addrinfo addrinfo,String mno){
-//        int mno= user.getUserId();
-
-        log.info("addrinfo:{}",addrinfo);
+        log.info("addrinfo:{}", addrinfo);
         addrinfo.setMno(Integer.parseInt(mno));
 
         int result = dao.updateById(addrinfo);
         return result;
     }
 
-    public Map<String ,Object> showAddrinfo(Addrinfo addrinfo,String mno){
-//        int mno= user.getUserId();
-        Map<String ,Object> map1 = new HashMap<>();
+    public Map<String, Object> showAddrinfo(Addrinfo addrinfo, String mno) {
+        // int mno= user.getUserId();
+        Map<String, Object> map1 = new HashMap<>();
         String ano = addrinfo.getAno();
         LambdaQueryWrapper<Addrinfo> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(Addrinfo::getAno,ano)
-                .eq(Addrinfo::getMno,mno);
+        wrapper.eq(Addrinfo::getAno, ano).eq(Addrinfo::getMno, mno);
         List<Addrinfo> list = dao.selectList(wrapper);
 
-
-        if(list!=null&&list.size()>0){
+        if (list != null && list.size() > 0) {
             Map map = new HashMap();
-            map.put("addr",list.get(0));
-            map.put("address",this.showAddress(list.get(0)));
-            map1.put("code",1);
-            map1.put("data",map);
-        }else{
-            map1.put("code",0);
+            map.put("addr", list.get(0));
+            map.put("address", this.showAddress(list.get(0)));
+            map1.put("code", 1);
+            map1.put("data", map);
+        } else {
+            map1.put("code", 0);
         }
         return map1;
     }
-    private String showAddress(Addrinfo addr){
 
-//        北京市 海淀区 东北旺西路8号中关村软件园 （李思 收） 182****7528
+    private String showAddress(Addrinfo addr) {
+
+        // 北京市 海淀区 东北旺西路8号中关村软件园 （李思 收） 182****7528
         StringBuffer sb = new StringBuffer();
-        String tel = (addr.getTel().substring(0,3)+"****"+addr.getTel().substring(addr.getTel().length()-4,addr.getTel().length()));
-        sb.append(addr.getProvince()+" "+addr.getCity()+" "+addr.getArea()+" "+addr.getAddr()+" ("+addr.getName()+"  )"+" "+tel);
+        String tel = (addr.getTel().substring(0, 3) + "****"
+            + addr.getTel().substring(addr.getTel().length() - 4, addr.getTel().length()));
+        sb.append(addr.getProvince() + " " + addr.getCity() + " " + addr.getArea() + " " + addr.getAddr() + " ("
+            + addr.getName() + "  )" + " " + tel);
 
         return sb.toString();
     }

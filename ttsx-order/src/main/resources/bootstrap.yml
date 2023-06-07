@@ -13,9 +13,9 @@ spring:
         file-extension: yml
         # 用于共享的配置文件
         shared-configs:
-        #          - mysql119.yml
-         - {dataId: ttsx-mysql.yml,refresh: true}   #
-         - {dataId: ttsx-redis.yml,refresh: true}
+          #          - mysql119.yml
+          - { dataId: ttsx-mysql.yml,refresh: true }   #
+          - { dataId: ttsx-redis.yml,refresh: true }
   profiles:
     active: prod #它用来指定当前应用的配置环境
 

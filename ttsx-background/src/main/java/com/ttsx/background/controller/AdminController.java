@@ -43,11 +43,10 @@ public class AdminController {
     @Autowired
     private RedisTemplate redisTemplate;
 
-    //管理员登陆
+    // 管理员登陆
     @RequestMapping("/adminLogin")
-    public Map adminLogin(@RequestParam("aname") String aname,
-                          @RequestParam("apwd") String apwd) {
-        //TODO:用security做登陆的授权认证，或者其他框架
+    public Map adminLogin(@RequestParam("aname") String aname, @RequestParam("apwd") String apwd) {
+        // TODO:用security做登陆的授权认证，或者其他框架
         Map map = new HashMap();
         try {
             if (aname == null || apwd == null) {
@@ -66,7 +65,7 @@ public class AdminController {
                 map.put("code", 1);
                 map.put("data", tblAdmin);
 
-                //将token存入redis
+                // 将token存入redis
                 Map m = new HashMap();
                 m.put("aname", tblAdmin.getAname());
                 m.put("aid", tblAdmin.getAid());
@@ -86,7 +85,7 @@ public class AdminController {
         }
     }
 
-    //退出登陆
+    // 退出登陆
     @PostMapping("/logout")
     public Map logout(HttpServletRequest request, HttpServletResponse response) {
         String token = request.getHeader("Authorization");
@@ -98,11 +97,10 @@ public class AdminController {
         return map;
     }
 
-    //修改密码
+    // 修改密码
     @RequestMapping("/modifyPwd")
-    public Map modifyPwd(@RequestParam("pwd1") String pwd1,
-                         @RequestParam("pwd2") String pwd2,
-                         @RequestParam("pwd3") String pwd3) {
+    public Map modifyPwd(@RequestParam("pwd1") String pwd1, @RequestParam("pwd2") String pwd2,
+        @RequestParam("pwd3") String pwd3) {
         Map map = new HashMap();
         try {
             if (!pwd2.equals(pwd3)) {
@@ -115,9 +113,9 @@ public class AdminController {
             pwd2 = Md5.MD5Encode(pwd2);
             Boolean flag = this.redisTemplate.hasKey("token_admin");
             if (flag) {
-                String token = (String) this.redisTemplate.opsForHash().get("token", "token_admin");
+                String token = (String)this.redisTemplate.opsForHash().get("token", "token_admin");
                 Map<String, Object> tokenInfo = JWTUtils.getTokenInfo(token);
-                String aid = (String) tokenInfo.get("aid");
+                String aid = (String)tokenInfo.get("aid");
                 QueryWrapper<TblAdmin> qw = new QueryWrapper<>();
                 qw.eq("apwd", pwd1);
                 qw.eq("aid", aid);
@@ -149,7 +147,7 @@ public class AdminController {
         }
     }
 
-    //检查登陆
+    // 检查登陆
     @RequestMapping("/selectLogin")
     public Map selectLogin(HttpServletRequest request) {
         String token = request.getHeader("Authorization");
@@ -160,10 +158,10 @@ public class AdminController {
             map.put("msg", "用户未登录!请先登录再进入此页面!");
             return map;
         }
-        //TODO:如何取过期时间
+        // TODO:如何取过期时间
         Boolean aBoolean = this.redisTemplate.hasKey(token);
-//        String t = (String) this.redisTemplate.opsForHash().get("token", "token_admin");
-//        Long ttl = this.redisTemplate.getExpire("token");
+        // String t = (String) this.redisTemplate.opsForHash().get("token", "token_admin");
+        // Long ttl = this.redisTemplate.getExpire("token");
         if (aBoolean) {
             map.put("code", 1);
             Map<String, Object> info = JWTUtils.getTokenInfo(token);
@@ -176,8 +174,7 @@ public class AdminController {
     }
 
     @RequestMapping("/addImg")
-    public Map addImg(@RequestParam("gno") String gno,
-                      @RequestParam("pics") String pics) {
+    public Map addImg(@RequestParam("gno") String gno, @RequestParam("pics") String pics) {
         Map map = new HashMap();
         try {
             Goodsinfo goodsinfo = this.goodsMapper.selectById(gno);
@@ -209,10 +206,10 @@ public class AdminController {
             Part uploadFile = request.getPart("uploadFile");
 
             String fileName = uploadFile.getSubmittedFileName();
-            String filePath = "E:\\homework\\t4\\-\\ttsx-index\\src\\main\\resources\\static\\images\\goods\\" +
-                    UploadFileUtils.getNowDateStr();
+            String filePath = "E:\\homework\\t4\\-\\ttsx-index\\src\\main\\resources\\static\\images\\goods\\"
+                + UploadFileUtils.getNowDateStr();
             String urlPath = "images/goods" + UploadFileUtils.getNowDateStr() + fileName;
-            //注:线下时需服务器重启才可查看图片
+            // 注:线下时需服务器重启才可查看图片
             urlPath = urlPath.replaceAll("\\\\", "/");
             File saveDirFile = new File(filePath);
             if (!saveDirFile.exists()) {
@@ -231,13 +228,13 @@ public class AdminController {
     }
 
     @RequestMapping("/test1")
-    public Map test1()  {
+    public Map test1() {
         Map map = new HashMap();
-        try{
+        try {
             List<OrderIteminfoX> orderIteminfos = this.adminMapper.selectOrderiteminfo();
             map.put("code", 1);
             map.put("data", orderIteminfos);
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
             map.put("code", 0);
             map.put("msg", e.getMessage());

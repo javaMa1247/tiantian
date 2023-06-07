@@ -20,61 +20,57 @@ import java.util.Map;
  * @Time: 22:54
  * @Description:
  */
-//@WebFilter(filterName = "loginCheckFilter",urlPatterns = "/*")
+// @WebFilter(filterName = "loginCheckFilter",urlPatterns = "/*")
 @Slf4j
 public class LoginCheckFilter implements Filter {
     @Autowired
     private RedisTemplate redisTemplate;
-    //路径匹配器，支持通配符
+    // 路径匹配器，支持通配符
     public static final AntPathMatcher PATH_MATCHER = new AntPathMatcher();
 
     @Override
-    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        HttpServletRequest request=(HttpServletRequest) servletRequest;
-        HttpServletResponse response=(HttpServletResponse) servletResponse;
+    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
+        throws IOException, ServletException {
+        HttpServletRequest request = (HttpServletRequest)servletRequest;
+        HttpServletResponse response = (HttpServletResponse)servletResponse;
 
-        //1.获取本次请求的URI
-        String requestURI=request.getRequestURI();  //backend/index.html
+        // 1.获取本次请求的URI
+        String requestURI = request.getRequestURI(); // backend/index.html
 
-        log.info("拦截到请求:{}",requestURI);
+        log.info("拦截到请求:{}", requestURI);
 
-        //不需要处理的请求路径
-        String[] urls = new String[]{
-                "/employee/login",
-                "/common/**",
-                "/user/sendMsg", //移动端发送短信
-                "/user/login" , //移动端登录
-                "/user/logon",  //注册
-                "/user/findPass" ,   //忘记密码
-                "/user/logout",
-                "/user/showName",
-                "/user/checkUname",
-                "/backgroud/**",//管理员
+        // 不需要处理的请求路径
+        String[] urls = new String[] {"/employee/login", "/common/**", "/user/sendMsg", // 移动端发送短信
+            "/user/login", // 移动端登录
+            "/user/logon", // 注册
+            "/user/findPass", // 忘记密码
+            "/user/logout", "/user/showName", "/user/checkUname", "/backgroud/**",// 管理员
         };
 
-        //2.判断本次请求是否需要处理
+        // 2.判断本次请求是否需要处理
         boolean check = check(urls, requestURI);
 
-        //3.如果不需要处理，则直接放行
-        if(check){
-            log.info("本次请求{}不需要处理",requestURI);
-            filterChain.doFilter(request,response);
+        // 3.如果不需要处理，则直接放行
+        if (check) {
+            log.info("本次请求{}不需要处理", requestURI);
+            filterChain.doFilter(request, response);
             return;
         }
 
-        //4-1.判断登录状态，如果已经登录，则直接放行
-        if(request.getHeader("Authorization") != null){
+        // 4-1.判断登录状态，如果已经登录，则直接放行
+        String Authorization = "Authorization";
+        if (request.getHeader(Authorization) != null) {
 
             String token = request.getHeader("Authorization");
-            log.info("待检测的token为:"+ token );
+            log.info("待检测的token为:" + token);
             System.out.println(token);
-            boolean flag=this.redisTemplate.hasKey(token);
-            String mno ="";
-            if(  flag) {
-                String t= (String) this.redisTemplate.opsForHash().get(token,"token");
-                Map<String,Object> info=JWTUtils.getTokenInfo(   t   );
+            boolean flag = this.redisTemplate.hasKey(token);
+            String mno = "";
+            if (flag) {
+                String t = (String)this.redisTemplate.opsForHash().get(token, "token");
+                Map<String, Object> info = JWTUtils.getTokenInfo(t);
                 mno = info.get("userid").toString();
-            }else{
+            } else {
                 log.info("token已过期");
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 response.setContentType(MediaType.APPLICATION_JSON_VALUE);
@@ -83,15 +79,15 @@ public class LoginCheckFilter implements Filter {
                 return;
             }
 
-            log.info("用户已经登录,用户id为:{}",mno);
+            log.info("用户已经登录,用户id为:{}", mno);
             Long empId = Long.parseLong(mno);
             BaseContext.setCurrentId(empId);
-            filterChain.doFilter(request,response);
+            filterChain.doFilter(request, response);
             return;
         }
 
         log.info("用户未登录");
-        //5.如果未登录则返回未登录结果,通过输出流方式向客户端页面响应
+        // 5.如果未登录则返回未登录结果,通过输出流方式向客户端页面响应
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.getWriter().write("{\"message\": \"用户未登录\"}");
@@ -104,11 +100,11 @@ public class LoginCheckFilter implements Filter {
 
     }
 
-    //判断本次请求是否要放行
-    public boolean check(String[] urls,String requestURI){
+    // 判断本次请求是否要放行
+    public boolean check(String[] urls, String requestURI) {
         for (String url : urls) {
-            boolean match=PATH_MATCHER.match(url,requestURI);
-            if(match){
+            boolean match = PATH_MATCHER.match(url, requestURI);
+            if (match) {
                 return true;
             }
         }
@@ -119,6 +115,5 @@ public class LoginCheckFilter implements Filter {
     public void init(FilterConfig filterConfig) throws ServletException {
 
     }
-
 
 }

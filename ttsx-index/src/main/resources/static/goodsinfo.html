@@ -212,7 +212,7 @@
             modifydescr() {
                 let params = new URLSearchParams(this.goodinfo);
                 params.append("op", "modifyGoodDescr");
-                axios.post(admin_addr+ "modifyGoodDescrn", params).then(data => {
+                axios.post(admin_addr + "modifyGoodDescrn", params).then(data => {
                     if (data.data.code == 1) {
                         this.$message({type: 'success', message: '修改成功!'});
                     } else {
@@ -224,7 +224,7 @@
                 let params = new URLSearchParams();
                 params.append("op", "toDeletX");
                 params.append("gno", gno);
-                axios.post(admin_addr+"toDeletX", params).then(data => {
+                axios.post(admin_addr + "toDeletX", params).then(data => {
                     if (data.data.code == 1) {
                         this.$message({type: 'success', message: '下架成功!'});
                         this.getdatas();
@@ -237,7 +237,7 @@
             adddata() {
                 let params = new URLSearchParams(this.goodinfo);
                 params.append("op", "addGoodInfo");
-                axios.post(admin_addr+ "addGoodInfo", params).then(data => {
+                axios.post(admin_addr + "addGoodInfo", params).then(data => {
                     if (data.data.code == 1) {
                         this.$message({type: 'success', message: '添加成功!'});
                         this.getdatas();
@@ -250,7 +250,7 @@
             modifydata() {
                 let params = new URLSearchParams(this.goodinfo);
                 params.append("op", "modifyGoodInfo");
-                axios.post(admin_addr+ "modifyGoodInfo", params).then(data => {
+                axios.post(admin_addr + "modifyGoodInfo", params).then(data => {
                     if (data.data.code == 1) {
                         this.$message({type: 'success', message: '修改成功!'});
                         this.getdatas();
@@ -263,7 +263,7 @@
             getdatas() {
                 let params = new URLSearchParams();
                 params.append("op", "getGoodsInfo");
-                axios.post(admin_addr+ "getGoodsInfo", params).then(data => {
+                axios.post(admin_addr + "getGoodsInfo", params).then(data => {
                     if (data.data.code == 1) {
                         this.goodsinfo = data.data.data;
                     } else {
@@ -274,7 +274,7 @@
             getselectdata() {
                 let params = new URLSearchParams();
                 params.append("op", "getSelectData");
-                axios.post(admin_addr+ "getSelectData", params).then(data => {
+                axios.post(admin_addr + "getSelectData", params).then(data => {
                     if (data.data.code == 1) {
                         this.selectDatas = data.data.data;
                     } else {
@@ -292,7 +292,7 @@
         created() {
             let params = new URLSearchParams();
             params.append("op", "selectLogin");
-            axios.post(admin_login+"selectLogin", params).then(data => {
+            axios.post(admin_login + "selectLogin", params).then(data => {
                 if (data.data.code != 1) {
                     this.$message.error(data.data.msg);
                     window.location.href = "404.html";

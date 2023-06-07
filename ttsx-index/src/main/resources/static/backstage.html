@@ -169,7 +169,7 @@
             selectl() {
                 let params = new URLSearchParams();
                 params.append("op", "selectLogin");
-                axios.post(admin_addr+ "selectLogin", params).then(data => {
+                axios.post(admin_addr + "selectLogin", params).then(data => {
                     if (data.data.code != 1) {
                         alert("登录状态失效!请重新登录!");
                         window.location.href = "login_admin.html";
@@ -182,10 +182,10 @@
                 params.append("pwd1", this.form.pwd1);
                 params.append("pwd2", this.form.pwd2);
                 params.append("pwd3", this.form.pwd3);
-                axios.post(admin_addr+ "modifyPwd", params).then(data => {
+                axios.post(admin_addr + "modifyPwd", params).then(data => {
                     if (data.data.code == 1) {
                         alert("密码修改成功,请重新登录...");
-                        axios.get(admin_addr+"logout").then(data => {
+                        axios.get(admin_addr + "logout").then(data => {
                             if (data.data.code != 1) {
                                 this.$message.error(data.data.msg);
                             } else {
@@ -221,7 +221,7 @@
                 }).then(() => {
                     let params = new URLSearchParams();
                     params.append("op", "logout");
-                    axios.post(admin_addr+ "logout", params).then(data => {
+                    axios.post(admin_addr + "logout", params).then(data => {
                         if (data.data.code == 1) {
                             alert("退出成功...");
                             localStorage.removeItem("token_admin");
@@ -236,7 +236,7 @@
         created() {
             let params = new URLSearchParams();
             params.append("op", "selectLogin");
-            axios.post(admin_addr+ "selectLogin", params).then(data => {
+            axios.post(admin_addr + "selectLogin", params).then(data => {
                 if (data.data.code == 1) {
                     this.loginuserinfo = data.data.data
                     this.$message("欢迎您!" + data.data.data.aname);

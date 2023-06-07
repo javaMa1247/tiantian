@@ -52,7 +52,7 @@
             <artifactId>sentinel-spring-cloud-gateway-adapter</artifactId>
         </dependency>
 
-<!--        &lt;!&ndash;Redis&ndash;&gt;-->
+        <!--        &lt;!&ndash;Redis&ndash;&gt;-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
@@ -82,8 +82,8 @@
                     <artifactId>druid-spring-boot-starter</artifactId>
                 </exclusion>
                 <exclusion>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-web</artifactId>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-web</artifactId>
                 </exclusion>
                 <exclusion>
                     <groupId>com.mysql</groupId>

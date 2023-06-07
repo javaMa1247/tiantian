@@ -31,9 +31,9 @@ public class OrderBiz {
     @Autowired
     private OrderBizTmpl orderBizTmpl;
 
-    public Integer addOrder(List<Map<String, Object>> orders,String ano,String mno){
+    public Integer addOrder(List<Map<String, Object>> orders, String ano, String mno) {
 
-//        int mno= user.getUserId();
+        // int mno= user.getUserId();
         Integer res = 0;
 
         Orderinfo orderinfo = new Orderinfo();
@@ -45,8 +45,8 @@ public class OrderBiz {
         String ono = orderinfo.getOno();
         log.info(ono);
         OrderIteminfo orderIteminfo = new OrderIteminfo();
-        for(Map<String, Object> list :orders){
-            orderIteminfo.setGno((String) list.get("gno"));
+        for (Map<String, Object> list : orders) {
+            orderIteminfo.setGno((String)list.get("gno"));
             orderIteminfo.setNums(list.get("num").toString());
             orderIteminfo.setPrice(list.get("smallCount").toString());
             orderIteminfo.setOno(ono);
@@ -54,13 +54,11 @@ public class OrderBiz {
         }
         QueryWrapper<OrderIteminfo> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("ono", ono);
-        List<Object> result = itemDao.selectObjs(
-                queryWrapper.select("SUM(price)")
-        );
+        List<Object> result = itemDao.selectObjs(queryWrapper.select("SUM(price)"));
         if (result != null && !result.isEmpty()) {
             Object value = result.get(0);
             if (value instanceof BigDecimal) {
-                BigDecimal sumPrice = (BigDecimal) value;
+                BigDecimal sumPrice = (BigDecimal)value;
                 // 使用 sumPrice 进行后续操作
                 sumPrice = sumPrice.add(new BigDecimal(10));
                 orderinfo.setPrice(sumPrice.doubleValue());
@@ -73,12 +71,12 @@ public class OrderBiz {
         return res;
     }
 
-    public PageBean showOrderbyPage(PageBean pageBean,String mno){
-//        int mno= user.getUserId();
-        PageBean page = this.orderBizTmpl.findByPage(pageBean, mno+"");
-        if(page!=null){
+    public PageBean showOrderbyPage(PageBean pageBean, String mno) {
+        // int mno= user.getUserId();
+        PageBean page = this.orderBizTmpl.findByPage(pageBean, mno + "");
+        if (page != null) {
             return page;
-        }else {
+        } else {
             return null;
         }
 
@@ -91,7 +89,7 @@ public class OrderBiz {
         QueryWrapper<Orderinfo> queryWrapper1 = new QueryWrapper<>();
         queryWrapper1.eq("ono", ono);
         int delete1 = dao.delete(queryWrapper1);
-        if(delete>0 && delete1>0){
+        if (delete > 0 && delete1 > 0) {
             return 1;
         }
         return 0;

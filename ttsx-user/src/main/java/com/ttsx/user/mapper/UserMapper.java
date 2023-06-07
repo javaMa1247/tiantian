@@ -11,5 +11,4 @@ import org.apache.ibatis.annotations.Mapper;
  * @Description:
  */
 @Mapper
-public interface UserMapper extends BaseMapper<Memberinfo> {
-}
+public interface UserMapper extends BaseMapper<Memberinfo> {}

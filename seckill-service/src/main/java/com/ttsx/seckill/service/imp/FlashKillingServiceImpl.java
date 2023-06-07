@@ -18,16 +18,18 @@ import java.util.List;
  */
 @Service
 @Slf4j
-public class FlashKillingServiceImpl extends ServiceImpl<FlashKillingMapper, FlashKilling> implements FlashKillingService {
+public class FlashKillingServiceImpl extends ServiceImpl<FlashKillingMapper, FlashKilling>
+    implements FlashKillingService {
     @Autowired
     private FlashKillingMapper flashKillingMapper;
 
     @Override
     public int decrByStock(Integer gno) {
-        FlashKilling flashKilling = flashKillingMapper.selectOne(new QueryWrapper<FlashKilling>().lambda().eq(FlashKilling::getGno,gno));
-        flashKilling.setCount(flashKilling.getCount()-1);
+        FlashKilling flashKilling =
+            flashKillingMapper.selectOne(new QueryWrapper<FlashKilling>().lambda().eq(FlashKilling::getGno, gno));
+        flashKilling.setCount(flashKilling.getCount() - 1);
         int i = flashKillingMapper.updateById(flashKilling);
-        if( i<= 0){
+        if (i <= 0) {
             throw new RuntimeException("减少库存失败");
         }
         return i;

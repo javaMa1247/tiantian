@@ -11,7 +11,7 @@
     <!-- 引入组件库 -->
     <script src="https://unpkg.com/element-ui@2.15.10/lib/index.js"></script>
     <style>
-        .el-form{
+        .el-form {
             text-align: center;
         }
     </style>
@@ -23,7 +23,7 @@
             <el-input v-model="formInline.gno" placeholder="请输入商品编号"></el-input>
         </el-form-item>
         <el-form-item label="图片">
-            <input type="file" id="imgFile" style="margin-bottom: 10px;" />
+            <input type="file" id="imgFile" style="margin-bottom: 10px;"/>
         </el-form-item>
         <el-form-item>
             <el-button type="primary" @click="onSubmit">增加</el-button>
@@ -33,31 +33,31 @@
 <script>
     var admin_addr = "http://localhost:20001/backgroud/"
     let vm = new Vue({
-        el:"#app",
-        data:{
-            picUrl:"",
+        el: "#app",
+        data: {
+            picUrl: "",
             formInline: {
                 gno: '',
             }
         },
-        methods:{
+        methods: {
             onSubmit() {
                 let file = document.getElementById('imgFile').files[0];
                 let formData = new FormData();
-                formData.append("uploadFile",file,file.name);
-                const config = {headers: { "Content-Type": "multipart/form-data;boundary="+new Date().getTime() }};
-                axios.post(admin_addr+"uploadFile",formData,config).then(data => {
+                formData.append("uploadFile", file, file.name);
+                const config = {headers: {"Content-Type": "multipart/form-data;boundary=" + new Date().getTime()}};
+                axios.post(admin_addr + "uploadFile", formData, config).then(data => {
                     if (data.data.code == 1) {
-                        this.$message({type: 'success', message:'图片上传成功!'})
+                        this.$message({type: 'success', message: '图片上传成功!'})
                         this.picUrl = data.data.data;
                         let params = new URLSearchParams();
-                        params.append("op","addImg");
-                        params.append("pics",this.picUrl);
-                        params.append("gno",this.formInline.gno);
-                        axios.post(admin_addr+ "addImg",params).then(data => {
-                            if(data.data.code == 1){
-                                this.$message({type: 'success', message:'图片更改/增加成功!'})
-                            }else {
+                        params.append("op", "addImg");
+                        params.append("pics", this.picUrl);
+                        params.append("gno", this.formInline.gno);
+                        axios.post(admin_addr + "addImg", params).then(data => {
+                            if (data.data.code == 1) {
+                                this.$message({type: 'success', message: '图片更改/增加成功!'})
+                            } else {
                                 this.$message.error(data.data.msg);
                             }
                         })
@@ -68,11 +68,11 @@
                 });
             }
         },
-        created(){
+        created() {
             let params = new URLSearchParams();
-            params.append("op","selectLogin");
-            axios.post(admin_addr+"selectLogin",params).then(data => {
-                if(data.data.code != 1) {
+            params.append("op", "selectLogin");
+            axios.post(admin_addr + "selectLogin", params).then(data => {
+                if (data.data.code != 1) {
                     this.$message.error(data.data.msg);
                     window.location.href = "404.html";
                 }

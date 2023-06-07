@@ -13,7 +13,7 @@ spring:
     name: ttsx-index
   web:
     resources:
-      static-locations: [classpath:/META-INF/resources,classpath:/resources,classpath:/static,classpath:/templates]
+      static-locations: [ classpath:/META-INF/resources,classpath:/resources,classpath:/static,classpath:/templates ]
 logging:
   level:
     root: info

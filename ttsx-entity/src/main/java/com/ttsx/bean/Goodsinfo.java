@@ -16,7 +16,7 @@ import java.lang.reflect.Type;
  */
 @Data
 public class Goodsinfo implements Serializable {
-    @TableId(type = IdType.AUTO)    //主键且自增
+    @TableId(type = IdType.AUTO) // 主键且自增
     private Integer gno;
     private Integer tno;
     private String gname;
@@ -26,7 +26,7 @@ public class Goodsinfo implements Serializable {
     private String pics;
     private String unit;
     private String qperied;
-    @TableField(exist = false,select = false)
+    @TableField(exist = false, select = false)
     private String tname;
     private String weight;
     private String descr;

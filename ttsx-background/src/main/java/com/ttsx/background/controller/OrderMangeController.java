@@ -2,15 +2,12 @@ package com.ttsx.background.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.ttsx.background.mapper.AdminMapper;
-import com.ttsx.background.mapper.GoodsMapper;
 import com.ttsx.background.mapper.OrderDao;
-import com.ttsx.background.mapper.UserMapper;
 import com.ttsx.bean.OrderInfoBeanX;
 import com.ttsx.bean.OrderShowInfoBeanX;
 import com.ttsx.bean.Orderinfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,12 +32,11 @@ public class OrderMangeController {
     @Autowired
     private OrderDao orderDao;
 
-
-    //TODO:导入ttsx-order,  待解决导入问题 ：getOrderInfo，nextStatus
-    //查询订单详情
+    // TODO:导入ttsx-order, 待解决导入问题 ：getOrderInfo，nextStatus
+    // 查询订单详情
     @RequestMapping("/getOrderInfo")
-    public Map getOrderInfo() {
-        Map map = new HashMap();
+    public Map<String, Object> getOrderInfo() {
+        Map<String, Object> map = new HashMap<>();
         try {
             List<OrderInfoBeanX> select = this.adminMapper.selectOrderInfo();
             for (OrderInfoBeanX orderInfoBeanX : select) {
@@ -76,10 +72,10 @@ public class OrderMangeController {
         return map;
     }
 
-    //下一步
+    // 下一步
     @RequestMapping("/nextStatus")
-    public Map nextStatus(@RequestParam("ono") String ono) {
-        Map map = new HashMap();
+    public Map<String, java.io.Serializable> nextStatus(@RequestParam("ono") String ono) {
+        Map<String, java.io.Serializable> map = new HashMap<>();
         try {
             Orderinfo orderinfo = this.orderDao.selectById(ono);
             Integer status = orderinfo.getStatus();
@@ -104,10 +100,10 @@ public class OrderMangeController {
         return map;
     }
 
-    //获取订单详情
+    // 获取订单详情
     @RequestMapping("/getOrderItem")
-    public Map getOrderItem(@RequestParam("ono") String ono) {
-        Map map = new HashMap();
+    public Map<String, java.io.Serializable> getOrderItem(@RequestParam("ono") String ono) {
+        Map<String, java.io.Serializable> map = new HashMap<>();
         try {
             List<OrderShowInfoBeanX> select = this.adminMapper.selectOrderItem(ono);
             if (select.size() == 0) {

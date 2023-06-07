@@ -27,18 +27,14 @@ public class Order {
     @TableField("gno")
     private Integer gno;
 
-
     @TableField("order_user")
     private String orderUser;
-
 
     @TableField("create_by")
     private String createBy;
 
-
     @TableField("update_by")
     private String updateBy;
-
 
     @TableField("create_date")
     private Date createDate;

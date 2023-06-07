@@ -11,17 +11,32 @@ public class BaseContext {
 
     /**
      * 设置值
+     * 
      * @param id
      */
-    public static void setCurrentId(Long id){
+    public static void setCurrentId(Long id) {
         threadLocal.set(id);
     }
 
     /**
      * 获取值
+     * 
      * @return
      */
-    public static Long getCurrentId(){
+    public static Long getCurrentId() {
         return threadLocal.get();
+    }
+
+    /**
+     * TODO 删除值
+     * 
+     * @return void
+     * @author Arnold
+     * @throws
+     *
+     **/
+
+    public static void remove() {
+        threadLocal.remove();
     }
 }

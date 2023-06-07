@@ -37,6 +37,7 @@ public class MqOrderServiceImpl {
 
     /**
      * MQ监听订单消息队列，并消费
+     * 
      * @param order
      */
     @RabbitListener(queues = RabbitMqConfig.ORDER_QUEUE, containerFactory = "rabbitListenerContainerFactory")
@@ -53,20 +54,21 @@ public class MqOrderServiceImpl {
         order.setDelFlag("0");
         int i = orderService.saveOrder(order);
         int j = flashKillingService.decrByStock(order.getGno());
-        if (i>0 && j>0){
-            //消费成功
+        if (i > 0 && j > 0) {
+            // 消费成功
             channel.basicAck(message.getMessageProperties().getDeliveryTag(), true);
             log.info("消费订单成功，订单用户为：{}，商品id为：{}", order.getOrderUser(), order.getGno());
-        }else {
-            channel.basicNack(message.getMessageProperties().getDeliveryTag(), false,true);
+        } else {
+            channel.basicNack(message.getMessageProperties().getDeliveryTag(), false, true);
             log.info("消费订单失败，订单用户为：{}，商品id为：{}", order.getOrderUser(), order.getGno());
         }
     }
+
     @RabbitListener(queues = RabbitMqConfig.STORY_QUEUE)
     @Transactional(rollbackFor = Exception.class)
-    public void saveStory(Message message, Channel channel)throws IOException{
-        String msg = new String (message.getBody());
-        log.info("接受到的消息为:{}",msg);
+    public void saveStory(Message message, Channel channel) throws IOException {
+        String msg = new String(message.getBody());
+        log.info("接受到的消息为:{}", msg);
         job.selectjob();
         System.out.println("秒杀数据更新完成...");
     }

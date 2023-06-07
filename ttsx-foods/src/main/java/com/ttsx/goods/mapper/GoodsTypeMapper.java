@@ -11,5 +11,4 @@ import org.apache.ibatis.annotations.Mapper;
  * @Description:
  */
 @Mapper
-public interface GoodsTypeMapper extends BaseMapper<Goodstype> {
-}
+public interface GoodsTypeMapper extends BaseMapper<Goodstype> {}

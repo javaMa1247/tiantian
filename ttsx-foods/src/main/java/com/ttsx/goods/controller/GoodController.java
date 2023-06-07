@@ -48,108 +48,107 @@ public class GoodController {
     private MemberinfoService memberinfoService;
 
     @Autowired
-    private RedisTemplate<String,String> redisTemplate;
-    //根据fid查询商品信息
+    private RedisTemplate<String, String> redisTemplate;
+
+    // 根据fid查询商品信息
     @RequestMapping("findById/{fid}")
-    public R<Goodsinfo> findById(@PathVariable Integer fid){
+    public R<Goodsinfo> findById(@PathVariable Integer fid) {
         Goodsinfo good = goodsService.getById(fid);
         return R.success(good);
 
     }
 
-    //根据tno查询商品类型
+    // 根据tno查询商品类型
     @RequestMapping("findTypeByTno")
-    public R<Goodstype> findTypeByTno(Integer tno){
+    public R<Goodstype> findTypeByTno(Integer tno) {
         Goodstype goodstype = goodsTypeService.getById(tno);
         return R.success(goodstype);
 
     }
 
     @PostMapping("showGoodsInformation")
-    public R<Goodsinfo> showGoodsInformation(String Gno){
+    public R<Goodsinfo> showGoodsInformation(String Gno) {
         LambdaQueryWrapper<Goodsinfo> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-        lambdaQueryWrapper.eq(Goodsinfo::getGno,Gno);
+        lambdaQueryWrapper.eq(Goodsinfo::getGno, Gno);
         Goodsinfo goods = goodsService.getOne(lambdaQueryWrapper);
 
         return R.success(goods);
     }
 
-    //展示商品信息
+    // 展示商品信息
     @GetMapping("showGoodsInfo")
-    public R<List<Goodsinfo>> selectGoodsInfo(){
+    public R<List<Goodsinfo>> selectGoodsInfo() {
         List<Goodsinfo> list = goodsService.list();
 
         return R.success(list);
     }
 
-    //展示商品类型
+    // 展示商品类型
     @GetMapping("showGoodsType")
-    public R<List<Goodstype>> selectGoodsType(){
+    public R<List<Goodstype>> selectGoodsType() {
         List<Goodstype> list = goodsTypeService.list();
 
         return R.success(list);
     }
 
-    //页面搜索查询，模糊查询商品并分页
+    // 页面搜索查询，模糊查询商品并分页
     @PostMapping("findGoods")
-    public R<Page> findGoods( String pageno, String goodsname, String pagesize){
-        Page<Goodsinfo> page = new Page<>(Integer.parseInt(pageno),Integer.parseInt(pagesize),true);
+    public R<Page> findGoods(String pageno, String goodsname, String pagesize) {
+        Page<Goodsinfo> page = new Page<>(Integer.parseInt(pageno), Integer.parseInt(pagesize), true);
         LambdaQueryWrapper<Goodsinfo> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-        lambdaQueryWrapper.like(Goodsinfo::getGname,goodsname);
-        goodsService.page(page,lambdaQueryWrapper);
+        lambdaQueryWrapper.like(Goodsinfo::getGname, goodsname);
+        goodsService.page(page, lambdaQueryWrapper);
 
         return R.success(page);
     }
 
-    //显示最新商品
-    //String sql="select * from goodsinfo order by gno desc limit 0,2; ";
+    // 显示最新商品
+    // String sql="select * from goodsinfo order by gno desc limit 0,2; ";
     @GetMapping("showNewGoods")
-    public R<List<Goodsinfo>> showNewGoods(){
+    public R<List<Goodsinfo>> showNewGoods() {
         LambdaQueryWrapper<Goodsinfo> lambdaQueryWrapper = new LambdaQueryWrapper();
-        lambdaQueryWrapper.orderByDesc(Goodsinfo::getGno)
-                          .last(" limit 2 ");
+        lambdaQueryWrapper.orderByDesc(Goodsinfo::getGno).last(" limit 2 ");
         List<Goodsinfo> list = goodsService.list(lambdaQueryWrapper);
 
         return R.success(list);
     }
 
-    //根据Gno查询分类下的商品信息
+    // 根据Gno查询分类下的商品信息
     @PostMapping("showGoodsTno")
-    public R<Page<Goodsinfo>> showGoodsByTno( String pageno, String pagesize, String tno){
-        Page<Goodsinfo> page = new Page<>(Integer.parseInt(pageno),Integer.parseInt(pagesize),true);
+    public R<Page<Goodsinfo>> showGoodsByTno(String pageno, String pagesize, String tno) {
+        Page<Goodsinfo> page = new Page<>(Integer.parseInt(pageno), Integer.parseInt(pagesize), true);
         LambdaQueryWrapper<Goodsinfo> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-        lambdaQueryWrapper.eq(Goodsinfo::getTno,tno);
-        goodsService.page(page,lambdaQueryWrapper);
+        lambdaQueryWrapper.eq(Goodsinfo::getTno, tno);
+        goodsService.page(page, lambdaQueryWrapper);
 
         return R.success(page);
     }
 
-    //删除评论
-    //delete from discuss where did = ? and mno = ?
+    // 删除评论
+    // delete from discuss where did = ? and mno = ?
     @DeleteMapping("del")
-    public R<String> del(@RequestHeader String uid,String did){
-        int mno= Integer.parseInt(uid);
+    public R<String> del(@RequestHeader String uid, String did) {
+        int mno = Integer.parseInt(uid);
         LambdaQueryWrapper<Discuss> lambdaQueryWrapper = new LambdaQueryWrapper<Discuss>();
-        lambdaQueryWrapper.eq(Discuss::getDid,did)
-                          .eq(Discuss::getMno,mno);
+        lambdaQueryWrapper.eq(Discuss::getDid, did).eq(Discuss::getMno, mno);
         boolean remove = discussService.remove(lambdaQueryWrapper);
-        if(remove==false){
+        if (remove == false) {
             throw new CustomException("删除失败");
         }
 
         return R.success("删除评论成功");
     }
 
-    //根据商品id显示评论
-    //" select * from discuss,memberinfo where gno=? and discuss.mno=memberinfo.mno;";
+    // 根据商品id显示评论
+    // " select * from discuss,memberinfo where gno=? and discuss.mno=memberinfo.mno;";
     @PostMapping("showDiscuss")
-    public R<List<DiscussDto>> selectDiscuss(String Gno){
+    public R<List<DiscussDto>> selectDiscuss(String Gno) {
         LambdaQueryWrapper<Discuss> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-        lambdaQueryWrapper.eq(Discuss::getGno,Gno);
+        lambdaQueryWrapper.eq(Discuss::getGno, Gno);
         List<Discuss> list = discussService.list(lambdaQueryWrapper);
-        List<DiscussDto> listDto = list.stream().map((item)->{
+        List<DiscussDto> listDto = list.stream().map((item) -> {
             DiscussDto discussDto = new DiscussDto();
-            BeanUtils.copyProperties(item,discussDto);
+            BeanUtils.copyProperties(item, discussDto);
             Memberinfo byId = memberinfoService.getById(item.getMno());
             discussDto.setNickName(byId.getNickName());
             return discussDto;
@@ -158,12 +157,12 @@ public class GoodController {
         return R.success(listDto);
     }
 
-    //评论
-    //"insert into discuss(mno,gno,dis,publishtime) values(?,?,?,now()); "
+    // 评论
+    // "insert into discuss(mno,gno,dis,publishtime) values(?,?,?,now()); "
     @PutMapping("addDiscuss")
-    public R<String> addDiscuss(@RequestHeader String uid,int Gno,@RequestParam(value = "discuss") String dis){
+    public R<String> addDiscuss(@RequestHeader String uid, int Gno, @RequestParam(value = "discuss") String dis) {
         Discuss discuss = new Discuss();
-        int mno= Integer.parseInt(uid);
+        int mno = Integer.parseInt(uid);
         discuss.setMno(mno);
         discuss.setGno(Gno);
         discuss.setDis(dis);
@@ -173,10 +172,10 @@ public class GoodController {
         return R.success("评论成功");
     }
 
-    //历史记录
+    // 历史记录
 
     @PostMapping("setHistory")
-    public R<String> setHistory (@RequestHeader String uid,HttpServletRequest request){
+    public R<String> setHistory(@RequestHeader String uid, HttpServletRequest request) {
 
         String userId = uid;
         // 构造 Redis 键名
@@ -195,11 +194,11 @@ public class GoodController {
             redisTemplate.opsForZSet().removeRange(key, 0, -6);
         }
 
-
         return R.success("添加成功");
     }
+
     @PostMapping("getHistory")
-    public R<List<Goodsinfo>> getHistory (@RequestHeader String uid){
+    public R<List<Goodsinfo>> getHistory(@RequestHeader String uid) {
         String userId = uid;
         String key = "user:" + userId + ":views";
         Set<String> productIds = redisTemplate.opsForZSet().reverseRange(key, 0, 4);

@@ -8,5 +8,4 @@ import com.ttsx.bean.OrderIteminfo;
  * @Author: 86150
  * @CreateDate: 2023-05-11 下午 12:25
  */
-public interface OrderItemDao extends BaseMapper<OrderIteminfo> {
-}
+public interface OrderItemDao extends BaseMapper<OrderIteminfo> {}

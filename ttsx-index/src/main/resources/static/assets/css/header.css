@@ -1,23 +1,28 @@
 * {
-    padding:0;
-    margin:0;
-    border:none;
+    padding: 0;
+    margin: 0;
+    border: none;
     list-style: none;
 }
-html,body {
-    height:100%;
-    background:rgba(246, 246, 246, 1);
+
+html, body {
+    height: 100%;
+    background: rgba(246, 246, 246, 1);
 }
+
 a, a:hover, a:focus {
     text-decoration: none;
 }
-input:focus,input:active,button:focus,button:active{
+
+input:focus, input:active, button:focus, button:active {
     outline: none;
 }
+
 .seckill-welcome {
     height: 139px;
     background: yellowgreen;
 }
+
 .welcome-content {
     width: 1200px;
     margin: 0 auto;
@@ -26,6 +31,7 @@ input:focus,input:active,button:focus,button:active{
     flex-direction: row;
     align-items: center;
 }
+
 .seckill-text {
     font-size: 14px;
     font-weight: normal;
@@ -35,15 +41,18 @@ input:focus,input:active,button:focus,button:active{
     color: #fffefe;
     flex: 1;
 }
+
 .seckill-ul {
     display: flex;
     flex-direction: row;
     align-items: center;
     margin: 0;
 }
+
 .seckill-li {
     margin-right: 20px;
 }
+
 .seckill-li label, .seckill-li span {
     font-size: 14px;
     font-weight: normal;
@@ -54,6 +63,7 @@ input:focus,input:active,button:focus,button:active{
     margin: 0;
     cursor: pointer;
 }
+
 .shopping-content {
     display: flex;
     flex-direction: row;
@@ -65,6 +75,7 @@ input:focus,input:active,button:focus,button:active{
     cursor: pointer;
     color: #fff;
 }
+
 .seckill-nav {
     padding-top: 12px;
     height: 99px;
@@ -79,6 +90,7 @@ input:focus,input:active,button:focus,button:active{
     width: 1200px;
     margin: 0 auto;
 }
+
 .nav-logo {
     width: 150px;
     height: 59px;
@@ -86,32 +98,39 @@ input:focus,input:active,button:focus,button:active{
     background-size: 100% 100%;
     background-position: center;
 }
+
 .nav-select {
     flex: 1;
     padding: 30px 98px 0 68px;
     box-sizing: border-box;
 }
+
 .nav-list {
     display: flex;
     flex-direction: row;
     align-items: center;
     margin: 0;
 }
+
 .nav-text {
     padding-left: 53px;
 }
+
 .nav-text:first-child {
     padding: 0;
 }
+
 .nav-text a {
     font-size: 16px;
     font-weight: normal;
     letter-spacing: 0px;
     color: #242b39;
 }
+
 .nav-text a:hover, .nav-text a:focus {
     color: greenyellow;
 }
+
 .nav-search {
     width: 264px;
     height: 40px;
@@ -121,6 +140,7 @@ input:focus,input:active,button:focus,button:active{
     flex-direction: row;
     align-items: center;
 }
+
 .input-content {
     width: 214px;
     height: 40px;
@@ -130,6 +150,7 @@ input:focus,input:active,button:focus,button:active{
     border-radius: 20px 0 0 20px;
     border: solid 1px #dedede;
 }
+
 .search-input {
     width: 100%;
     font-size: 14px;
@@ -137,6 +158,7 @@ input:focus,input:active,button:focus,button:active{
     padding-right: 19px;
     box-sizing: border-box;
 }
+
 .search-img {
     width: 50px;
     height: 40px;
@@ -150,14 +172,16 @@ input:focus,input:active,button:focus,button:active{
     cursor: pointer;
     border-radius: 0px 20px 20px 0px;
 }
+
 .seckill-classify {
-    width:100%;
-    padding-top:20px;
+    width: 100%;
+    padding-top: 20px;
     box-sizing: border-box;
     background: #fff;
     border-bottom: 2px solid #e01222;
     transition: all 1s ease;
 }
+
 .seckill-classify-active {
     position: fixed;
     left: 0;

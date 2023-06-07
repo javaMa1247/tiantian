@@ -11,6 +11,7 @@
             margin: 0;
             padding: 0;
         }
+
         .seckill {
             height: 230px;
             width: 190px;
@@ -18,6 +19,7 @@
             background-color: #e83632;
             padding-top: 31px;
         }
+
         .seckill .seckill_title {
             display: block;
             width: 100%;
@@ -26,10 +28,12 @@
             text-align: center;
             color: white;
         }
+
         .seckill .seckill_content {
             height: 116px;
             width: 100%;
         }
+
         .seckill .seckill_content p {
             display: inline-block;
             height: 26px;
@@ -39,6 +43,7 @@
             color: white;
             text-align: center;
         }
+
         .seckill .seckill_content h2 {
             height: 90px;
             width: 100%;
@@ -46,12 +51,14 @@
             line-height: 90px;
 
         }
+
         .seckill .seckill_timer {
             margin: 20px auto 0;
             height: 30px;
             width: 130px;
             list-style: none;
         }
+
         .seckill .seckill_timer .seckill_timer_box {
             float: left;
             height: 100%;
@@ -63,6 +70,7 @@
             text-align: center;
             line-height: 30px;
         }
+
         .seckill .seckill_timer .seckill_timer_icon {
             float: left;
             height: 100%;
@@ -73,6 +81,7 @@
             text-align: center;
             line-height: 30px;
         }
+
         .iconfont {
             font-size: 60px;
             color: white;
@@ -82,24 +91,25 @@
     <link rel="stylesheet" href="https://cdn.bootcss.com/normalize/8.0.1/normalize.css">
     <!---标准格式-->
     <link rel="stylesheet" href="./css/text.css">
-    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="icon" href="favicon.ico" type="image/x-icon"/>
     <title>小米商城</title>
     <script>
         var lis = document.querySelectorAll('.seckill_timer_box');
         countTime();
         //设置计时器，回调函数设置为封装好的计时函数
-        window.setInterval(countTime,1000);
+        window.setInterval(countTime, 1000);
+
         //封装计时函数
-        function countTime(){
+        function countTime() {
             var endTime = +new Date('2023-5-21 22:55');   //设置秒杀截至时间【手动赋值】
             var startTime = +new Date();
-            var times = (endTime - startTime)/1000;
-            var hour = parseInt(times/60/60%24);
-            hour = hour<10? '0'+hour : hour;
-            var min = parseInt(times/60%60);
-            min = min<10? '0'+min : min;
-            var sec = parseInt(times%60);
-            sec = sec<10? '0'+sec : sec;
+            var times = (endTime - startTime) / 1000;
+            var hour = parseInt(times / 60 / 60 % 24);
+            hour = hour < 10 ? '0' + hour : hour;
+            var min = parseInt(times / 60 % 60);
+            min = min < 10 ? '0' + min : min;
+            var sec = parseInt(times % 60);
+            sec = sec < 10 ? '0' + sec : sec;
 
             lis[0].innerHTML = hour;
             lis[1].innerHTML = min;

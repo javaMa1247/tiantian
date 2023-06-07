@@ -29,37 +29,34 @@ public class CartBiz {
     @Autowired
     private CartDao dao;
 
-
-    public List<Cartinfo> showAllCart(String mno){
-//        int mno= user.getUserId();
+    public List<Cartinfo> showAllCart(String mno) {
+        // int mno= user.getUserId();
         QueryWrapper<Cartinfo> queryWrapper = new QueryWrapper<>();
-        queryWrapper.lambda()
-                .eq(Cartinfo::getMno, mno);
+        queryWrapper.lambda().eq(Cartinfo::getMno, mno);
 
         List<Cartinfo> cartinfos = this.dao.selectList(queryWrapper);
         for (Cartinfo cartinfo : cartinfos) {
-            cartinfo.setCount(cartinfo.getCount()+1);
-            //TODO: 到nacos中查找res-foods服务中的   findById ，要得到菜品对象goods
-            R<Goodsinfo> resultMap=this.feignApp.findById(   Integer.valueOf(cartinfo.getGno()) );
+            cartinfo.setCount(cartinfo.getCount() + 1);
+            // TODO: 到nacos中查找res-foods服务中的 findById ，要得到菜品对象goods
+            R<Goodsinfo> resultMap = this.feignApp.findById(Integer.valueOf(cartinfo.getGno()));
             Goodsinfo gs = resultMap.getData();
-            cartinfo.setSmallCount(gs.getPrice()*cartinfo.getNum());
+            cartinfo.setSmallCount(gs.getPrice() * cartinfo.getNum());
             cartinfo.setGoodsinfo(gs);
 
         }
         return cartinfos;
     }
-    public int addCart(String gno,String num,String mno) {
-//        int mno= user.getUserId();
-//        mno = BaseContext.getCurrentId().intValue();
+
+    public int addCart(String gno, String num, String mno) {
+        // int mno= user.getUserId();
+        // mno = BaseContext.getCurrentId().intValue();
         int result = 0;
         try {
-            //判断购物项是否已经存在
+            // 判断购物项是否已经存在
             QueryWrapper<Cartinfo> queryWrapper = new QueryWrapper<>();
-            queryWrapper.select("num")
-                    .eq("gno", gno)
-                    .eq("mno", mno);
+            queryWrapper.select("num").eq("gno", gno).eq("mno", mno);
             List<Object> numList = dao.selectObjs(queryWrapper);
-            int num0 = numList.size()==0 ? 0 : (int) numList.get(0);
+            int num0 = numList.size() == 0 ? 0 : (int)numList.get(0);
 
             if (num0 > 0) {
                 int num2 = num0 + Integer.parseInt(num);
@@ -67,21 +64,19 @@ public class CartBiz {
                     num2 = 1;
                 }
                 UpdateWrapper<Cartinfo> updateWrapper = new UpdateWrapper<>();
-                updateWrapper.set("num", num2)
-                        .eq("gno", gno)
-                        .eq("mno", mno);
+                updateWrapper.set("num", num2).eq("gno", gno).eq("mno", mno);
                 int rows = dao.update(null, updateWrapper);
                 return rows;
             } else {
-//                String cno = String.valueOf((int) db.selectAggreation("select max(cno) from cartinfo") + 1);
-//                db.doUpdata("INSERT INTO cartinfo VALUES (?, ?,?, ?)",cno,YcConstants.selectMno(request),gno,num);
+                // String cno = String.valueOf((int) db.selectAggreation("select max(cno) from cartinfo") + 1);
+                // db.doUpdata("INSERT INTO cartinfo VALUES (?, ?,?, ?)",cno,YcConstants.selectMno(request),gno,num);
                 QueryWrapper<Cartinfo> queryWrapper1 = new QueryWrapper<>();
                 queryWrapper1.select("max(cno)");
                 Object re = dao.selectObjs(queryWrapper1).get(0);
-                Integer maxCno = re == null ? null : (Integer.valueOf(re.toString()))+1 ;
+                Integer maxCno = re == null ? null : (Integer.valueOf(re.toString())) + 1;
 
-                Cartinfo cartinfo = new Cartinfo(maxCno+"",gno,mno+"", Integer.valueOf(num));
-                log.info(mno+"");
+                Cartinfo cartinfo = new Cartinfo(maxCno + "", gno, mno + "", Integer.valueOf(num));
+                log.info(mno + "");
                 int rows = dao.insert(cartinfo);
             }
 
@@ -91,34 +86,34 @@ public class CartBiz {
         }
         return 1;
     }
-    public int delgoods(String cno,String gno,String mno){
-//        int mno= user.getUserId();
-        int result = 0;
-        try{
-            LambdaQueryWrapper<Cartinfo> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-            lambdaQueryWrapper.eq(Cartinfo::getCno, cno)
-                    .eq(Cartinfo::getMno, mno)
-                    .eq(Cartinfo::getGno, gno);
-            result =  dao.delete(lambdaQueryWrapper);
 
-        }catch (Exception e){
+    public int delgoods(String cno, String gno, String mno) {
+        // int mno= user.getUserId();
+        int result = 0;
+        try {
+            LambdaQueryWrapper<Cartinfo> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+            lambdaQueryWrapper.eq(Cartinfo::getCno, cno).eq(Cartinfo::getMno, mno).eq(Cartinfo::getGno, gno);
+            result = dao.delete(lambdaQueryWrapper);
+
+        } catch (Exception e) {
             return result;
         }
 
         return result;
     }
-    public Integer cleanCart(List<Map<String, Object>> lists,String mno){
-//        int mno= user.getUserId();
+
+    public Integer cleanCart(List<Map<String, Object>> lists, String mno) {
+        // int mno= user.getUserId();
         int i = 0;
-//        String ono = String.valueOf(db.selectAggreation("select MAX(ono) from orderinfo"));
-        if(lists.size()>0){
-            for(Map<String, Object> list :lists){
-                String cno = (String) list.get("cno");
+        // String ono = String.valueOf(db.selectAggreation("select MAX(ono) from orderinfo"));
+        if (lists.size() > 0) {
+            for (Map<String, Object> list : lists) {
+                String cno = (String)list.get("cno");
                 LambdaQueryWrapper<Cartinfo> wrapper = new LambdaQueryWrapper<>();
                 wrapper.eq(Cartinfo::getCno, cno).eq(Cartinfo::getMno, mno);
                 i = dao.delete(wrapper);
             }
-        }else {
+        } else {
             return 0;
         }
         return i;
@@ -128,16 +123,16 @@ public class CartBiz {
         Cartinfo cart = new Cartinfo();
         List<Cartinfo> list = new ArrayList<>();
         Goodsinfo goodsinfo = feignApp.findById(Integer.parseInt(gno)).getData();
-        try{
+        try {
             cart.setNum(Integer.parseInt(num));
-            cart.setSmallCount(goodsinfo.getPrice()*cart.getNum());
+            cart.setSmallCount(goodsinfo.getPrice() * cart.getNum());
             cart.setGoodsinfo(goodsinfo);
             cart.setGno(gno);
             list.add(cart);
             return list;
 
-        }catch (Exception e){
-            return  list;
+        } catch (Exception e) {
+            return list;
         }
     }
 }

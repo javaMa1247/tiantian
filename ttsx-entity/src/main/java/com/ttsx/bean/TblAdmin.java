@@ -15,7 +15,7 @@ import java.io.Serializable;
  */
 @Data
 public class TblAdmin implements Serializable {
-    @TableId(type = IdType.AUTO)    //主键且自增
+    @TableId(type = IdType.AUTO) // 主键且自增
     private String aid;
     private String aname;
     private String apwd;

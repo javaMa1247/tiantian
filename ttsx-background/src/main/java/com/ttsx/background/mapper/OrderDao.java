@@ -16,21 +16,19 @@ import java.util.List;
  */
 @Component
 public interface OrderDao extends BaseMapper<Orderinfo> {
-    @Select("select orderiteminfo.ino ,ono,goodsinfo.*,nums,orderiteminfo.price smallCount from orderiteminfo,goodsinfo\n" +
-            "where goodsinfo.gno=orderiteminfo.gno and ono=#{ono}")
+    @Select("select orderiteminfo.ino ,ono,goodsinfo.*,nums,orderiteminfo.price smallCount from orderiteminfo,goodsinfo\n"
+        + "where goodsinfo.gno=orderiteminfo.gno and ono=#{ono}")
     List<OrderIteminfo> selectOrderItemByOno(@Param("ono") String ono);
 
-    @Select("select ono,date_format(odate,'%Y-%m-%d %H:%I:%S') odate,orderinfo.ano,rdate,orderinfo.status,price,invoice  from addrinfo,orderinfo\n" +
-            "where orderinfo.ano = addrinfo.ano and mno= #{mno} order by ono desc limit #{start}, #{pagesize}")
+    @Select("select ono,date_format(odate,'%Y-%m-%d %H:%I:%S') odate,orderinfo.ano,rdate,orderinfo.status,price,invoice  from addrinfo,orderinfo\n"
+        + "where orderinfo.ano = addrinfo.ano and mno= #{mno} order by ono desc limit #{start}, #{pagesize}")
     List<Orderinfo> selectAllOrderByPage(@Param("mno") String mno, @Param("start") Integer start,
-                                         @Param("pagesize") Integer pagesize);
+        @Param("pagesize") Integer pagesize);
 
-//    IPage<Orderinfo> selectAllOrderByPage(Page<Orderinfo> page, @Param("mno") String mno);
+    // IPage<Orderinfo> selectAllOrderByPage(Page<Orderinfo> page, @Param("mno") String mno);
 
-    @Select("SELECT COUNT(*) " +
-            "FROM orderinfo o " +
-            "INNER JOIN addrinfo a ON (o.ano = a.ano) " +
-            "WHERE a.mno = #{mno}")
+    @Select("SELECT COUNT(*) " + "FROM orderinfo o " + "INNER JOIN addrinfo a ON (o.ano = a.ano) "
+        + "WHERE a.mno = #{mno}")
     Integer getOrderInfoCountByMno(@Param("mno") String mno);
 
 }

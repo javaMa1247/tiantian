@@ -10,5 +10,4 @@ import org.apache.ibatis.annotations.Mapper;
  * @CreateDate: 2023-05-25 下午 6:52
  */
 @Mapper
-public interface FlashKillingMapper extends BaseMapper<FlashKilling> {
-}
+public interface FlashKillingMapper extends BaseMapper<FlashKilling> {}

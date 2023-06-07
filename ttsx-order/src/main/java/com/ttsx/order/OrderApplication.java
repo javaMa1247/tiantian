@@ -13,10 +13,10 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
  */
 @SpringBootApplication
 @EnableDiscoveryClient
-@EnableFeignClients(basePackages = {"com.ttsx.feignApi"})    //
+@EnableFeignClients(basePackages = {"com.ttsx.feignApi"}) //
 @MapperScan(basePackages = "com.ttsx.order.dao")
 public class OrderApplication {
     public static void main(String[] args) {
-        SpringApplication.run(OrderApplication.class,args);
+        SpringApplication.run(OrderApplication.class, args);
     }
 }

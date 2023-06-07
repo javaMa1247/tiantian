@@ -8,7 +8,7 @@ import java.util.Date;
 
 /**
  * @program: -
- * @description:  秒杀商品 与 商品的 集合类
+ * @description: 秒杀商品 与 商品的 集合类
  * @author: dx
  * @create: 2023/5/24 10:22
  */
@@ -33,38 +33,26 @@ public class FlashKillingVO implements Serializable {
 
     @Override
     public String toString() {
-        return "FlashKillingVO{" +
-                "fno=" + fno +
-                ", gno=" + gno +
-                ", tno=" + tno +
-                ", price=" + price +
-                ", fk_price=" + fk_price +
-                ", count=" + count +
-                ", currentCount=" + currentCount +
-                ", start_data=" + start_data +
-                ", start_dateString='" + start_dateString + '\'' +
-                ", time=" + time +
-                ", gname='" + gname + '\'' +
-                ", intro='" + intro + '\'' +
-                ", pics='" + pics + '\'' +
-                ", unit='" + unit + '\'' +
-                ", qperied='" + qperied + '\'' +
-                ", weight='" + weight + '\'' +
-                '}';
+        return "FlashKillingVO{" + "fno=" + fno + ", gno=" + gno + ", tno=" + tno + ", price=" + price + ", fk_price="
+            + fk_price + ", count=" + count + ", currentCount=" + currentCount + ", start_data=" + start_data
+            + ", start_dateString='" + start_dateString + '\'' + ", time=" + time + ", gname='" + gname + '\''
+            + ", intro='" + intro + '\'' + ", pics='" + pics + '\'' + ", unit='" + unit + '\'' + ", qperied='" + qperied
+            + '\'' + ", weight='" + weight + '\'' + '}';
     }
 
-    public FlashKillingVO(){
+    public FlashKillingVO() {
 
     }
+
     public Integer getCurrentCount() {
-        if (this.currentCount==null){
+        if (this.currentCount == null) {
             this.currentCount = this.getCount();
         }
         return currentCount;
     }
 
     public String getStart_dateString() {
-        if (this.start_dateString == null){
+        if (this.start_dateString == null) {
             long timestamp = this.getStart_data().getTime();
             Date date = new Date(timestamp);
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -72,8 +60,9 @@ public class FlashKillingVO implements Serializable {
         }
         return start_dateString;
     }
+
     public Date getStart_data() {
-        if (this.start_data == null){
+        if (this.start_data == null) {
             return new Date();
         }
         return start_data;
