@@ -13,7 +13,7 @@ spring:
         password: nacos
         namespace: ttsx-prod
     gateway:
-      globalcors:  #全局跨域处理
+      globalcors: #全局跨域处理
         cors-configurations:
           '[/**]':
             allowedOriginPatterns: "*"
@@ -21,7 +21,7 @@ spring:
             exposedHeaders: "*"
             allowedMethods: "*"
             #要注意的是，当 Access-Control-Allow-Credentials 的值为 true 时，Access-Control-Allow-Origin 的值只能是请求的 Origin，不能是 *
-#            allowedOrigins: "*"
+            #            allowedOrigins: "*"
             Access-Control-Allow-Origin: "*"
             allowCredentials: true   #并且允许携带身份凭证
       #            allowCredentials: true   #并且允许携带身份凭证
@@ -35,12 +35,12 @@ spring:
         - id: ttsx-order-addr
           uri: lb://ttsx-order
           predicates:
-           - Path=/addr/**
+            - Path=/addr/**
 
         - id: ttsx-backgroud
           uri: lb://ttsx-backgroud
           predicates:
-          - Path=/backgroud/**
+            - Path=/backgroud/**
 
         - id: ttsx-user
           uri: lb://ttsx-user
@@ -50,13 +50,23 @@ spring:
         - id: ttsx-foods
           uri: lb://ttsx-foods
           predicates:
-           - Path=/goods/**
+            - Path=/goods/**
           filters:
-#           - RewritePath=/foods/(?<segment>.*), /$\{segment}
+        #           - RewritePath=/foods/(?<segment>.*), /$\{segment}
         - id: ttsx-order
           uri: lb://ttsx-order
           predicates:
             - Path=/order/**
+
+        - id: ttsx-seckill
+          uri: lb://ttsx-seckill
+          predicates:
+            - Path=/fk/**
+
+        - id: ttsx-seckill-seck
+          uri: lb://ttsx-seckill
+          predicates:
+            - Path=/seck/**
 
         - id: ttsx-order-cart
           uri: lb://ttsx-order
